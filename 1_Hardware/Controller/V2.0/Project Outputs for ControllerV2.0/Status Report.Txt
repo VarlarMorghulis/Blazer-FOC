@@ -1,0 +1,11 @@
+Output: Test Point Report
+Type  : Test Points
+From  : Variant [[No Variations]] of Project [ControllerV2.0.PrjPcb]
+   Generated File[Assembly Testpoint Report for ControllerV2.0.csv]
+   Generated File[Assembly Testpoint Report for ControllerV2.0.ipc]
+
+
+Files Generated   : 2
+Documents Printed : 0
+
+Finished Output Generation At 11:03:40 On 2024/4/22

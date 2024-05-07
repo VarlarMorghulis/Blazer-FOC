@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=controllerv2.0-roundholes.txt|DrillLayers=gtl,g1,g2,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=controllerv2.0-slotholes.txt|DrillLayers=gtl,g1,g2,gbl
