@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Blazer_FOC\Blazer_FOC.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Blazer_FOC\Blazer_FOC.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue May 07 09:44:37 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue May 07 16:50:58 2024
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -627,8 +627,7 @@ Global Symbols
 <P><STRONG><a name="[126]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, rt_memclr_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = __aeabi_memclr4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
-<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_MspInit
+<BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_MspInit
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_MspInit
 <LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM8_Init
 <LI><a href="#[190]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
@@ -640,6 +639,7 @@ Global Symbols
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_MspPostInit
 <LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Encoder_MspInit
+<LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
 
 <P><STRONG><a name="[220]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, rt_memclr_w.o(.text), UNUSED)
@@ -956,8 +956,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIR_Butterworth_Handle
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Encoder_Calibration
+<BR>[Called By]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Encoder_Calibration
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
 </UL>
 
 <P><STRONG><a name="[26]"></a>ADC_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.ADC_IRQHandler))
@@ -970,13 +970,13 @@ Global Symbols
 <P><STRONG><a name="[cd]"></a>BSP1kHzIRQHandler</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, bsp_task.o(i.BSP1kHzIRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = BSP1kHzIRQHandler &rArr; Vofa_Upload &rArr; HAL_UART_Transmit_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vbus_Update
-<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature_Update
-<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ibus_Update
-<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Key_Status_Check
+<BR>[Calls]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Key_Status_Check
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vofa_Upload
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_GetKeyval
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_ErrorHandle
+<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vbus_Update
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature_Update
+<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ibus_Update
 </UL>
 <BR>[Called By]<UL><LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
@@ -985,16 +985,16 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 268 + Unknown Stack Size
 <LI>Call Chain = Board_Init &rArr; Menu_Init &rArr; Draw_Main_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_Resolution_Init
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
-<LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Init
+<BR>[Calls]<UL><LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Init
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Start
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Encoder_Start
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIMEx_OCN_Start
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADCEx_InjectedStart
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Filter_Init
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_Resolution_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1055,12 +1055,12 @@ Global Symbols
 <P><STRONG><a name="[ea]"></a>Calib_Currentloop</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, foc_calibration.o(i.Calib_Currentloop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = Calib_Currentloop &rArr; TLE5012B_Update &rArr; ReadTLE5012B &rArr; HAL_SPI_Receive &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TLE5012B_Update
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_PI_Ctrl
+<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_PI_Ctrl
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_Transform
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I_Park_Transform
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_Cal
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_Transform
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TLE5012B_Update
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Anticogging_Calibration
 </UL>
@@ -1068,8 +1068,8 @@ Global Symbols
 <P><STRONG><a name="[f1]"></a>Calib_Speedloop</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, foc_calibration.o(i.Calib_Speedloop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Calib_Speedloop &rArr; Encoder_Cal &rArr; ABZ_Update
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Speed_PI_Ctrl
+<BR>[Calls]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Speed_PI_Ctrl
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Anticogging_Calibration
 </UL>
@@ -1160,16 +1160,16 @@ Global Symbols
 <P><STRONG><a name="[70]"></a>Draw_Calib_font</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, menu.o(i.Draw_Calib_font))
 <BR><BR>[Stack]<UL><LI>Max Depth = 236<LI>Call Chain = Draw_Calib_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> menu.o(i.Menu_Init)
 </UL>
 <P><STRONG><a name="[76]"></a>Draw_Info_font</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, menu.o(i.Draw_Info_font))
 <BR><BR>[Stack]<UL><LI>Max Depth = 236<LI>Call Chain = Draw_Info_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> menu.o(i.Menu_Init)
 </UL>
@@ -1177,10 +1177,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 252 + Unknown Stack Size
 <LI>Call Chain = Draw_Main_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetFont
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SendBuffer
+<BR>[Calls]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SendBuffer
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_ClearBuffer
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetFont
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
@@ -1191,16 +1191,16 @@ Global Symbols
 <P><STRONG><a name="[74]"></a>Draw_Run_font</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, menu.o(i.Draw_Run_font))
 <BR><BR>[Stack]<UL><LI>Max Depth = 236<LI>Call Chain = Draw_Run_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> menu.o(i.Menu_Init)
 </UL>
 <P><STRONG><a name="[72]"></a>Draw_Setting_font</STRONG> (Thumb, 46 bytes, Stack size 16 bytes, menu.o(i.Draw_Setting_font))
 <BR><BR>[Stack]<UL><LI>Max Depth = 236<LI>Call Chain = Draw_Setting_font &rArr; u8g2_DrawStr &rArr; u8g2_draw_string &rArr; u8g2_DrawGlyph &rArr; u8g2_font_draw_glyph &rArr; u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawStr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> menu.o(i.Menu_Init)
 </UL>
@@ -1226,8 +1226,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[157]"></a>Error_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, main.o(i.Error_Handler))
-<BR><BR>[Called By]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
-<LI><a href="#[193]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
+<BR><BR>[Called By]<UL><LI><a href="#[193]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 <LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM8_Init
 <LI><a href="#[191]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM7_Init
 <LI><a href="#[190]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
@@ -1240,6 +1239,7 @@ Global Symbols
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_ADC1_Init
 <LI><a href="#[19f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
+<LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
 
 <P><STRONG><a name="[140]"></a>FLASH_Erase_Sector</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, stm32f4xx_hal_flash_ex.o(i.FLASH_Erase_Sector))
@@ -1311,12 +1311,12 @@ Global Symbols
 <P><STRONG><a name="[111]"></a>FOC_Task_Encoder_Calibration</STRONG> (Thumb, 390 bytes, Stack size 32 bytes, foc_calibration.o(i.FOC_Task_Encoder_Calibration))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = FOC_Task_Encoder_Calibration &rArr; Flash_Save &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_Update
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_GetCalAngle
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
+<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SVPWM_Cal
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I_Park_Transform
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Flash_Save
+<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_Update
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_GetCalAngle
 </UL>
 <BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Calibration
 </UL>
@@ -1600,13 +1600,13 @@ Global Symbols
 <P><STRONG><a name="[13a]"></a>HAL_DMA_Init</STRONG> (Thumb, 208 bytes, Stack size 24 bytes, stm32f4xx_hal_dma.o(i.HAL_DMA_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = HAL_DMA_Init &rArr; DMA_CheckFifoParam
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_CheckFifoParam
+<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_CheckFifoParam
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_CalcBaseAndBitshift
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
-<LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DMA_Init
+<BR>[Called By]<UL><LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DMA_Init
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
+<LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
 
 <P><STRONG><a name="[13d]"></a>HAL_DMA_Start_IT</STRONG> (Thumb, 110 bytes, Stack size 24 bytes, stm32f4xx_hal_dma.o(i.HAL_DMA_Start_IT))
@@ -1666,13 +1666,13 @@ Global Symbols
 <P><STRONG><a name="[127]"></a>HAL_GPIO_Init</STRONG> (Thumb, 420 bytes, Stack size 40 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = HAL_GPIO_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
-<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_MspInit
+<BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_MspInit
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_MspInit
 <LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_MspPostInit
 <LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Encoder_MspInit
+<LI><a href="#[156]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
 </UL>
 
 <P><STRONG><a name="[182]"></a>HAL_GPIO_ReadPin</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_ReadPin))
@@ -1688,18 +1688,18 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[101]"></a>HAL_GetTick</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_hal.o(i.HAL_GetTick))
-<BR><BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Init
+<BR><BR>[Called By]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Init
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WaitForLastOperation
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Abort
 <LI><a href="#[159]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_TransmitReceive
 <LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_WaitFlagStateUntilTimeout
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_DMATransmitCplt
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
 <LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Receive
-<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
 </UL>
 
 <P><STRONG><a name="[19e]"></a>HAL_IncTick</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f4xx_hal.o(i.HAL_IncTick))
@@ -1826,9 +1826,9 @@ Global Symbols
 <P><STRONG><a name="[156]"></a>HAL_SPI_MspInit</STRONG> (Thumb, 336 bytes, Stack size 56 bytes, spi.o(i.HAL_SPI_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
@@ -2091,11 +2091,11 @@ Global Symbols
 <P><STRONG><a name="[17e]"></a>HAL_UART_MspInit</STRONG> (Thumb, 158 bytes, Stack size 40 bytes, usart.o(i.HAL_UART_MspInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_UART_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[17d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
@@ -2125,8 +2125,7 @@ Global Symbols
 <P><STRONG><a name="[117]"></a>HFI_Process</STRONG> (Thumb, 232 bytes, Stack size 16 bytes, foc_hfi.o(i.HFI_Process))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = HFI_Process &rArr; Generate_HighFrequency_Volt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIR_Butterworth_Handle
-<LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Handle
+<BR>[Calls]<UL><LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Handle
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Generate_HighFrequency_Volt
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_PI_Ctrl
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
@@ -2135,6 +2134,7 @@ Global Symbols
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I_Park_Transform
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_Cal
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_Transform
+<LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIR_Butterworth_Handle
 </UL>
 <BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Sensorless
 </UL>
@@ -2147,9 +2147,9 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f405xx.o(RESET)
 </UL>
 <P><STRONG><a name="[cb]"></a>IIR_Butterworth_Handle</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, foc_utils.o(i.IIR_Butterworth_Handle))
-<BR><BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TLE5012B_Update
+<BR><BR>[Called By]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HFI_Process
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TLE5012B_Update
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ABZ_Update
-<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HFI_Process
 </UL>
 
 <P><STRONG><a name="[f0]"></a>I_Park_Transform</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, foc_algorithm.o(i.I_Park_Transform))
@@ -2222,10 +2222,10 @@ Global Symbols
 <P><STRONG><a name="[187]"></a>MX_DMA_Init</STRONG> (Thumb, 146 bytes, Stack size 8 bytes, dma.o(i.MX_DMA_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = MX_DMA_Init &rArr; HAL_DMA_Init &rArr; DMA_CheckFifoParam
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
-<LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_EnableIRQ
 <LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2245,8 +2245,8 @@ Global Symbols
 <P><STRONG><a name="[18a]"></a>MX_SPI2_Init</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, spi.o(i.MX_SPI2_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = MX_SPI2_Init &rArr; HAL_SPI_Init &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
-<LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<BR>[Calls]<UL><LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2254,8 +2254,8 @@ Global Symbols
 <P><STRONG><a name="[18b]"></a>MX_SPI3_Init</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, spi.o(i.MX_SPI3_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = MX_SPI3_Init &rArr; HAL_SPI_Init &rArr; HAL_SPI_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
-<LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<BR>[Calls]<UL><LI><a href="#[157]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2363,9 +2363,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SendBuffer
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_ClearBuffer
-<LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawTriangle
 <LI><a href="#[196]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Show_Function
+<LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Choose_Menu
 </UL>
@@ -2398,10 +2398,10 @@ Global Symbols
 <P><STRONG><a name="[114]"></a>Open_Voltageloop</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, foc_run.o(i.Open_Voltageloop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Open_Voltageloop &rArr; I_Park_Transform
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_normalizeAngle
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
+<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SVPWM_Cal
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I_Park_Transform
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_normalizeAngle
 </UL>
 <BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Reminder
 </UL>
@@ -2458,12 +2458,12 @@ Global Symbols
 <P><STRONG><a name="[115]"></a>Sensored_Currentloop</STRONG> (Thumb, 118 bytes, Stack size 8 bytes, foc_run.o(i.Sensored_Currentloop))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Sensored_Currentloop &rArr; Encoder_Cal &rArr; ABZ_Update
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_PI_Ctrl
+<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_PI_Ctrl
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Park_Transform
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I_Park_Transform
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Current_Cal
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clarke_Transform
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
 </UL>
 <BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOC_Task_Sensored
 </UL>
@@ -2597,9 +2597,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ff]"></a>_normalizeAngle</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, foc_utils.o(i._normalizeAngle))
-<BR><BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Open_Voltageloop
+<BR><BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Open_Voltageloop
 <LI><a href="#[181]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Handle
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_Cal
 </UL>
 
 <P><STRONG><a name="[d6]"></a>delay_init</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, delay.o(i.delay_init))
@@ -2716,8 +2716,8 @@ Global Symbols
 <P><STRONG><a name="[1bf]"></a>u8g2_DrawHXBMP</STRONG> (Thumb, 160 bytes, Stack size 56 bytes, u8g2_bitmap.o(i.u8g2_DrawHXBMP))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = u8g2_DrawHXBMP &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
-<LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawHVLine
+<BR>[Calls]<UL><LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawHVLine
+<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
 </UL>
@@ -2760,8 +2760,8 @@ Global Symbols
 <P><STRONG><a name="[fa]"></a>u8g2_DrawXBMP</STRONG> (Thumb, 84 bytes, Stack size 40 bytes, u8g2_bitmap.o(i.u8g2_DrawXBMP))
 <BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = u8g2_DrawXBMP &rArr; u8g2_DrawHXBMP &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
-<LI><a href="#[1bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawHXBMP
+<BR>[Calls]<UL><LI><a href="#[1bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawHXBMP
+<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
 </UL>
 <BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Draw_Setting_font
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Draw_Run_font
@@ -2783,10 +2783,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_is_intersection_decision_tree
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_apply_clip_window
-<LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_glyph
+<BR>[Called By]<UL><LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_glyph
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawXBMP
 <LI><a href="#[1bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_DrawHXBMP
+<LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_apply_clip_window
 </UL>
 
 <P><STRONG><a name="[1b7]"></a>u8g2_NextPage</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, u8g2_buffer.o(i.u8g2_NextPage))
@@ -2840,8 +2840,8 @@ Global Symbols
 <P><STRONG><a name="[1c8]"></a>u8g2_SetupBuffer</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, u8g2_setup.o(i.u8g2_SetupBuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = u8g2_SetupBuffer
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetMaxClipWindow
-<LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetFontPosBaseline
+<BR>[Calls]<UL><LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetFontPosBaseline
+<LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_SetMaxClipWindow
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_Setup_sh1107_128x80_f
 </UL>
@@ -2907,13 +2907,13 @@ Global Symbols
 <P><STRONG><a name="[1d2]"></a>u8g2_font_decode_glyph</STRONG> (Thumb, 312 bytes, Stack size 32 bytes, u8g2_font.o(i.u8g2_font_decode_glyph))
 <BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = u8g2_font_decode_glyph &rArr; u8g2_font_decode_len &rArr; u8g2_DrawHVLine &rArr; u8g2_clip_intersection2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
-<LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_len
+<BR>[Calls]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_len
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_get_unsigned_bits
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_decode_get_signed_bits
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_add_vector_y
 <LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_add_vector_x
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_setup_decode
+<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_IsIntersection
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8g2_font_draw_glyph
 </UL>
@@ -3077,8 +3077,8 @@ Global Symbols
 <P><STRONG><a name="[1e4]"></a>u8x8_cad_SendData</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, u8x8_cad.o(i.u8x8_cad_SendData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = u8x8_cad_SendData
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_generic
-<LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
+<BR>[Called By]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
+<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_generic
 </UL>
 
 <P><STRONG><a name="[1e3]"></a>u8x8_cad_SendSequence</STRONG> (Thumb, 100 bytes, Stack size 24 bytes, u8x8_cad.o(i.u8x8_cad_SendSequence))
@@ -3087,8 +3087,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendData
 <LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_gpio_call
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_generic
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_128x80
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_128x80
+<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_generic
 </UL>
 
 <P><STRONG><a name="[1e8]"></a>u8x8_cad_StartTransfer</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, u8x8_cad.o(i.u8x8_cad_StartTransfer))
@@ -3112,10 +3112,10 @@ Global Symbols
 <P><STRONG><a name="[7e]"></a>u8x8_d_sh1107_128x80</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, u8x8_d_sh1107.o(i.u8x8_d_sh1107_128x80))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = u8x8_d_sh1107_128x80 &rArr; u8x8_d_sh1107_generic &rArr; u8x8_cad_SendSequence &rArr; u8x8_cad_SendData
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_helper_display_setup_memory
+<BR>[Calls]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
+<LI><a href="#[1e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_helper_display_setup_memory
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_helper_display_init
 <LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_sh1107_generic
-<LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> u8g2_d_setup.o(i.u8g2_Setup_sh1107_128x80_f)
 </UL>
@@ -3125,8 +3125,8 @@ Global Symbols
 <P><STRONG><a name="[1df]"></a>u8x8_gpio_call</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, u8x8_gpio.o(i.u8x8_gpio_call))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = u8x8_gpio_call
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_helper_display_init
-<LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
+<BR>[Called By]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_cad_SendSequence
+<LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_d_helper_display_init
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u8x8_byte_4wire_hw_spi
 </UL>
 
