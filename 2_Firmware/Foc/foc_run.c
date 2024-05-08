@@ -220,6 +220,7 @@ uint16_t enc_index;
    */
 void Sensored_Currentloop(void)
 {
+	ErrorState Current_Ers,Encoder_Ers;
 	Encoder_TypeDef *Encoder_t;
 	
 #ifdef USE_ABZ_ENCODER
@@ -229,12 +230,15 @@ void Sensored_Currentloop(void)
 #ifdef USE_SPI_ENCODER
 	Encoder_t=&TLE5012B_t;
 #endif
+	/*电流采样及处理*/
+	Current_Ers=Current_Cal(&FOC_Sensored_t,&CurrentOffset_t);
+	/*编码器更新及角度速度处理*/
+	Encoder_Cal(&FOC_Sensored_t,Encoder_t,Motor_t.Pole_Pairs);
 	
 	/*电流采样运行正常且编码器读取正常*/
-	if(Current_Cal(&FOC_Sensored_t,&CurrentOffset_t)==FOC_OK &&
-	   Encoder_Cal(&FOC_Sensored_t,Encoder_t,Motor_t.Pole_Pairs)==FOC_OK)
+	if(Current_Ers==FOC_OK && Encoder_Ers==FOC_OK)
 	{
-		enc_index=TLE5012B_t.raw_value/16;
+//		enc_index=TLE5012B_t.raw_value/16;
 		
 //		FOC_Sensored_t.Ia=(float)Anticog_1[enc_index];
 //		FOC_Sensored_t.Ib=(float)Anticog_2[enc_index];
@@ -264,7 +268,10 @@ void Sensored_Currentloop(void)
 	}
 	else
 	{
-		TE_Currentloop_t.Errstate=FOC_FAULT;
+		if(Current_Ers==FOC_FAULT)
+			TE_Currentloop_t.Errstate=FOC_FAULT;
+		if(Encoder_Ers==FOC_FAULT)
+			TE_Speedloop_t.Errstate=FOC_FAULT;		
 	}
 }
 

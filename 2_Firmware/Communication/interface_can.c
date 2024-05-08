@@ -103,6 +103,7 @@ void CAN_SendMessage(void)
 	CAN_TxHeaderStruct.TransmitGlobalTime=ENABLE;
 	
 	CAN_DataTransform();
+	
 	/*转子机械角度高8位*/
 	tx_data[0]=SendMsg_t.angle>>8;
 	/*转子机械角度低8位*/
@@ -128,3 +129,7 @@ void CAN_SendMessage(void)
 	}
 }
 
+void CAN_ID_Conflict_Detect(void)
+{
+	
+}
