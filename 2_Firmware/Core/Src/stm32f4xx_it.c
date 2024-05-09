@@ -335,6 +335,7 @@ void DMA2_Stream7_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 /**
    * @brief  ADC中断回调函数,执行FOC算法
+			 频率为20kHz
    * @param  无
    * @retval 无
    */
@@ -359,6 +360,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 }
 
+/**
+   * @brief  启用ABZ编码器模式时,Z相外部中断函数,校正运行中的误差
+   * @param  无
+   * @retval 无
+   */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin==ENC_Z_Pin)
@@ -369,6 +375,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 /**
    * @brief  TIM7定时器中断回调函数,处理一些实时性和优先级较低的任务
+			 频率为1kHz
    * @param  无
    * @retval 无
    */

@@ -21,5 +21,6 @@ void CAN_Filter_Init(void);
 void CAN_DataTransform(void);
 void CANRxIRQHandler(void);
 void CAN_SendMessage(void);
+void CAN_LostConnect_Handle(void);
 
 #endif

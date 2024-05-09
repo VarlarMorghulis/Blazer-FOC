@@ -158,7 +158,7 @@ ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t
    */
 void Motor_Release(void)
 {
-	TIM1->CCR1=0;
-	TIM1->CCR2=0;
-	TIM1->CCR3=0;
+	TIM1->CCR1=4200;
+	TIM1->CCR2=4200;
+	TIM1->CCR3=4200;
 } 

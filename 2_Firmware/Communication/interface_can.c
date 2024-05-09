@@ -4,7 +4,7 @@ SendMsg_TypeDef SendMsg_t;
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.ID=0x03
+	.ID=0x00
 };
 
 extern FOC_State FOC_State_t;
@@ -12,6 +12,7 @@ extern PID_TypeDef PID_Iq;
 extern Encoder_TypeDef TLE5012B_t;
 extern Encoder_TypeDef ABZ_t;
 extern FOC_TypeDef FOC_Sensored_t;
+extern uint32_t CAN_Rx_timeout;
 
 /**
    * @brief  CAN1滤波器初始化函数
@@ -68,13 +69,18 @@ void CANRxIRQHandler(void)
 {
 	CAN_RxHeaderTypeDef CAN_RxHeaderStruct;
 	uint8_t rx_data[2];
-		
+	
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	
 	/*主控发送的扩展ID与驱动板ID对应*/
 	if(CAN_RxHeaderStruct.ExtId==ReceiveMsg_t.ID)
 	{
+		/*将接收超时标志位清零,类似看门狗的实现方式*/
+		CAN_Rx_timeout=0;
+		
+		/*有感闭环模式*/
 		FOC_State_t=FOC_Sensored;
+		
 		ReceiveMsg_t.given_current=0;
 		ReceiveMsg_t.given_current|=rx_data[0]<<8*1;
 		ReceiveMsg_t.given_current|=rx_data[1];
@@ -127,6 +133,12 @@ void CAN_SendMessage(void)
 		if(++send_num==10)
 			break;
 	}
+}
+
+void CAN_LostConnect_Handle(void)
+{
+	/*超时则清空电机之前的运行数据,防止重新连接后过冲*/
+	PID_Iq.ref_value=0.0f;
 }
 
 void CAN_ID_Conflict_Detect(void)

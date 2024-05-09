@@ -43,8 +43,12 @@ Encoder_TypeDef TLE5012B_t=
 
 Encoder_TypeDef ABZ_t=
 {
-	.resolution=8192
+	.resolution=4000
 };
+
+extern uint8_t Z_use_flag;
+extern uint8_t Z_detect_flag;
+extern FOC_State FOC_State_t;
 
 /**
    * @brief  读取TLE5012B数据
@@ -172,20 +176,22 @@ float ABZ_GetCalAngle(Encoder_TypeDef *ABZ_t)
 void ENC_Z_EXTIIRQHandler(void)
 {
 	static uint8_t first_flag=0;
-	static uint16_t Offset_CNT=0;
-	
-	/*首次检测到Z相脉冲*/
-	if(first_flag==0)
-	{
-		Offset_CNT=ABZ_TIM->CNT;
-		first_flag=1;
-	}
-	
-	/*之后检测到Z相脉冲根据首次的便宜值纠正*/
+
+	if(Z_use_flag==1)
+		Z_detect_flag=1;
 	else
 	{
-		ABZ_TIM->CNT=Offset_CNT;
+		if(FOC_State_t==FOC_Wait)
+		{
+			if(first_flag==0)
+			{
+				Flash_Read();
+				LED_G(1);
+				first_flag=1;
+			}
+		}
 	}
+		
 }
 
 ErrorState Encoder_Cal(FOC_TypeDef *FOC_t,Encoder_TypeDef *Encoder_t,uint8_t Pole_Pairs)
@@ -219,7 +225,7 @@ ErrorState Encoder_Cal(FOC_TypeDef *FOC_t,Encoder_TypeDef *Encoder_t,uint8_t Pol
 #endif
 
 	/*编码器极性和电机极对数不正常*/
-	if(Encoder_t->sensor_dir==0||Pole_Pairs==0)
+	if(Encoder_t->sensor_dir==0||Pole_Pairs<=1)
 	{
 		return FOC_FAULT;
 	}

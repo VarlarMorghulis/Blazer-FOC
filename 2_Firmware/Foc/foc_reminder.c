@@ -7,7 +7,7 @@ FOC_TypeDef FOC_Reminder_t=
 {
 	.Udc=24.0f,
 	.Ud=0.0f,
-	.Uq=0.5f,
+	.Uq=0.3f,
 	.Tpwm=PWM_TIM_PERIOD,
 	.Speed=0.0f
 };

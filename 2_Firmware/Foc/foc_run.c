@@ -122,7 +122,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=1.0f,
+	.ref_value=10.0f,
 	.Kp=0.022f,
 	.Ki=47.5f,
 	.error_sum_max=8.0f,
@@ -317,7 +317,7 @@ void FOC_Task_Sensored(void)
 	/*运行前读取Flash存储参数*/
 	if(TE_Currentloop_t.Init_Flag==0)
 	{
-		Flash_Read();
+		//Flash_Read();
 		TE_Currentloop_t.Init_Flag=1;
 	}
 	

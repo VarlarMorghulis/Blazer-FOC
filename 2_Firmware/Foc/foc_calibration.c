@@ -7,7 +7,7 @@ uint16_t Anticog_3[2048];
 FOC_TypeDef FOC_Encoder_Calibration_t=
 {
 	.Udc=24.0f,
-	.Ud=3.0f,
+	.Ud=2.0f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 };
@@ -115,9 +115,10 @@ PID_TypeDef PID_Speed_Calib=
 
 enum {Calib_ADC,Calib_Encoder,Calib_Anticogging,Calib_Done};
 uint8_t Calib_State=Calib_ADC;
+uint8_t Z_use_flag;
+uint8_t Z_detect_flag;
 
 extern FOC_State FOC_State_t;
-
 extern Encoder_TypeDef TLE5012B_t;
 extern Encoder_TypeDef ABZ_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
@@ -181,7 +182,8 @@ void FOC_Task_ADC_Calibration(void)
 void FOC_Task_Encoder_Calibration(void)
 {
 	static int16_t i=0;
-	static uint8_t run_flag;/*0电角度自增强拖 1电角度自减强拖 2记录编码器零偏*/
+	/*0电角度自增强拖 1电角度自减强拖 2电角度置0 3开环旋转寻找Z相*/
+	static uint8_t run_flag;
 	static float mid_angle,end_angle;
 	
 	/*2ms执行一次*/
@@ -267,24 +269,64 @@ void FOC_Task_Encoder_Calibration(void)
 			}
 		}
 		
-		/*清空定时器计数值,去除编码器零偏*/
+		/*清空定时器计数值,电角度置0*/
 		else if(run_flag==2)
 		{
 			ABZ_TIM->CNT=0;
 			
 			/*清空编码器角度差和圈数*/
 			ABZ_t.d_angle=0.0f;
+			ABZ_t.velocity=0.0f;
 			ABZ_t.loop=0;
 			
 			i=0;
-			run_flag=0;
-				
-			/*校准参数存储*/
-			Flash_Save();
-				
-			/*状态跳转*/
-			Calib_State=Calib_Done;
+			run_flag=3;
 		}
+		
+		/*开环旋转直到检测到Z相脉冲*/
+		else if(run_flag==3)
+		{
+			Z_use_flag=1;
+			/*暂时还没检测到Z相脉冲*/
+			if(Z_detect_flag==0)
+			{
+				if(i<=Motor_t.Pole_Pairs*1000)
+				{
+					FOC_Encoder_Calibration_t.theta_el=_normalizeAngle(_2PI*i/1000.0f);
+					I_Park_Transform(&FOC_Encoder_Calibration_t);
+					SVPWM_Cal(&FOC_Encoder_Calibration_t);
+					SetPWM(&FOC_Encoder_Calibration_t);
+					i++;
+				}
+				/*转完一圈还没检测到Z相脉冲,说明接线有问题*/
+				else
+				{
+					i=0;
+					/*状态跳转*/
+					FOC_State_t=FOC_Error;
+				}
+			}
+			
+			/*检测到Z相脉冲*/
+			else if(Z_detect_flag==1)
+			{
+				ABZ_t.zero_enc_offset=ABZ_TIM->CNT;
+				
+				i=0;
+				run_flag=0;
+				Z_use_flag=0;
+				Z_detect_flag=0;
+				
+				/*校准参数存储*/
+				Flash_Save();
+					
+				/*状态跳转*/
+				Calib_State=Calib_Done;
+			}
+			
+
+		}
+		
 		
 		TE_Encoder_Calibration_t.Cnt_20kHz=0;
 	}
@@ -402,6 +444,7 @@ void FOC_Task_Encoder_Calibration(void)
 				
 				/*清空编码器角度差和圈数*/
 				TLE5012B_t.d_angle=0.0f;
+				TLE5012B_t.velocity=0.0f;
 				TLE5012B_t.loop=0;
 				
 				i=0;
