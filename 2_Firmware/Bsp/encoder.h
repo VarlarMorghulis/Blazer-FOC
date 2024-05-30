@@ -18,8 +18,8 @@
 #define TLE_CS_ENABLE  ENC_CS_GPIO_Port->BSRR=(uint32_t)ENC_CS_Pin<<16U/*片选脚电平拉低*/
 #define TLE_CS_DISABLE ENC_CS_GPIO_Port->BSRR=ENC_CS_Pin        		/*片选脚电平拉高*/
 
-//#define USE_SPI_ENCODER
-#define USE_ABZ_ENCODER
+#define USE_SPI_ENCODER
+//#define USE_ABZ_ENCODER
 
 typedef struct
 {

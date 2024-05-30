@@ -4,7 +4,7 @@ SendMsg_TypeDef SendMsg_t;
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.ID=0x00
+	.ID=0x01
 };
 
 extern FOC_State FOC_State_t;
@@ -13,6 +13,7 @@ extern Encoder_TypeDef TLE5012B_t;
 extern Encoder_TypeDef ABZ_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
+extern uint8_t Z_confirm_flag;
 
 /**
    * @brief  CAN1滤波器初始化函数
@@ -78,6 +79,9 @@ void CANRxIRQHandler(void)
 		/*将接收超时标志位清零,类似看门狗的实现方式*/
 		CAN_Rx_timeout=0;
 		
+#ifdef USE_ABZ_ENCODER
+	if(Z_confirm_flag==1)
+	{
 		/*有感闭环模式*/
 		FOC_State_t=FOC_Sensored;
 		
@@ -86,6 +90,19 @@ void CANRxIRQHandler(void)
 		ReceiveMsg_t.given_current|=rx_data[1];
 		
 		CAN_DataTransform();
+	}
+#endif
+
+#ifdef USE_SPI_ENCODER
+	/*有感闭环模式*/
+	FOC_State_t=FOC_Sensored;
+		
+	ReceiveMsg_t.given_current=0;
+	ReceiveMsg_t.given_current|=rx_data[0]<<8*1;
+	ReceiveMsg_t.given_current|=rx_data[1];
+		
+	CAN_DataTransform();
+#endif
 	}
 }
 

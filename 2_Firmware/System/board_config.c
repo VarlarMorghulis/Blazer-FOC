@@ -2,15 +2,15 @@
 
 void Board_Init(void)
 {
+	/*从Flash读取存储的电机和编码器数据*/
+	Flash_Read();
+	
 	/*延时函数初始化*/
 	delay_init(168);
 	
 	/*使能TIM7中断*/
 	HAL_TIM_Base_Start_IT(&htim7);
-	
-	/*CAN1初始化*/
-	CAN_Filter_Init();
-	
+		
 	/*ABZ编码器定时器开启*/
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_1);/*A*/
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_2);/*B*/
@@ -39,4 +39,7 @@ void Board_Init(void)
 	
 	OLED_Init();
 	Menu_Init();
+	
+	/*CAN1初始化*/
+	CAN_Filter_Init();
 }

@@ -41,7 +41,7 @@ void Motor_Beep_PlayNote(uint16_t tone,uint16_t duration)
 
 void FOC_Task_Reminder(void)
 {
-	static uint16_t i;
+	static uint16_t note_index;
 	static uint8_t run_flag;
 	/*CAN_ID不同,上电后到提示音响起的延时就不同*/
 	/*例如CAN_ID=0x02,上电后1+2*0.5=2秒后听到提示音*/
@@ -65,29 +65,45 @@ void FOC_Task_Reminder(void)
 	else if(run_flag==1)
 	{
 		/*依次播放各个音符*/
-		if(i<sizeof(Note_t)/sizeof(Note_TypeDef))
+		if(note_index<sizeof(Note_t)/sizeof(Note_TypeDef))
 		{
 			if(TE_Reminder_t.Cnt_20kHz==0)
 			{
-				__HAL_TIM_SET_PRESCALER(&htim1,Note_t[i].Tone);
+				__HAL_TIM_SET_PRESCALER(&htim1,Note_t[note_index].Tone);
 			}
 			
 			TE_Reminder_t.Cnt_20kHz++;
 			
-			if(TE_Reminder_t.Cnt_20kHz/20>=Note_t[i].Duration)
+			if(TE_Reminder_t.Cnt_20kHz/20>=Note_t[note_index].Duration)
 			{
 				TE_Reminder_t.Cnt_20kHz=0;
-				i++;
+				note_index++;
 			}
 			
 			Open_Voltageloop(&FOC_Reminder_t,1);
+		}
+
+		else 
+		{
+			run_flag=2;
+			note_index=0;
+			TE_Reminder_t.Cnt_20kHz=0;
+			__HAL_TIM_SET_PRESCALER(&htim1,T_NONE);
+			Motor_Release();
+		}
+	}
+	/*播放完成后等待一段时间*/
+	else if(run_flag==2)
+	{
+		/*等待1s*/
+		if(TE_Reminder_t.Cnt_20kHz<=20000)
+		{
+			TE_Reminder_t.Cnt_20kHz++;
 		}
 		else 
 		{
 			run_flag=0;
 			TE_Reminder_t.Cnt_20kHz=0;
-			__HAL_TIM_SET_PRESCALER(&htim1,T_NONE);
-			Motor_Release();
 			FOC_State_t=FOC_Wait;
 		}
 	}

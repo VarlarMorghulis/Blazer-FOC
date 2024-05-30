@@ -1,0 +1,87 @@
+Removed Pin From Net: NetName=PGND Pin=D1-1
+Removed Pin From Net: NetName=DCBUS Pin=D1-2
+Removed Pin From Net: NetName=U Pin=R6-1
+Removed Pin From Net: NetName=SH_A Pin=R6-2
+Removed Pin From Net: NetName=V Pin=R7-1
+Removed Pin From Net: NetName=SH_B Pin=R7-2
+Removed Pin From Net: NetName=W Pin=R8-1
+Removed Pin From Net: NetName=SH_C Pin=R8-2
+Removed Member From Class: ClassName=Driver Member=D1
+Change Component Comment : Designator=R6 Old Comment=HoLRS3920-3W-1mR-1% New Comment=1mR
+Change Component Comment : Designator=R7 Old Comment=HoLRS3920-3W-1mR-1% New Comment=1mR
+Change Component Comment : Designator=R8 Old Comment=HoLRS3920-3W-1mR-1% New Comment=1mR
+Change component parameters: Designator = "R6" ("R6"); Footprint = "3920R"; UniqueID = "\TFTIBASQ" ("\TFTIBASQ")
+Change component parameters (AddParameter): Name = "Add into BOM"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Channel ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Convert to PCB"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet"; Value = "https://atta.szlcsc.com/upload/public/pdf/source/20231123/B35E1474215435358D1EA89A1F2CD565.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Device"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Group ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "JLCPCB Part Class"; Value = "扩展库"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LCSC Part Name"; Value = "1mΩ ±1% 8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "RESI(开步睿思）"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mounting Sytle"; Value = "贴片"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Power(Watts)"; Value = "8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Reuse Block"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier"; Value = "LCSC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Footprint"; Value = "3920"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part"; Value = "C5224161"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Symbol"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Temperature Coefficient"; Value = "±25ppm/℃"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tolerance"; Value = "±1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "采样电阻"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1mΩ"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R7" ("R7"); Footprint = "3920R"; UniqueID = "\LQKMXIEY" ("\LQKMXIEY")
+Change component parameters (AddParameter): Name = "Add into BOM"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Channel ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Convert to PCB"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet"; Value = "https://atta.szlcsc.com/upload/public/pdf/source/20231123/B35E1474215435358D1EA89A1F2CD565.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Device"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Group ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "JLCPCB Part Class"; Value = "扩展库"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LCSC Part Name"; Value = "1mΩ ±1% 8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "RESI(开步睿思）"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mounting Sytle"; Value = "贴片"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Power(Watts)"; Value = "8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Reuse Block"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier"; Value = "LCSC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Footprint"; Value = "3920"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part"; Value = "C5224161"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Symbol"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Temperature Coefficient"; Value = "±25ppm/℃"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tolerance"; Value = "±1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "采样电阻"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1mΩ"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R8" ("R8"); Footprint = "3920R"; UniqueID = "\RTURKLJD" ("\RTURKLJD")
+Change component parameters (AddParameter): Name = "Add into BOM"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Channel ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Convert to PCB"; Value = "yes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Datasheet"; Value = "https://atta.szlcsc.com/upload/public/pdf/source/20231123/B35E1474215435358D1EA89A1F2CD565.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Device"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Group ID"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "JLCPCB Part Class"; Value = "扩展库"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "LCSC Part Name"; Value = "1mΩ ±1% 8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "RESI(开步睿思）"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mounting Sytle"; Value = "贴片"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Power(Watts)"; Value = "8W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Reuse Block"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier"; Value = "LCSC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Footprint"; Value = "3920"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part"; Value = "C5224161"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Symbol"; Value = "SEWF3920F1L00P9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Temperature Coefficient"; Value = "±25ppm/℃"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Tolerance"; Value = "±1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "采样电阻"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1mΩ"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=SH_A Pin=R6-1
+Added Pin To Net: NetName=U Pin=R6-2
+Added Pin To Net: NetName=SH_B Pin=R7-1
+Added Pin To Net: NetName=V Pin=R7-2
+Added Pin To Net: NetName=SH_C Pin=R8-1
+Added Pin To Net: NetName=W Pin=R8-2

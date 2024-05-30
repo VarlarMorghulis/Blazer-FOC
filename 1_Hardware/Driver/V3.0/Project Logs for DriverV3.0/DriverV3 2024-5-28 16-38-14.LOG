@@ -1,0 +1,110 @@
+Added Component: Designator=J1(PAD_RECT)
+Added Component: Designator=J2(PAD_RECT)
+Added Component: Designator=J3(PAD_RECT)
+Added Component: Designator=J6(PAD_RECT)
+Added Component: Designator=J7(PAD_RECT)
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=V Pin=J2-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=W Pin=J3-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=DCBUS Pin=J6-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Pin To Net: NetName=PGND Pin=J7-1
+Added Member To Class: ClassName=DriverV3.0 Member=Component J1 Pad
+Added Member To Class: ClassName=DriverV3.0 Member=Component J2 Pad
+Added Member To Class: ClassName=DriverV3.0 Member=Component J3 Pad
+Added Member To Class: ClassName=DriverV3.0 Member=Component J6 Pad
+Added Member To Class: ClassName=DriverV3.0 Member=Component J7 Pad

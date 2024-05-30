@@ -48,6 +48,7 @@ Encoder_TypeDef ABZ_t=
 
 extern uint8_t Z_use_flag;
 extern uint8_t Z_detect_flag;
+uint8_t Z_confirm_flag;
 extern FOC_State FOC_State_t;
 
 /**
@@ -75,13 +76,25 @@ uint16_t ReadTLE5012B(uint16_t Reg)
    */
 void TLE5012B_Update(Encoder_TypeDef *TLE5012B_t)
 {
-	/*读取编码器角度原始值,并考虑电角度零偏*/
+	static uint8_t init_flag=0;
+	
+	/*读取编码器角度原始值*/
 	TLE5012B_t->raw_value=ReadTLE5012B(READ_ANGLE_VALUE);
-	/*把0-32768转换为0-2pi*/
+	/*考虑电角度零偏,并把0-32768转换为0-2pi*/
 	TLE5012B_t->angle_now=(TLE5012B_t->raw_value+TLE5012B_t->zero_enc_offset)%32767*0.0001917476f;
 
 	/*当前角度与上一次角度作差*/
-	TLE5012B_t->d_angle=TLE5012B_t->angle_now-TLE5012B_t->angle_last;
+	/*由于零偏存在,第一次更新angle_now不为0,但angle_last为0*/
+	/*所以初始编码器更新后会计算出一个很大的瞬时速度,第一次需要人为清零*/
+	if(init_flag==0)
+	{
+		TLE5012B_t->d_angle=0.0f;
+		init_flag=1;
+	}
+	else if(init_flag==1)
+	{
+		TLE5012B_t->d_angle=TLE5012B_t->angle_now-TLE5012B_t->angle_last;
+	}
 	
 	/*正向过零检测,+4.5不是一个定死的值,只要体现出角度过零大幅度突变即可*/
 	if(TLE5012B_t->d_angle<-4.5f)
@@ -175,19 +188,17 @@ float ABZ_GetCalAngle(Encoder_TypeDef *ABZ_t)
 
 void ENC_Z_EXTIIRQHandler(void)
 {
-	static uint8_t first_flag=0;
-
 	if(Z_use_flag==1)
 		Z_detect_flag=1;
 	else
 	{
 		if(FOC_State_t==FOC_Wait)
 		{
-			if(first_flag==0)
+			if(Z_confirm_flag==0)
 			{
 				Flash_Read();
 				LED_G(1);
-				first_flag=1;
+				Z_confirm_flag=1;
 			}
 		}
 	}
@@ -208,8 +219,8 @@ ErrorState Encoder_Cal(FOC_TypeDef *FOC_t,Encoder_TypeDef *Encoder_t,uint8_t Pol
 	/*编码器更新*/
 	TLE5012B_Update(Encoder_t);
 	
-	/*连着100次编码器读数都是0x0000,说明连接不正常*/
-	if(Encoder_t->raw_value==0x0000)
+	/*连着100次编码器读数都是0x7FFF,说明连接不正常*/
+	if(Encoder_t->raw_value==32767)
 	{
 		i++;
 		if(i>=100)

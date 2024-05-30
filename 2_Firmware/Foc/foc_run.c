@@ -59,7 +59,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=10.0f,
+	.ref_value=3.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
 	.error_sum_max=8.0f,
@@ -122,7 +122,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=10.0f,
+	.ref_value=0.0f,
 	.Kp=0.022f,
 	.Ki=47.5f,
 	.error_sum_max=8.0f,
@@ -233,7 +233,7 @@ void Sensored_Currentloop(void)
 	/*电流采样及处理*/
 	Current_Ers=Current_Cal(&FOC_Sensored_t,&CurrentOffset_t);
 	/*编码器更新及角度速度处理*/
-	Encoder_Cal(&FOC_Sensored_t,Encoder_t,Motor_t.Pole_Pairs);
+	Encoder_Ers=Encoder_Cal(&FOC_Sensored_t,Encoder_t,Motor_t.Pole_Pairs);
 	
 	/*电流采样运行正常且编码器读取正常*/
 	if(Current_Ers==FOC_OK && Encoder_Ers==FOC_OK)
@@ -314,12 +314,15 @@ void Sensored_Positionloop(void)
 
 void FOC_Task_Sensored(void)
 {
+	
+#ifdef USE_SPI_ENCODER
 	/*运行前读取Flash存储参数*/
-	if(TE_Currentloop_t.Init_Flag==0)
-	{
-		//Flash_Read();
-		TE_Currentloop_t.Init_Flag=1;
-	}
+//	if(TE_Currentloop_t.Init_Flag==0)
+//	{
+//		Flash_Read();
+//		TE_Currentloop_t.Init_Flag=1;
+//	}
+#endif
 	
 	/*电流环执行频率为10kHz*/
 	if(++TE_Currentloop_t.Cnt_20kHz>=2)

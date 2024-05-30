@@ -1,0 +1,36 @@
+Change Component Designator: OldDesignator=C25 NewDesignator=C29
+Change Component Designator: OldDesignator=C26 NewDesignator=C30
+Change Component Designator: OldDesignator=C27 NewDesignator=C31
+Change Component Designator: OldDesignator=C28 NewDesignator=C32
+Change Component Designator: OldDesignator=C29 NewDesignator=C33
+Change Component Designator: OldDesignator=C30 NewDesignator=C34
+Change Component Designator: OldDesignator=C31 NewDesignator=C35
+Change Component Designator: OldDesignator=C32 NewDesignator=C36
+Change Component Designator: OldDesignator=C33 NewDesignator=C37
+Change Component Designator: OldDesignator=C34 NewDesignator=C38
+Change Component Designator: OldDesignator=C35 NewDesignator=C39
+Change Component Designator: OldDesignator=C36 NewDesignator=C40
+Change Component Designator: OldDesignator=C37 NewDesignator=C41
+Change Component Designator: OldDesignator=C38 NewDesignator=C42
+Added Component: Designator=C25(1206C)
+Added Component: Designator=C26(1206C)
+Added Component: Designator=C27(1206C)
+Added Component: Designator=C28(1206C)
+Added Component: Designator=C43(1206C)
+Added Pin To Net: NetName=DCBUS Pin=C25-1
+Added Pin To Net: NetName=PGND Pin=C25-2
+Added Pin To Net: NetName=DCBUS Pin=C26-1
+Added Pin To Net: NetName=PGND Pin=C26-2
+Added Pin To Net: NetName=DCBUS Pin=C27-1
+Added Pin To Net: NetName=PGND Pin=C27-2
+Added Pin To Net: NetName=DCBUS Pin=C28-1
+Added Pin To Net: NetName=PGND Pin=C28-2
+Added Pin To Net: NetName=DCBUS Pin=C43-1
+Added Pin To Net: NetName=PGND Pin=C43-2
+Added Member To Class: ClassName=DriverV3.0 Member=Component C39 10uf
+Added Member To Class: ClassName=DriverV3.0 Member=Component C40 10uf
+Added Member To Class: ClassName=DriverV3.0 Member=Component C41 10uf
+Added Member To Class: ClassName=DriverV3.0 Member=Component C42 10uf
+Added Member To Class: ClassName=DriverV3.0 Member=Component C43 10uf
+Added Member To Class: ClassName=DriverV3.0 Member=Component J1 Pad
+Added Member To Class: ClassName=DriverV3.0 Member=Component J3 Pad

@@ -24,25 +24,29 @@ void FOC20kHzIRQHandler(void)
 			FOC_Task_Calibration();
 		}
 		break;
-				
+		
+		/*有感模式*/		
 		case FOC_Sensored:
 		{
 			FOC_Task_Sensored();
 		}
 		break;
 		
+		/*无感模式*/
 		case FOC_Sensorless:
 		{
 			FOC_Task_Sensorless();
 		}
 		break;
 		
+		/*闲置状态*/
 		case FOC_Wait:
 		{
 			Motor_Release();
 		}
 		break;
 		
+		/*错误状态*/
 		case FOC_Error:
 		{
 			Motor_Release();

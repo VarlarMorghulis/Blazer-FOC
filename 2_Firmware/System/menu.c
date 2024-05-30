@@ -259,10 +259,10 @@ void Menu_Show(uint8_t key)
     nowMenu = now;
 }
 
-
+extern Encoder_TypeDef ABZ_t;
 void Draw_Main_font(int8_t x, int8_t y)
 {
-	char ID_str[10],Vbus_str[10];
+	char ID_str[10],Vbus_str[10],Resolution_str[10];
 	
 	u8g2_ClearBuffer(&u8g2);
 	
@@ -272,22 +272,12 @@ void Draw_Main_font(int8_t x, int8_t y)
 	u8g2_DrawStr(&u8g2, 0, 18, "0x0");
     u8g2_DrawStr(&u8g2, 35, 18, ID_str);
 		
-	sprintf(Vbus_str,"%.1f",AnalogParam_t.vbus);
-    u8g2_DrawStr(&u8g2, 60, 18, Vbus_str);
-	u8g2_DrawStr(&u8g2, 105, 18, "V");
+	//sprintf(Vbus_str,"%.1f",AnalogParam_t.vbus);
+	sprintf(Vbus_str,"%-.1fV",AnalogParam_t.vbus);
+    u8g2_DrawStr(&u8g2, 65, 18, Vbus_str);
+	//u8g2_DrawStr(&u8g2, 105, 18, "V");
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
-	
-//	u8g2_DrawStr(&u8g2,0,35,"Iq:");
-//	sprintf(Iq_str,"%.1f",FOC_Sensored_t.Iq);
-//	u8g2_DrawStr(&u8g2,60,35,Iq_str);	
-//	u8g2_DrawStr(&u8g2,90,35,"A");
-//	
-//	u8g2_DrawStr(&u8g2,0,50,"Speed:");
-//	//sprintf(Speed_str,"%3d rpm",(int16_t)(TLE5012B_t.velocity/_2PI*60.0f));
-//	sprintf(Speed_str,"%3d",100);
-//	u8g2_DrawStr(&u8g2,60,50,Speed_str);
-//	u8g2_DrawStr(&u8g2,90,50,"RPM");
 	
 	u8g2_DrawStr(&u8g2,10,40,"Motor");
 	
@@ -297,6 +287,8 @@ void Draw_Main_font(int8_t x, int8_t y)
 	
 #ifdef USE_ABZ_ENCODER
 	u8g2_DrawStr(&u8g2,80,55,"ABZ");
+	sprintf(Resolution_str,"%d",ABZ_t.resolution);
+	u8g2_DrawStr(&u8g2,80,70,Resolution_str);
 #endif
 
 #ifdef USE_SPI_ENCODER
@@ -393,10 +385,33 @@ void Setting(void)
 	u8g2_DrawStr(&u8g2,20,35,"To be developed");
 }
 
+extern PID_TypeDef PID_Iq;
 void Run(void)
 {
+	char Iq_ref_str[10],Iq_now_str[10];
+	
 	FOC_State_t=FOC_Sensored;
-	u8g2_DrawStr(&u8g2,20,35,"To be developed");
+	
+	u8g2_SetFont(&u8g2,u8g2_font_ncenB10_tf);
+	u8g2_DrawStr(&u8g2,10,20,"Current");
+	u8g2_DrawStr(&u8g2,28,36,"Mode");
+	
+	if(key1_event==KE_ShortPress)
+	{
+		PID_Iq.ref_value+=1.0f;
+	}
+	else if(key2_event==KE_ShortPress)
+	{
+		PID_Iq.ref_value-=1.0f;
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+	
+	sprintf(Iq_ref_str,"Iq_ref  %3.2fA",PID_Iq.ref_value);
+	u8g2_DrawStr(&u8g2,10,50,Iq_ref_str);
+	
+	sprintf(Iq_now_str,"Iq_now  %3.2fA",PID_Iq.samp_value);
+	u8g2_DrawStr(&u8g2,10,62,Iq_now_str);
 }
 
 void Info(void)

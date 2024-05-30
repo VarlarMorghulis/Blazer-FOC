@@ -1,4 +1,4 @@
-# Keil Generated output files in the sub-directories .\Listings and .\Objects
+# Keil Generated output files in the sub-directories .\MDK-ARM\Blazer_FOC
 *.lst
 *.o
 *.d
