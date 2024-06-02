@@ -7,9 +7,6 @@ void Board_Init(void)
 	
 	/*延时函数初始化*/
 	delay_init(168);
-	
-	/*使能TIM7中断*/
-	HAL_TIM_Base_Start_IT(&htim7);
 		
 	/*ABZ编码器定时器开启*/
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_1);/*A*/
@@ -37,9 +34,12 @@ void Board_Init(void)
 	/*使能ADC1注入组中断*/
 	__HAL_ADC_ENABLE_IT(&hadc1,ADC_IT_JEOC);
 	
-	OLED_Init();
-	Menu_Init();
-	
 	/*CAN1初始化*/
 	CAN_Filter_Init();
+	
+	/*使能TIM7中断*/
+	HAL_TIM_Base_Start_IT(&htim7);
+	
+	OLED_Init();
+	Menu_Init();
 }

@@ -4,9 +4,11 @@ uint16_t Led_Cnt;
 uint16_t Analog_Cnt;
 uint16_t Key_Cnt;
 uint16_t Menu_Cnt;
+uint16_t CanTx_Cnt;
 uint8_t menu_key;
 uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
+extern uint8_t CAN_Txflag;
 extern FOC_State FOC_State_t;
 void BSP1kHzIRQHandler(void)
 {
@@ -17,7 +19,14 @@ void BSP1kHzIRQHandler(void)
 	
 #ifdef USE_SPI_ENCODER
 	if(FOC_State_t!=FOC_Reminder)
-		CAN_SendMessage();
+	{
+		if(++CanTx_Cnt>=2)
+		{
+			CAN_SendMessage();
+			CanTx_Cnt=0;
+		}
+	}	
+		
 #endif
 	
 	Vofa_Upload();
@@ -45,9 +54,12 @@ void BSP1kHzIRQHandler(void)
 	
 	Menu_Cnt++;
 	
-	/*CAN_Rx_timeout每次在CANRxIRQHandler()中清零*/
-	if(++CAN_Rx_timeout>=500)
+	if(FOC_State_t==FOC_Sensored)
 	{
-		CAN_LostConnect_Handle();
+		/*CAN_Rx_timeout每次在CANRxIRQHandler()中清零*/
+		if(++CAN_Rx_timeout>=500)
+		{
+			CAN_LostConnect_Handle();
+		}
 	}
 }

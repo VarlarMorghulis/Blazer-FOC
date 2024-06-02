@@ -4,7 +4,7 @@ SendMsg_TypeDef SendMsg_t;
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.ID=0x01
+	.ID=0x03
 };
 
 extern FOC_State FOC_State_t;
@@ -61,6 +61,8 @@ void CAN_DataTransform(void)
 	SendMsg_t.real_current=(uint16_t)((int16_t)(FOC_Sensored_t.Iq*409.6f));
 }
 
+uint8_t CAN_Rxflag=0;
+
 /**
    * @brief  CAN1数据接收函数
    * @param  无
@@ -74,7 +76,7 @@ void CANRxIRQHandler(void)
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	
 	/*主控发送的扩展ID与驱动板ID对应*/
-	if(CAN_RxHeaderStruct.ExtId==ReceiveMsg_t.ID)
+	if(CAN_RxHeaderStruct.ExtId==ReceiveMsg_t.ID+0x150)
 	{
 		/*将接收超时标志位清零,类似看门狗的实现方式*/
 		CAN_Rx_timeout=0;
@@ -94,15 +96,19 @@ void CANRxIRQHandler(void)
 #endif
 
 #ifdef USE_SPI_ENCODER
-	/*有感闭环模式*/
-	FOC_State_t=FOC_Sensored;
-		
+	if(CAN_Rxflag==0)
+	{	/*有感闭环模式*/
+		FOC_State_t=FOC_Sensored;
+		CAN_Rxflag=1;
+	}
+	
 	ReceiveMsg_t.given_current=0;
 	ReceiveMsg_t.given_current|=rx_data[0]<<8*1;
 	ReceiveMsg_t.given_current|=rx_data[1];
 		
 	CAN_DataTransform();
 #endif
+	LED_G_TOGGLE;
 	}
 }
 
@@ -156,6 +162,13 @@ void CAN_LostConnect_Handle(void)
 {
 	/*超时则清空电机之前的运行数据,防止重新连接后过冲*/
 	PID_Iq.ref_value=0.0f;
+//	Motor_Release();
+	LED_G(0);
+	/*将CAN接收标志位置0*/
+	CAN_Rxflag=0;
+	/*进入闲置状态*/
+	FOC_State_t=FOC_Wait;
+	
 }
 
 void CAN_ID_Conflict_Detect(void)

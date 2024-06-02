@@ -295,6 +295,14 @@ void Draw_Main_font(int8_t x, int8_t y)
 	u8g2_DrawStr(&u8g2,80,55,"SPI");
 #endif
 
+#ifdef Motor_Tmotor_U10
+	u8g2_DrawStr(&u8g2,80,40,"U10");
+#endif
+
+#ifdef Motor_5065
+	u8g2_DrawStr(&u8g2,80,40,"5065");
+#endif
+
 	u8g2_SendBuffer(&u8g2);
 }
 
