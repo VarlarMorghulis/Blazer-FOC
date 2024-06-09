@@ -20,7 +20,7 @@ void BSP1kHzIRQHandler(void)
 #ifdef USE_SPI_ENCODER
 	if(FOC_State_t!=FOC_Reminder)
 	{
-		if(++CanTx_Cnt>=2)
+		if(++CanTx_Cnt>=1)
 		{
 			CAN_SendMessage();
 			CanTx_Cnt=0;
