@@ -4,6 +4,8 @@ void Board_Init(void)
 {
 	/*从Flash读取存储的电机和编码器数据*/
 	Flash_Read();
+	/*从Flash读取CAN_ID*/
+	Flash_CAN_ID_Read();
 	
 	/*延时函数初始化*/
 	delay_init(168);

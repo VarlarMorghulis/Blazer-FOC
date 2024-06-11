@@ -33,12 +33,16 @@ void Menu_Show(uint8_t key);
 void Draw_Main_font(int8_t x, int8_t y);
 void Draw_Calib_font(int8_t x, int8_t y);
 void Draw_Setting_font(int8_t x, int8_t y);
+void Draw_CAN_ID_font(int8_t x, int8_t y);
+void Draw_Current_font(int8_t x, int8_t y);
 void Draw_Run_font(int8_t x, int8_t y);
 void Draw_Info_font(int8_t x, int8_t y);
 
 void NoFun(void);
 void Calib(void);
 void Setting(void);
+void CAN_ID(void);
+void Current(void);
 void Run(void);
 void Info(void);
 

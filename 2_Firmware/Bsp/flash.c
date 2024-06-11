@@ -4,6 +4,7 @@ extern Encoder_TypeDef TLE5012B_t;
 extern Encoder_TypeDef ABZ_t;
 extern Motor_TypeDef Motor_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
+extern ReceiveMsg_TypeDef ReceiveMsg_t;
 
 #define ADDR_FLASH_START			ADDR_FLASH_SECTOR_8
 
@@ -21,6 +22,11 @@ float IntBitToFloat(uint32_t x)
 	return *pInt;
 }
 
+/**
+   * @brief  电机极对数和编码器参数保存 使用扇区9
+   * @param  
+   * @retval
+   */
 void Flash_Save(void)
 {
 	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
@@ -198,4 +204,53 @@ float Flash_GetAnticogCurrent(uint16_t index,uint8_t Ix)
 	Iph=IntBitToFloat(temp);
 	
 	return Iph;
+}
+
+/**
+   * @brief  CAN_ID参数保存 使用扇区8
+   * @param  无
+   * @retval 无
+   */
+void Flash_CAN_ID_Save(void)
+{
+	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
+	uint32_t PageError=0;
+	uint32_t temp;
+	uint32_t addr;
+	
+	FLASH_EraseInitstruct.TypeErase = FLASH_TYPEERASE_SECTORS;//执行扇区擦除操作
+	FLASH_EraseInitstruct.Sector=FLASH_SECTOR_8;
+	FLASH_EraseInitstruct.NbSectors=1;               
+    FLASH_EraseInitstruct.VoltageRange=FLASH_VOLTAGE_RANGE_3;//擦除的电压范围2.7-3.6V  
+
+	/*解锁Flash*/
+	HAL_FLASH_Unlock();
+    
+	/*擦除扇区*/
+	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
+	
+	temp=(uint32_t)ReceiveMsg_t.ID;
+	
+	addr=ADDR_FLASH_SECTOR_8;
+
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,addr,temp);	
+
+	/*Flash上锁*/
+	HAL_FLASH_Lock();
+	
+}
+
+void Flash_CAN_ID_Read(void)
+{
+	uint32_t temp;
+	uint32_t addr;
+	
+	addr=ADDR_FLASH_SECTOR_8;
+
+	temp=(*((volatile uint32_t *)addr));
+	
+	if(temp>0x08)
+		temp=0x01;
+	
+	ReceiveMsg_t.ID=(uint8_t)temp;
 }

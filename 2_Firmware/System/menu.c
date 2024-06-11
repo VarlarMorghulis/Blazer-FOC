@@ -28,6 +28,9 @@ void Menu_Init(void)
     nowMenu = Creat_Menu("MENU",Draw_Main_font,NoFun);
         nowMenu = Creat_ChildMenu("calib",Draw_Calib_font,Calib);
 		nowMenu = Creat_BrotherMenu("setting",Draw_Setting_font,Setting);
+			nowMenu = Creat_ChildMenu("can id",Draw_CAN_ID_font,CAN_ID);
+			nowMenu = Creat_BrotherMenu("current",Draw_Current_font,Current);
+			nowMenu = Circle_Menu();
 		nowMenu = Creat_BrotherMenu("run",Draw_Run_font,Run);
 		nowMenu = Creat_BrotherMenu("info",Draw_Info_font,Info);
         nowMenu = Circle_Menu();
@@ -140,7 +143,7 @@ uint8_t Menu_GetKeyval(void)
 
 void Choose_Menu(void)
 {
-	//MENU* now=nowMenu;
+	/*还未进入具体的某个功能页面*/
 	if(nowMenu->flag==0)
 	{
 		switch(menu_key)
@@ -165,13 +168,19 @@ void Choose_Menu(void)
 			break;
 	        
 			case ENTER:
+			{
 				nowMenu->flag=1;
+				/*进入页面后清空按键状态,防止相同的操作二次触发*/
+				key1_event=KE_Dummy;
+				key2_event=KE_Dummy;
+			}
 			break;
 			
 			default:break;
 		}
 	}
-	else
+	/*当前在某个功能页面里*/
+	else if(nowMenu->flag==1)
 	{
 		switch(menu_key)
 		{
@@ -225,6 +234,30 @@ void Menu_Show(uint8_t key)
 				Show_Function(nowMenu->Show, 176-i*8, 0);
 				u8g2_SendBuffer(&u8g2);
 				delay_ms(5);
+			}
+			else if(key==DOWN)
+			{
+//				u8g2_ClearBuffer(&u8g2);
+//				nowMenu=now;
+//				Show_Function(nowMenu->Show, 0, 40);
+//				nowMenu = now->last;
+//				Show_Function(nowMenu->Show, 0, 40-i*8);
+//				nowMenu = now->next;
+//				Show_Function(nowMenu->Show, 0, 40+i*8);
+//				u8g2_SendBuffer(&u8g2);
+//				delay_ms(5);
+			}
+			else if(key==UP)
+			{
+//				u8g2_ClearBuffer(&u8g2);
+//				nowMenu=now;
+//				Show_Function(nowMenu->Show, 8-i, 40);
+//				nowMenu = now->last;
+//				Show_Function(nowMenu->Show, 8-i, 40-i*8);
+//				nowMenu = now->next;
+//				Show_Function(nowMenu->Show, 8-i, 40+i*8);
+//				u8g2_SendBuffer(&u8g2);
+//				delay_ms(5);		
 			}
 			
 			nowMenu = now;
@@ -318,6 +351,18 @@ void Draw_Setting_font(int8_t x, int8_t y)
 	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
 }
 
+void Draw_CAN_ID_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_can_id);
+	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
+}
+
+void Draw_Current_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_current);
+	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
+}
+
 void Draw_Run_font(int8_t x, int8_t y)
 {
 	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_run);
@@ -389,6 +434,69 @@ void Calib(void)
 }
 
 void Setting(void)
+{
+	u8g2_DrawStr(&u8g2,20,35,"To be developed");
+}
+
+extern ReceiveMsg_TypeDef ReceiveMsg_t;
+void CAN_ID(void)
+{
+	static uint8_t run_flag=0;
+	char can_id_str[10];
+
+	if(run_flag==0)
+	{
+		u8g2_ClearBuffer(&u8g2);
+		/*长按进入ID配置*/
+		if(key1_event==KE_LongPress)
+		{
+			key1_event=KE_Dummy;
+			run_flag=1;
+		}
+	}
+	if(run_flag==1)
+	{
+		/*ID增加*/
+		if(key1_event==KE_ShortPress)
+		{
+			ReceiveMsg_t.ID++;
+			if(ReceiveMsg_t.ID>0x08)
+				ReceiveMsg_t.ID=0x01;
+		}
+		/*ID减小*/
+		if(key2_event==KE_ShortPress)
+		{
+			ReceiveMsg_t.ID--;
+			if(ReceiveMsg_t.ID<0X01)
+				ReceiveMsg_t.ID=0x08;
+		}
+		
+		/*保存配置*/
+		if(key1_event==KE_LongPress)
+		{
+			Flash_CAN_ID_Save();
+			run_flag=0;
+		}
+	}
+
+	/*只有在ID配置时有小箭头标识*/
+	if(run_flag==1)
+	{
+		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
+		u8g2_DrawTriangle(&u8g2,25,40,31,32,31,48);
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
+	
+	sprintf(can_id_str,"0x0%d",ReceiveMsg_t.ID);
+	u8g2_DrawStr(&u8g2,39,50,can_id_str);
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+	
+
+}
+
+void Current(void)
 {
 	u8g2_DrawStr(&u8g2,20,35,"To be developed");
 }

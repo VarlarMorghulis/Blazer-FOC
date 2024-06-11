@@ -4,7 +4,7 @@ SendMsg_TypeDef SendMsg_t;
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.ID=0x03
+	.ID=0x01
 };
 
 extern FOC_State FOC_State_t;
