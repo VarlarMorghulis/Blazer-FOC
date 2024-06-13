@@ -34,7 +34,7 @@ TaskElement_TypeDef TE_Sensorless_t=
 
 FOC_TypeDef FOC_Sensored_t=
 {
-	.Udc=24.0f,
+	.Udc=1.0f,
 	.Ud=0.0f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
@@ -53,8 +53,8 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Iq=
@@ -62,8 +62,8 @@ PID_TypeDef PID_Iq=
 	.ref_value=3.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 #endif
 
@@ -72,19 +72,19 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.012f,
-	.Ki=50.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.0006f,
+	.Ki=2.5f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.012f,
-	.Ki=50.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.0006f,
+	.Ki=2.5f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 #endif
 
@@ -93,19 +93,19 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.035f,
-	.Ki=40.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.00175f,
+	.Ki=2.0f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.035f,
-	.Ki=40.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.00175f,
+	.Ki=2.0f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 #endif
 
@@ -114,19 +114,19 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.022f,
-	.Ki=47.5f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.0011f,
+	.Ki=2.375f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.022f,
-	.Ki=47.5f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.Kp=0.0011f,
+	.Ki=2.375f,
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 #endif
 

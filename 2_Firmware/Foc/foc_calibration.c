@@ -6,15 +6,15 @@ uint16_t Anticog_3[2048];
 
 FOC_TypeDef FOC_Encoder_Calibration_t=
 {
-	.Udc=24.0f,
-	.Ud=2.0f,
+	.Udc=1.0f,
+	.Ud=0.1f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 };
 
 FOC_TypeDef FOC_Anticogging_Calibration_t=
 {
-	.Udc=24.0f,
+	.Udc=1.0f,
 	.Ud=0.0f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
@@ -91,8 +91,8 @@ PID_TypeDef PID_Id_Calib=
 	.ref_value=0.0f,
 	.Kp=0.2985f,
 	.Ki=644.38f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Iq_Calib=
@@ -100,8 +100,8 @@ PID_TypeDef PID_Iq_Calib=
 	.ref_value=0.0f,
 	.Kp=0.2985f,
 	.Ki=644.38f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+	.error_sum_max=0.3f,
+	.output_max=0.577f
 };
 
 PID_TypeDef PID_Speed_Calib=

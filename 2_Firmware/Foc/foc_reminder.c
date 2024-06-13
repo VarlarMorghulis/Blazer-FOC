@@ -5,9 +5,9 @@ FOC_Reminder_Tone FOC_Reminder_Tone_t=T_NONE;
 /*FOC上电提示结构体初始化*/
 FOC_TypeDef FOC_Reminder_t=
 {
-	.Udc=24.0f,
+	.Udc=1.0f,
 	.Ud=0.0f,
-	.Uq=0.1f,
+	.Uq=0.004f,
 	.Tpwm=PWM_TIM_PERIOD,
 	.Speed=0.0f
 };
@@ -45,8 +45,8 @@ void FOC_Task_Reminder(void)
 	static uint8_t run_flag;
 	/*CAN_ID不同,上电后到提示音响起的延时就不同*/
 	/*例如CAN_ID=0x02,上电后1+2*0.5=2秒后听到提示音*/
-	//uint32_t id_cnt=ReceiveMsg_t.ID*20000;
-	uint32_t id_cnt=30000;
+	uint32_t id_cnt=ReceiveMsg_t.ID*20000;
+	//uint32_t id_cnt=30000;
 	
 	/*上电后等待一段时间*/
 	if(run_flag==0)

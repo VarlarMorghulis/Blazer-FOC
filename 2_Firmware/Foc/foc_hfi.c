@@ -90,7 +90,7 @@ IIR_Butterworth_TypeDef ERR_IIR_LPF_t=
 
 FOC_TypeDef FOC_HFI_t=
 {
-	.Udc=24.0f,
+	.Udc=1.0f,
 	.Ud=0.0f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD
