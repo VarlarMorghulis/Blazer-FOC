@@ -114,10 +114,6 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JWODNMAS
 
-[GeneratedDocument1]
-DocumentPath=Project Outputs for DriverV1.0\Design Rule Check - DriverV1.html
-DItemRevisionGUID=
-
 [Configuration1]
 Name=Sources
 ParameterCount=0
