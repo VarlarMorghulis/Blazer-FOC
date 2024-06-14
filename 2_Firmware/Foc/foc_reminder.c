@@ -105,7 +105,7 @@ void FOC_Task_Reminder(void)
 		{
 			run_flag=0;
 			TE_Reminder_t.Cnt_20kHz=0;
-			FOC_State_t=FOC_Wait;
+			FOC_State_t=FOC_Openloop;
 		}
 	}
 }

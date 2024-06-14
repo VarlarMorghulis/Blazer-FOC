@@ -25,5 +25,5 @@ void Sensored_Speedloop(void);
 void FOC_Sensored_Positionloop(void);
 void FOC_Task_Sensored(void);
 void FOC_Task_Sensorless(void);
-
+void FOC_Task_Openloop(void);
 #endif

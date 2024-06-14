@@ -12,20 +12,21 @@ extern Encoder_TypeDef ABZ_t;
 extern HFI_TypeDef HFI_t;
 extern FOC_TypeDef FOC_HFI_t;
 extern FOC_TypeDef FOC_Anticogging_Calibration_t;
+extern FOC_TypeDef FOC_Openloop_t;
 
 void Vofa_Upload(void)
 {
-	Frame_t.fdata[0]=HFI_t.inj_volt;
-	Frame_t.fdata[1]=HFI_t.sin_val;
-	Frame_t.fdata[2]=(float)TIM1->CCR3;
-	Frame_t.fdata[3]=(float)ADC1->JDR1;
-	Frame_t.fdata[4]=(float)ADC1->JDR2;
-	Frame_t.fdata[5]=(float)ADC1->JDR3;
-	Frame_t.fdata[6]=FOC_HFI_t.Iq_h;
-	Frame_t.fdata[7]=FOC_HFI_t.Iq_l;
-	Frame_t.fdata[8]=FOC_HFI_t.Id_h;
-	Frame_t.fdata[9]=FOC_HFI_t.Id_l;
-	Frame_t.fdata[10]=0.0f;
+	Frame_t.fdata[0]=FOC_Openloop_t.theta_el;
+	Frame_t.fdata[1]=(float)TIM1->CCR1;
+	Frame_t.fdata[2]=(float)TIM1->CCR2;
+	Frame_t.fdata[3]=(float)TIM1->CCR3;
+//	Frame_t.fdata[4]=(float)ADC1->JDR2;
+//	Frame_t.fdata[5]=(float)ADC1->JDR3;
+//	Frame_t.fdata[6]=FOC_HFI_t.Iq_h;
+//	Frame_t.fdata[7]=FOC_HFI_t.Iq_l;
+//	Frame_t.fdata[8]=FOC_HFI_t.Id_h;
+//	Frame_t.fdata[9]=FOC_HFI_t.Id_l;
+//	Frame_t.fdata[10]=0.0f;
 	
 	/*高频注入变量查看*/
 //	Frame_t.fdata[0]=HFI_t.inj_volt;

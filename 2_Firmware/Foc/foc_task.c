@@ -24,7 +24,7 @@ void FOC20kHzIRQHandler(void)
 			FOC_Task_Calibration();
 		}
 		break;
-		
+			
 		/*有感模式*/		
 		case FOC_Sensored:
 		{
@@ -36,6 +36,13 @@ void FOC20kHzIRQHandler(void)
 		case FOC_Sensorless:
 		{
 			FOC_Task_Sensorless();
+		}
+		break;
+		
+		/*开环模式*/
+		case FOC_Openloop:
+		{
+			FOC_Task_Openloop();
 		}
 		break;
 		

@@ -32,6 +32,14 @@ TaskElement_TypeDef TE_Sensorless_t=
 	.Errstate=FOC_OK
 };
 
+TaskElement_TypeDef TE_Openloop_t=
+{
+	.Init_Flag=0,
+	.Run_Flag=0,
+	.Cnt_20kHz=0,
+	.Errstate=FOC_OK
+};
+
 FOC_TypeDef FOC_Sensored_t=
 {
 	.Udc=1.0f,
@@ -39,6 +47,15 @@ FOC_TypeDef FOC_Sensored_t=
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 	.Speed=0.0f
+};
+
+FOC_TypeDef FOC_Openloop_t=
+{
+	.Udc=1.0f,
+	.Ud=0.0f,
+	.Uq=0.0f,
+	.Tpwm=PWM_TIM_PERIOD,
+	.Speed=12.56f
 };
 
 Motor_TypeDef Motor_t=
@@ -59,7 +76,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=3.0f,
+	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
 	.error_sum_max=0.3f,
@@ -200,15 +217,33 @@ void Open_Voltageloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs)
    */
 void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime)
 {
+	Current_Cal(FOC_t,&CurrentOffset_t);
+	
 	if(FOC_t->Speed_now<FOC_t->Speed)
 	{
-		FOC_t->Speed_now+=FOC_t->Speed/runtime*0.0002f;
+		FOC_t->Speed_now+=FOC_t->Speed/runtime*0.0001f;
 	}
-	FOC_t->theta_temp+=0.0002f*FOC_t->Speed_now;
+	FOC_t->theta_temp+=0.0001f*FOC_t->Speed_now;
 	FOC_t->theta_temp=_normalizeAngle(FOC_t->theta_temp);
 	FOC_t->theta_el=_normalizeAngle(FOC_t->theta_temp*Pole_Pairs);
+	
+	/*Clarke变换*/
+	Clarke_Transform(FOC_t);
+		
+	/*Park变换*/
+	Park_Transform(FOC_t);
+		
+	/*PID计算输出*/
+	PID_Id.samp_value=FOC_t->Id;
+	PID_Iq.samp_value=FOC_t->Iq;
+	FOC_t->Ud=Current_PI_Ctrl(&PID_Id);
+	FOC_t->Uq=Current_PI_Ctrl(&PID_Iq);
+		
+	/*反Park变换*/
 	I_Park_Transform(FOC_t);
+	
 	SVPWM_Cal(FOC_t);
+	
 	SetPWM(FOC_t);
 }
 
@@ -314,16 +349,6 @@ void Sensored_Positionloop(void)
 
 void FOC_Task_Sensored(void)
 {
-	
-#ifdef USE_SPI_ENCODER
-	/*运行前读取Flash存储参数*/
-//	if(TE_Currentloop_t.Init_Flag==0)
-//	{
-//		Flash_Read();
-//		TE_Currentloop_t.Init_Flag=1;
-//	}
-#endif
-	
 	/*电流环执行频率为10kHz*/
 	if(++TE_Currentloop_t.Cnt_20kHz>=2)
 	{
@@ -368,4 +393,14 @@ void FOC_Task_Sensorless(void)
 		TE_Sensorless_t.Cnt_20kHz=0;
 	}
 	
+}
+
+void FOC_Task_Openloop(void)
+{
+	/*开环执行频率为10kHz*/
+	if(++TE_Openloop_t.Cnt_20kHz>=2)
+	{
+		Open_Currentloop(&FOC_Openloop_t,15,0.5f);
+		TE_Currentloop_t.Cnt_20kHz=0;
+	}
 }

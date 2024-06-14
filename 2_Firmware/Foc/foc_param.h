@@ -10,10 +10,10 @@
 
 #define FOC_FREQ			PWM_TIM_FREQ
 
-//#define Motor_8318
+#define Motor_8318
 //#define Motor_5065
 //#define Motor_Wade
-#define Motor_Tmotor_U10
+//#define Motor_Tmotor_U10
 //#define Motor_LD2808
 typedef enum
 {

@@ -8,6 +8,7 @@ typedef enum
 	FOC_Reminder,
 	FOC_Calibration,
 	FOC_Identification,
+	FOC_Openloop,
 	FOC_Sensored,
 	FOC_Sensorless,
 	FOC_Error,
