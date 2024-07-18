@@ -53,14 +53,14 @@ FOC_TypeDef FOC_Openloop_t=
 {
 	.Udc=1.0f,
 	.Ud=0.0f,
-	.Uq=0.0f,
+	.Uq=0.1f,
 	.Tpwm=PWM_TIM_PERIOD,
-	.Speed=12.56f
+	.Speed=1.0f
 };
 
 Motor_TypeDef Motor_t=
 {
-	.Pole_Pairs=0
+	.Pole_Pairs=21
 };
 
 /*5065*/
@@ -97,7 +97,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=0.0f,
+	.ref_value=5.0f,
 	.Kp=0.0006f,
 	.Ki=2.5f,
 	.error_sum_max=0.3f,
@@ -400,7 +400,8 @@ void FOC_Task_Openloop(void)
 	/*开环执行频率为10kHz*/
 	if(++TE_Openloop_t.Cnt_20kHz>=2)
 	{
-		Open_Currentloop(&FOC_Openloop_t,15,0.5f);
+		//Open_Currentloop(&FOC_Openloop_t,15,0.5f);
+		Open_Voltageloop(&FOC_Openloop_t,15);
 		TE_Currentloop_t.Cnt_20kHz=0;
 	}
 }

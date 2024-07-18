@@ -164,7 +164,7 @@
           <Type>0</Type>
           <LineNumber>517</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134246368</Address>
+          <Address>134246988</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -271,6 +271,16 @@
           <count>18</count>
           <WinNumber>1</WinNumber>
           <ItemText>FOC_Openloop_t</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Motor_Rs</ItemText>
+        </Ww>
+        <Ww>
+          <count>20</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Iav</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

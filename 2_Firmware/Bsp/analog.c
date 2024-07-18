@@ -60,6 +60,7 @@ void Vbus_Update(void)
 	{
 		adc_sum/=10;
 		AnalogParam_t.vbus=(float)adc_sum/4095.0f*3.3f*11.0f;
+		adc_sum=0;
 		i=0;
 	}
 	

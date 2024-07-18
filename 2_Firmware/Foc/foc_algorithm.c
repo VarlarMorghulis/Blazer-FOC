@@ -133,7 +133,7 @@ void SetPWM(FOC_TypeDef *FOC_t)
    */
 ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t)
 {
-	/*电流采样零偏在一个合理范围内(2048+-100),否则报错*/
+	/*电流采样偏置在一个合理范围内(2048+-100),否则报错*/
 	if(CurrentOffset_t->A_Offset<1948||CurrentOffset_t->A_Offset>2148 ||
 	   CurrentOffset_t->B_Offset<1948||CurrentOffset_t->B_Offset>2148 ||
 	   CurrentOffset_t->C_Offset<1948||CurrentOffset_t->C_Offset>2148	)

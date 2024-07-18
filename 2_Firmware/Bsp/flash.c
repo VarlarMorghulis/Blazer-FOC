@@ -101,7 +101,7 @@ void Flash_Read(void)
 #ifdef USE_SPI_ENCODER
 	TLE5012B_t.sensor_dir=(int8_t)temp[0];
 	TLE5012B_t.zero_enc_offset=(uint16_t)temp[1];
-	Motor_t.Pole_Pairs=(uint8_t)temp[2];
+	//Motor_t.Pole_Pairs=(uint8_t)temp[2];
 	CurrentOffset_t.A_Offset=(uint16_t)temp[3];
 	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
 	CurrentOffset_t.C_Offset=(uint16_t)temp[5];

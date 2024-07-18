@@ -24,7 +24,14 @@ void FOC20kHzIRQHandler(void)
 			FOC_Task_Calibration();
 		}
 		break;
-			
+		
+		/*辨识任务*/
+		case FOC_Identification:
+		{
+			FOC_Task_Identification();
+		}
+		break;
+		
 		/*有感模式*/		
 		case FOC_Sensored:
 		{

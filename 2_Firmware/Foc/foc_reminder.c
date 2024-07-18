@@ -51,7 +51,7 @@ void FOC_Task_Reminder(void)
 	/*上电后等待一段时间*/
 	if(run_flag==0)
 	{
-		if(TE_Reminder_t.Cnt_20kHz<=20000+id_cnt)
+		if(TE_Reminder_t.Cnt_20kHz<=40000)
 		{
 			TE_Reminder_t.Cnt_20kHz++;
 		}
@@ -105,7 +105,7 @@ void FOC_Task_Reminder(void)
 		{
 			run_flag=0;
 			TE_Reminder_t.Cnt_20kHz=0;
-			FOC_State_t=FOC_Openloop;
+			FOC_State_t=FOC_Wait;
 		}
 	}
 }

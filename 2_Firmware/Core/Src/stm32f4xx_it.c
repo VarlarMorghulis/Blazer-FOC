@@ -356,7 +356,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	if(hcan==&hcan1)
 	{
-		//CANRxIRQHandler();
+		CANRxIRQHandler();
 	}
 }
 

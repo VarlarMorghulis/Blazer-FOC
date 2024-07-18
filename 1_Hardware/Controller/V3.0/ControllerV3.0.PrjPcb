@@ -131,6 +131,138 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=OMLFNWGI
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for ControllerV3.0\Assembly Testpoint Report for ControllerV3.0.csv
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Project Outputs for ControllerV3.0\Assembly Testpoint Report for ControllerV3.0.ipc
+DItemRevisionGUID=
+
+[GeneratedDocument3]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0-RoundHoles.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument4]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0-SlotHoles.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument5]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.DRR
+DItemRevisionGUID=
+
+[GeneratedDocument6]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument7]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.G1
+DItemRevisionGUID=
+
+[GeneratedDocument8]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.G2
+DItemRevisionGUID=
+
+[GeneratedDocument9]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.G3
+DItemRevisionGUID=
+
+[GeneratedDocument10]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.G4
+DItemRevisionGUID=
+
+[GeneratedDocument11]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GBL
+DItemRevisionGUID=
+
+[GeneratedDocument12]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GBO
+DItemRevisionGUID=
+
+[GeneratedDocument13]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GBP
+DItemRevisionGUID=
+
+[GeneratedDocument14]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument15]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GD1
+DItemRevisionGUID=
+
+[GeneratedDocument16]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GG1
+DItemRevisionGUID=
+
+[GeneratedDocument17]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GM1
+DItemRevisionGUID=
+
+[GeneratedDocument18]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GM6
+DItemRevisionGUID=
+
+[GeneratedDocument19]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GM13
+DItemRevisionGUID=
+
+[GeneratedDocument20]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GM15
+DItemRevisionGUID=
+
+[GeneratedDocument21]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GPB
+DItemRevisionGUID=
+
+[GeneratedDocument22]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GPT
+DItemRevisionGUID=
+
+[GeneratedDocument23]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument24]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument25]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument26]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument27]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument28]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.REP
+DItemRevisionGUID=
+
+[GeneratedDocument29]
+DocumentPath=Project Outputs for ControllerV3.0\ControllerV3.0.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument30]
+DocumentPath=Project Outputs for ControllerV3.0\Design Rule Check - ControllerV3.html
+DItemRevisionGUID=
+
+[GeneratedDocument31]
+DocumentPath=Project Outputs for ControllerV3.0\Fabrication Testpoint Report for ControllerV3.0.csv
+DItemRevisionGUID=
+
+[GeneratedDocument32]
+DocumentPath=Project Outputs for ControllerV3.0\Fabrication Testpoint Report for ControllerV3.0.ipc
+DItemRevisionGUID=
+
+[GeneratedDocument33]
+DocumentPath=Project Outputs for ControllerV3.0\Pick Place for ControllerV3.0.csv
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Sources
 ParameterCount=0
@@ -338,7 +470,7 @@ OutputDefault1=0
 Configuration1_Name1=ForceUpdateSettings
 Configuration1_Item1=False
 Configuration1_Name2=OutputConfigurationParameter1
-Configuration1_Item2=AssyAdjacencyDistance=250000|AssyGenerateCSVFormat=True|AssyGenerateIPCFormat=True|AssyGenerateSpreadSheetFormat=False|AssyGenerateTextFormat=False|AssyMergeNetTieNets=False|AssyOriginPosition=Relative|AssyOutlineLayer=56|AssyOutputAdjancencies=False|AssyOutputBoardOutline=False|AssyOutputTraces=False|AssyReportBottomLayerTestpoints=True|AssyReportTopLayerTestpoints=True|AssyUnits=Imperial|Record=TestPointView|DocumentPath=C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+Configuration1_Item2=AssyAdjacencyDistance=250000|AssyGenerateCSVFormat=True|AssyGenerateIPCFormat=True|AssyGenerateSpreadSheetFormat=False|AssyGenerateTextFormat=False|AssyMergeNetTieNets=False|AssyOriginPosition=Relative|AssyOutlineLayer=56|AssyOutputAdjancencies=False|AssyOutputBoardOutline=False|AssyOutputTraces=False|AssyReportBottomLayerTestpoints=True|AssyReportTopLayerTestpoints=True|AssyUnits=Imperial|Record=TestPointView|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 OutputType2=Pick Place
 OutputName2=Generates pick and place files
 OutputDocumentPath2=
@@ -347,7 +479,7 @@ OutputDefault2=0
 Configuration2_Name1=ForceUpdateSettings
 Configuration2_Item1=False
 Configuration2_Name2=OutputConfigurationParameter1
-Configuration2_Item2=Record=PickPlaceView|Units=Imperial|GenerateCSVFormat=True|GenerateTextFormat=False|ShowUnits=False|Separator=.|ExcludeFilterParam=False|IncludeVariations=False|IncludeStandardNoBOM=True|Filter= |FilterActive=False|YFlip=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|Column#17=Name:Operating Temperature Range,Fixed:False,Metric:False,Visible:False,Sort:None,Position:72|Column#18=Name:BOM_Manufacturer Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:22|Column#19=Name:Operating Temperature,Fixed:False,Metric:False,Visible:False,Sort:None,Position:71|Column#20=Name:JLCPCB Part Class,Fixed:False,Metric:False,Visible:False,Sort:None,Position:55|Column#21=Name:Supplier Footprint,Fixed:False,Metric:False,Visible:False,Sort:None,Position:97|Column#22=Name:ComponentLink3Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:31|Column#23=Name:Group ID,Fixed:False,Metric:False,Visible:False,Sort:None,Position:50|Column#24=Name:Switch Length,Fixed:False,Metric:False,Visible:False,Sort:None,Position:106|Column#25=Name:Operating Frequency(F) (Processor speed) (MHz),Fixed:False,Metric:False,Visible:False,Sort:None,Position:70|Column#26=Name:Output Current (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:74|Column#27=Name:Insulation Resistance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:53|Column#28=Name:Connector Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:33|Column#29=Name:Standard,Fixed:False,Metric:False,Visible:False,Sort:None,Position:90|Column#30=Name:Datasheet,Fixed:False,Metric:False,Visible:False,Sort:None,Position:40|Column#31=Name:Power Supply Rejection Ratio (PSRR),Fixed:False,Metric:False,Visible:False,Sort:None,Position:83|Column#32=Name:Gender,Fixed:False,Metric:False,Visible:False,Sort:None,Position:49|Column#33=Name:Dropout Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:44|Column#34=Name:DC Resistance (DCR),Fixed:False,Metric:False,Visible:False,Sort:None,Position:42|Column#35=Name:Packing,Fixed:False,Metric:False,Visible:False,Sort:None,Position:81|Column#36=Name:ComponentLink3URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:32|Column#37=Name:spiceSymbolName,Fixed:False,Metric:False,Visible:False,Sort:None,Position:89|Column#38=Name:Voltage Rating (DC),Fixed:False,Metric:False,Visible:False,Sort:None,Position:114|Column#39=Name:Reuse Block,Fixed:False,Metric:False,Visible:False,Sort:None,Position:86|Column#40=Name:Number of Ports,Fixed:False,Metric:False,Visible:False,Sort:None,Position:68|Column#41=Name:Supplier 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:93|Column#42=Name:D/A Converter,Fixed:False,Metric:False,Visible:False,Sort:None,Position:39|Column#43=Name:Tolerance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:111|Column#44=Name:FLASH Size (Prog) (kB),Fixed:False,Metric:False,Visible:False,Sort:None,Position:46|Column#45=Name:Add into BOM,Fixed:False,Metric:False,Visible:False,Sort:None,Position:18|Column#46=Name:Channel ID,Fixed:False,Metric:False,Visible:False,Sort:None,Position:25|Column#47=Name:Device,Fixed:False,Metric:False,Visible:False,Sort:None,Position:43|Column#48=Name:BOM_Supplier Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:24|Column#49=Name:Input Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:52|Column#50=Name:With Lamp,Fixed:False,Metric:False,Visible:False,Sort:None,Position:115|Column#51=Name:Number of Contacts,Fixed:False,Metric:False,Visible:False,Sort:None,Position:66|Column#52=Name:BOM_JLCPCB Part Class,Fixed:False,Metric:False,Visible:False,Sort:None,Position:20|Column#53=Name:Switch Height,Fixed:False,Metric:False,Visible:False,Sort:None,Position:105|Column#54=Name:PartNumber,Fixed:False,Metric:False,Visible:False,Sort:None,Position:82|Column#55=Name:ComponentLink2Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:29|Column#56=Name:Supply Voltage(Vcc) max (V),Fixed:False,Metric:False,Visible:False,Sort:None,Position:103|Column#57=Name:Current Rating - Power (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:38|Column#58=Name:Circuit,Fixed:False,Metric:False,Visible:False,Sort:None,Position:26|Column#59=Name:PackageDescription,Fixed:False,Metric:False,Visible:False,Sort:None,Position:78|Column#60=Name:Reverse Voltage (Vr),Fixed:False,Metric:False,Visible:False,Sort:None,Position:87|Column#61=Name:ComponentLink1URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:28|Column#62=Name:Synchronous Rectification,Fixed:False,Metric:False,Visible:False,Sort:None,Position:110|Column#63=Name:Value,Fixed:False,Metric:False,Visible:False,Sort:None,Position:113|Column#64=Name:PackageReference,Fixed:False,Metric:False,Visible:False,Sort:None,Position:79|Column#65=Name:Switch Width,Fixed:False,Metric:False,Visible:False,Sort:None,Position:107|Column#66=Name:Output Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:73|Column#67=Name:Quiescent Current (Ground Current),Fixed:False,Metric:False,Visible:False,Sort:None,Position:84|Column#68=Name:Average Rectified Current (Io),Fixed:False,Metric:False,Visible:False,Sort:None,Position:19|Column#69=Name:Feature,Fixed:False,Metric:False,Visible:False,Sort:None,Position:45|Column#70=Name:ComponentLink1Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:27|Column#71=Name:Function,Fixed:False,Metric:False,Visible:False,Sort:None,Position:48|Column#72=Name:Supplier Part Number 3,Fixed:False,Metric:False,Visible:False,Sort:None,Position:101|Column#73=Name:Internal RAM Size (kB),Fixed:False,Metric:False,Visible:False,Sort:None,Position:54|Column#74=Name:Supply Voltage(Vcc) min (V),Fixed:False,Metric:False,Visible:False,Sort:None,Position:104|Column#75=Name:Supplier Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:98|Column#76=Name:spicePre,Fixed:False,Metric:False,Visible:False,Sort:None,Position:88|Column#77=Name:Output Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:77|Column#78=Name:Core,Fixed:False,Metric:False,Visible:False,Sort:None,Position:37|Column#79=Name:Supplier 4,Fixed:False,Metric:False,Visible:False,Sort:None,Position:96|Column#80=Name:Actuator Style,Fixed:False,Metric:False,Visible:False,Sort:None,Position:16|Column#81=Name:Supplier,Fixed:False,Metric:False,Visible:False,Sort:None,Position:92|Column#82=Name:Noise,Fixed:False,Metric:False,Visible:False,Sort:None,Position:65|Column#83=Name:Supplier Part Number 2,Fixed:False,Metric:False,Visible:False,Sort:None,Position:100|Column#84=Name:Mounting Technology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:62|Column#85=Name:Supplier Part Number 4,Fixed:False,Metric:False,Visible:False,Sort:None,Position:102|Column#86=Name:BOM_Supplier,Fixed:False,Metric:False,Visible:False,Sort:None,Position:23|Column#87=Name:Operating Force,Fixed:False,Metric:False,Visible:False,Sort:None,Position:69|Column#88=Name:Mechanical Life,Fixed:False,Metric:False,Visible:False,Sort:None,Position:60|Column#89=Name:Symbol,Fixed:False,Metric:False,Visible:False,Sort:None,Position:109|Column#90=Name:Number of Outputs,Fixed:False,Metric:False,Visible:False,Sort:None,Position:67|Column#91=Name:LCSC Part Name,Fixed:False,Metric:False,Visible:False,Sort:None,Position:56|Column#92=Name:Topology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:112|Column#93=Name:Name,Fixed:False,Metric:False,Visible:False,Sort:None,Position:63|Column#94=Name:I/Os (High Current),Fixed:False,Metric:False,Visible:False,Sort:None,Position:51|Column#95=Name:Contact Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:34|Column#96=Name:Switching Frequency,Fixed:False,Metric:False,Visible:False,Sort:None,Position:108|Column#97=Name:nameAlias,Fixed:False,Metric:False,Visible:False,Sort:None,Position:64|Column#98=Name:Strike Gundam,Fixed:False,Metric:False,Visible:False,Sort:None,Position:91|Column#99=Name:Supplier Part Number 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:99|Column#100=Name:ComponentLink2URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:30|Column#101=Name:Manufacturer Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:58|Column#102=Name:Convert to PCB,Fixed:False,Metric:False,Visible:False,Sort:None,Position:36|Column#103=Name:Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:57|Column#104=Name:Supplier 2,Fixed:False,Metric:False,Visible:False,Sort:None,Position:94|Column#105=Name:Actuator/Cap Color,Fixed:False,Metric:False,Visible:False,Sort:None,Position:17|Column#106=Name:Maximum Input Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:59|Column#107=Name:Supplier 3,Fixed:False,Metric:False,Visible:False,Sort:None,Position:95|Column#108=Name:Forward Voltage (Vf@If),Fixed:False,Metric:False,Visible:False,Sort:None,Position:47|Column#109=Name:Output Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:76|Column#110=Name:BOM_Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:21|Column#111=Name:Rated Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:85|Column#112=Name:DatasheetVersion,Fixed:False,Metric:False,Visible:False,Sort:None,Position:41|Column#113=Name:PackageVersion,Fixed:False,Metric:False,Visible:False,Sort:None,Position:80|Column#114=Name:Contributor,Fixed:False,Metric:False,Visible:False,Sort:None,Position:35|Column#115=Name:Mounting Style,Fixed:False,Metric:False,Visible:False,Sort:None,Position:61|Column#116=Name:Output Polarity,Fixed:False,Metric:False,Visible:False,Sort:None,Position:75|DocumentPath=C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+Configuration2_Item2=Record=PickPlaceView|Units=Imperial|GenerateCSVFormat=True|GenerateTextFormat=False|ShowUnits=False|Separator=.|ExcludeFilterParam=False|IncludeVariations=False|IncludeStandardNoBOM=True|Filter= |FilterActive=False|YFlip=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|Column#17=Name:Operating Temperature Range,Fixed:False,Metric:False,Visible:False,Sort:None,Position:72|Column#18=Name:BOM_Manufacturer Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:22|Column#19=Name:Operating Temperature,Fixed:False,Metric:False,Visible:False,Sort:None,Position:71|Column#20=Name:JLCPCB Part Class,Fixed:False,Metric:False,Visible:False,Sort:None,Position:55|Column#21=Name:Supplier Footprint,Fixed:False,Metric:False,Visible:False,Sort:None,Position:97|Column#22=Name:ComponentLink3Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:31|Column#23=Name:Group ID,Fixed:False,Metric:False,Visible:False,Sort:None,Position:50|Column#24=Name:Switch Length,Fixed:False,Metric:False,Visible:False,Sort:None,Position:106|Column#25=Name:Operating Frequency(F) (Processor speed) (MHz),Fixed:False,Metric:False,Visible:False,Sort:None,Position:70|Column#26=Name:Output Current (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:74|Column#27=Name:Insulation Resistance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:53|Column#28=Name:Connector Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:33|Column#29=Name:Standard,Fixed:False,Metric:False,Visible:False,Sort:None,Position:90|Column#30=Name:Datasheet,Fixed:False,Metric:False,Visible:False,Sort:None,Position:40|Column#31=Name:Power Supply Rejection Ratio (PSRR),Fixed:False,Metric:False,Visible:False,Sort:None,Position:83|Column#32=Name:Gender,Fixed:False,Metric:False,Visible:False,Sort:None,Position:49|Column#33=Name:Dropout Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:44|Column#34=Name:DC Resistance (DCR),Fixed:False,Metric:False,Visible:False,Sort:None,Position:42|Column#35=Name:Packing,Fixed:False,Metric:False,Visible:False,Sort:None,Position:81|Column#36=Name:ComponentLink3URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:32|Column#37=Name:spiceSymbolName,Fixed:False,Metric:False,Visible:False,Sort:None,Position:89|Column#38=Name:Voltage Rating (DC),Fixed:False,Metric:False,Visible:False,Sort:None,Position:114|Column#39=Name:Reuse Block,Fixed:False,Metric:False,Visible:False,Sort:None,Position:86|Column#40=Name:Number of Ports,Fixed:False,Metric:False,Visible:False,Sort:None,Position:68|Column#41=Name:Supplier 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:93|Column#42=Name:D/A Converter,Fixed:False,Metric:False,Visible:False,Sort:None,Position:39|Column#43=Name:Tolerance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:111|Column#44=Name:FLASH Size (Prog) (kB),Fixed:False,Metric:False,Visible:False,Sort:None,Position:46|Column#45=Name:Add into BOM,Fixed:False,Metric:False,Visible:False,Sort:None,Position:18|Column#46=Name:Channel ID,Fixed:False,Metric:False,Visible:False,Sort:None,Position:25|Column#47=Name:Device,Fixed:False,Metric:False,Visible:False,Sort:None,Position:43|Column#48=Name:BOM_Supplier Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:24|Column#49=Name:Input Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:52|Column#50=Name:With Lamp,Fixed:False,Metric:False,Visible:False,Sort:None,Position:115|Column#51=Name:Number of Contacts,Fixed:False,Metric:False,Visible:False,Sort:None,Position:66|Column#52=Name:BOM_JLCPCB Part Class,Fixed:False,Metric:False,Visible:False,Sort:None,Position:20|Column#53=Name:Switch Height,Fixed:False,Metric:False,Visible:False,Sort:None,Position:105|Column#54=Name:PartNumber,Fixed:False,Metric:False,Visible:False,Sort:None,Position:82|Column#55=Name:ComponentLink2Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:29|Column#56=Name:Supply Voltage(Vcc) max (V),Fixed:False,Metric:False,Visible:False,Sort:None,Position:103|Column#57=Name:Current Rating - Power (Max),Fixed:False,Metric:False,Visible:False,Sort:None,Position:38|Column#58=Name:Circuit,Fixed:False,Metric:False,Visible:False,Sort:None,Position:26|Column#59=Name:PackageDescription,Fixed:False,Metric:False,Visible:False,Sort:None,Position:78|Column#60=Name:Reverse Voltage (Vr),Fixed:False,Metric:False,Visible:False,Sort:None,Position:87|Column#61=Name:ComponentLink1URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:28|Column#62=Name:Synchronous Rectification,Fixed:False,Metric:False,Visible:False,Sort:None,Position:110|Column#63=Name:Value,Fixed:False,Metric:False,Visible:False,Sort:None,Position:113|Column#64=Name:PackageReference,Fixed:False,Metric:False,Visible:False,Sort:None,Position:79|Column#65=Name:Switch Width,Fixed:False,Metric:False,Visible:False,Sort:None,Position:107|Column#66=Name:Output Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:73|Column#67=Name:Quiescent Current (Ground Current),Fixed:False,Metric:False,Visible:False,Sort:None,Position:84|Column#68=Name:Average Rectified Current (Io),Fixed:False,Metric:False,Visible:False,Sort:None,Position:19|Column#69=Name:Feature,Fixed:False,Metric:False,Visible:False,Sort:None,Position:45|Column#70=Name:ComponentLink1Description,Fixed:False,Metric:False,Visible:False,Sort:None,Position:27|Column#71=Name:Function,Fixed:False,Metric:False,Visible:False,Sort:None,Position:48|Column#72=Name:Supplier Part Number 3,Fixed:False,Metric:False,Visible:False,Sort:None,Position:101|Column#73=Name:Internal RAM Size (kB),Fixed:False,Metric:False,Visible:False,Sort:None,Position:54|Column#74=Name:Supply Voltage(Vcc) min (V),Fixed:False,Metric:False,Visible:False,Sort:None,Position:104|Column#75=Name:Supplier Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:98|Column#76=Name:spicePre,Fixed:False,Metric:False,Visible:False,Sort:None,Position:88|Column#77=Name:Output Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:77|Column#78=Name:Core,Fixed:False,Metric:False,Visible:False,Sort:None,Position:37|Column#79=Name:Supplier 4,Fixed:False,Metric:False,Visible:False,Sort:None,Position:96|Column#80=Name:Actuator Style,Fixed:False,Metric:False,Visible:False,Sort:None,Position:16|Column#81=Name:Supplier,Fixed:False,Metric:False,Visible:False,Sort:None,Position:92|Column#82=Name:Noise,Fixed:False,Metric:False,Visible:False,Sort:None,Position:65|Column#83=Name:Supplier Part Number 2,Fixed:False,Metric:False,Visible:False,Sort:None,Position:100|Column#84=Name:Mounting Technology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:62|Column#85=Name:Supplier Part Number 4,Fixed:False,Metric:False,Visible:False,Sort:None,Position:102|Column#86=Name:BOM_Supplier,Fixed:False,Metric:False,Visible:False,Sort:None,Position:23|Column#87=Name:Operating Force,Fixed:False,Metric:False,Visible:False,Sort:None,Position:69|Column#88=Name:Mechanical Life,Fixed:False,Metric:False,Visible:False,Sort:None,Position:60|Column#89=Name:Symbol,Fixed:False,Metric:False,Visible:False,Sort:None,Position:109|Column#90=Name:Number of Outputs,Fixed:False,Metric:False,Visible:False,Sort:None,Position:67|Column#91=Name:LCSC Part Name,Fixed:False,Metric:False,Visible:False,Sort:None,Position:56|Column#92=Name:Topology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:112|Column#93=Name:Name,Fixed:False,Metric:False,Visible:False,Sort:None,Position:63|Column#94=Name:I/Os (High Current),Fixed:False,Metric:False,Visible:False,Sort:None,Position:51|Column#95=Name:Contact Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:34|Column#96=Name:Switching Frequency,Fixed:False,Metric:False,Visible:False,Sort:None,Position:108|Column#97=Name:nameAlias,Fixed:False,Metric:False,Visible:False,Sort:None,Position:64|Column#98=Name:Strike Gundam,Fixed:False,Metric:False,Visible:False,Sort:None,Position:91|Column#99=Name:Supplier Part Number 1,Fixed:False,Metric:False,Visible:False,Sort:None,Position:99|Column#100=Name:ComponentLink2URL,Fixed:False,Metric:False,Visible:False,Sort:None,Position:30|Column#101=Name:Manufacturer Part,Fixed:False,Metric:False,Visible:False,Sort:None,Position:58|Column#102=Name:Convert to PCB,Fixed:False,Metric:False,Visible:False,Sort:None,Position:36|Column#103=Name:Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:57|Column#104=Name:Supplier 2,Fixed:False,Metric:False,Visible:False,Sort:None,Position:94|Column#105=Name:Actuator/Cap Color,Fixed:False,Metric:False,Visible:False,Sort:None,Position:17|Column#106=Name:Maximum Input Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:59|Column#107=Name:Supplier 3,Fixed:False,Metric:False,Visible:False,Sort:None,Position:95|Column#108=Name:Forward Voltage (Vf@If),Fixed:False,Metric:False,Visible:False,Sort:None,Position:47|Column#109=Name:Output Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:76|Column#110=Name:BOM_Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:21|Column#111=Name:Rated Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:85|Column#112=Name:DatasheetVersion,Fixed:False,Metric:False,Visible:False,Sort:None,Position:41|Column#113=Name:PackageVersion,Fixed:False,Metric:False,Visible:False,Sort:None,Position:80|Column#114=Name:Contributor,Fixed:False,Metric:False,Visible:False,Sort:None,Position:35|Column#115=Name:Mounting Style,Fixed:False,Metric:False,Visible:False,Sort:None,Position:61|Column#116=Name:Output Polarity,Fixed:False,Metric:False,Visible:False,Sort:None,Position:75|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 OutputType3=Assembly
 OutputName3=Assembly Drawings
 OutputDocumentPath3=
@@ -408,12 +540,16 @@ OutputDefault8=0
 Configuration8_Name1=ForceUpdateSettings
 Configuration8_Item1=False
 Configuration8_Name2=OutputConfigurationParameter1
-Configuration8_Item2=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateEIADrillFile=False|GenerateSeparatePlatedNonPlatedFiles=False|GenerateSeparateViaTypeFiles=False|NumberOfDecimals=4|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Imperial|ZeroesMode=SuppressTrailingZeroes|DocumentPath=C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+Configuration8_Item2=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateEIADrillFile=False|GenerateSeparatePlatedNonPlatedFiles=False|GenerateSeparateViaTypeFiles=False|NumberOfDecimals=4|NumberOfUnits=2|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Imperial|ZeroesMode=SuppressTrailingZeroes|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 OutputType9=IPC2581
 OutputName9=IPC-2581 Files
 OutputDocumentPath9=
 OutputVariantName9=
 OutputDefault9=0
+Configuration9_Name1=ForceUpdateSettings
+Configuration9_Item1=False
+Configuration9_Name2=OutputConfigurationParameter1
+Configuration9_Item2=Record=IPC2581View|IPC2581Version=B|MeasurementSystem=Metric|FloatingPointPrecision=6|IsWiseSupport=False|MergeNetTieNets=False|OEMDesignNumberRef=DesignItemID|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 OutputType10=Plane
 OutputName10=Power-Plane Prints
 OutputDocumentPath10=
@@ -428,7 +564,7 @@ OutputDefault11=0
 Configuration11_Name1=ForceUpdateSettings
 Configuration11_Item1=False
 Configuration11_Name2=OutputConfigurationParameter1
-Configuration11_Item2=AdjacencyDistance=250000|GenerateCSVFormat=True|GenerateIPCFormat=True|GenerateSpreadSheetFormat=False|GenerateTextFormat=False|MergeNetTieNets=False|OriginPosition=Relative|OutlineLayer=56|OutputAdjancencies=False|OutputBoardOutline=False|OutputTraces=False|Record=TestPointView|ReportBottomLayerTestpoints=True|ReportTopLayerTestpoints=True|Units=Imperial|DocumentPath=C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+Configuration11_Item2=AdjacencyDistance=250000|GenerateCSVFormat=True|GenerateIPCFormat=True|GenerateSpreadSheetFormat=False|GenerateTextFormat=False|MergeNetTieNets=False|OriginPosition=Relative|OutlineLayer=56|OutputAdjancencies=False|OutputBoardOutline=False|OutputTraces=False|Record=TestPointView|ReportBottomLayerTestpoints=True|ReportTopLayerTestpoints=True|Units=Imperial|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 OutputType12=Gerber
 OutputName12=Gerber Files
 OutputDocumentPath12=
@@ -437,7 +573,7 @@ OutputDefault12=0
 Configuration12_Name1=ForceUpdateSettings
 Configuration12_Item1=False
 Configuration12_Name2=OutputConfigurationParameter1
-Configuration12_Item2=AddToAllLayerClasses.Set= |AddToAllPlots.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16908289~1|CentrePlots=False|DrillDrawingSymbol=GraphicsSymbol|DrillDrawingSymbolSize=200000|EmbeddedApertures=True|FilmBorderSize=100000000|FilmXSize=2000000000|FilmYSize=1600000000|FlashAllFills=False|FlashPadShapes=True|G54OnApertureChange=False|GenerateDRCRulesFile=True|GenerateDRCRulesFile=True|GenerateReliefShapes=True|GenerateReports=True|GerberUnit=Imperial|GerberUnit=Imperial|IncludeUnconnectedMidLayerPads=False|LayerClassesMirror.Set= |LayerClassesPlot.Set= |LeadingAndTrailingZeroesMode=SuppressLeadingZeroes|MaxApertureSize=2500000|MinusApertureTolerance=50|MinusApertureTolerance=50|Mirror.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray|MirrorDrillDrawingPlots=False|MirrorDrillGuidePlots=False|NoRegularPolygons=False|NumberOfDecimals=4|NumberOfDecimals=4|OptimizeChangeLocationCommands=True|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Panelize=False|Plot.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16973830~1,16973832~1,16973834~1,16777217~1,16777218~1,16777219~1,16842751~1,16973835~1,16973833~1,16973831~1,16908289~1,16973848~1,16973849~1|PlotPositivePlaneLayers=False|PlotUsedDrillDrawingLayerPairs=True|PlotUsedDrillGuideLayerPairs=True|PlusApertureTolerance=50|PlusApertureTolerance=50|Record=GerberView|SoftwareArcs=False|Sorted=False|Sorted=False|DocumentPath=C:\Robocon\Project\Blazer_FOC\1_Hardware\Controller\V2.0\ControllerV2.0.PcbDoc
+Configuration12_Item2=AddToAllLayerClasses.Set= |AddToAllPlots.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16908289~1|CentrePlots=False|DrillDrawingSymbol=GraphicsSymbol|DrillDrawingSymbolSize=200000|EmbeddedApertures=True|FilmBorderSize=100000000|FilmXSize=2000000000|FilmYSize=1600000000|FlashAllFills=False|FlashPadShapes=True|G54OnApertureChange=False|GenerateDRCRulesFile=True|GenerateDRCRulesFile=True|GenerateReliefShapes=True|GenerateReports=True|GerberUnit=Imperial|GerberUnit=Imperial|IncludeUnconnectedMidLayerPads=False|LayerClassesMirror.Set= |LayerClassesPlot.Set= |LeadingAndTrailingZeroesMode=SuppressLeadingZeroes|MaxApertureSize=2500000|MinusApertureTolerance=50|MinusApertureTolerance=50|Mirror.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray|MirrorDrillDrawingPlots=False|MirrorDrillGuidePlots=False|NoRegularPolygons=False|NumberOfDecimals=4|NumberOfDecimals=4|OptimizeChangeLocationCommands=True|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Panelize=False|Plot.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16973830~1,16973832~1,16973834~1,16777217~1,16777220~1,16777218~1,16777219~1,16777221~1,16842751~1,16973835~1,16973833~1,16973831~1,16908289~1,16908294~1,16908301~1,16908303~1,16973848~1,16973849~1|PlotPositivePlaneLayers=False|PlotUsedDrillDrawingLayerPairs=True|PlotUsedDrillGuideLayerPairs=True|PlusApertureTolerance=50|PlusApertureTolerance=50|Record=GerberView|SoftwareArcs=False|Sorted=False|Sorted=False|DocumentPath=C:\Robocon\Project\Blazer-FOC\1_Hardware\Controller\V3.0\ControllerV3.0.PcbDoc
 
 [OutputGroup6]
 Name=Report Outputs

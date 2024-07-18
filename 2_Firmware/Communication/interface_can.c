@@ -41,8 +41,9 @@ void CAN_Filter_Init(void)
 
 void CAN_DataTransform(void)
 {
-	/*将接收到的-16384 -- +16384转化为-40A -- +40A的设定电流*/
-	PID_Iq.ref_value=((int16_t)(ReceiveMsg_t.given_current))*0.00244141f;
+	/*将接收到的-16384 -- +16384转化为-20A -- +20A的设定电流*/
+	PID_Iq.ref_value=((int16_t)(ReceiveMsg_t.given_current))*0.001220703f;
+	PID_Iq.ref_value=_constrain(PID_Iq.ref_value,-20.0f,20.0f);
 	
 #ifdef USE_SPI_ENCODER
 	/*发送编码器角度原始值*/
@@ -57,8 +58,8 @@ void CAN_DataTransform(void)
 	/*发送编码器速度由rad/s转为rpm*/
 	SendMsg_t.speed=(uint16_t)((int16_t)(ABZ_t.velocity*9.549296585f));
 #endif
-	/*将-40A -- +40A的当前电流转化为-16384 -- +16384的待发送数据*/
-	SendMsg_t.real_current=(uint16_t)((int16_t)(FOC_Sensored_t.Iq*409.6f));
+	/*将-20A -- +20A的当前电流转化为-16384 -- +16384的待发送数据*/
+	SendMsg_t.real_current=(uint16_t)((int16_t)(FOC_Sensored_t.Iq*819.2f));
 }
 
 uint8_t CAN_Rxflag=0;
