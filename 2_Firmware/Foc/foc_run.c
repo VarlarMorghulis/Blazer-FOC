@@ -60,7 +60,7 @@ FOC_TypeDef FOC_Openloop_t=
 
 Motor_TypeDef Motor_t=
 {
-	.Pole_Pairs=21
+	.Pole_Pairs=0
 };
 
 /*5065*/
@@ -70,7 +70,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 
@@ -79,7 +79,7 @@ PID_TypeDef PID_Iq=
 	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 #endif
@@ -91,7 +91,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.0006f,
 	.Ki=2.5f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 
@@ -100,7 +100,7 @@ PID_TypeDef PID_Iq=
 	.ref_value=5.0f,
 	.Kp=0.0006f,
 	.Ki=2.5f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 #endif
@@ -112,7 +112,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.00175f,
 	.Ki=2.0f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 
@@ -121,7 +121,7 @@ PID_TypeDef PID_Iq=
 	.ref_value=0.0f,
 	.Kp=0.00175f,
 	.Ki=2.0f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 #endif
@@ -133,7 +133,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.0011f,
 	.Ki=2.375f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 
@@ -142,39 +142,18 @@ PID_TypeDef PID_Iq=
 	.ref_value=0.0f,
 	.Kp=0.0011f,
 	.Ki=2.375f,
-	.error_sum_max=0.3f,
+	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
 #endif
 
-
-/*LD2808*/
-/*
-PID_TypeDef PID_Id=
-{
-	.ref_value=0.0f,
-	.Kp=0.02f,
-	.Ki=155.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.85f
-};
-
-PID_TypeDef PID_Iq=
-{
-	.ref_value=0.0f,
-	.Kp=0.02f,
-	.Ki=155.0f,
-	.error_sum_max=8.0f,
-	.output_max=13.85f
-};
-*/
-
 PID_TypeDef PID_Speed=
 {
-	.ref_value=0.0f,
-	.Kp=0.3f,
-	.Ki=3.0f,
-	.error_sum_max=3.0f,
+	.ref_value=20.0f,
+	.Kp=0.8f,
+	.Ki=0.0f,
+	.error_sum_max=6.0f,
+	/*速度环输出最大值就是电流环目标最大值*/
 	.output_max=6.0f
 };
 
@@ -187,8 +166,8 @@ PID_TypeDef PID_Position=
 
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
-extern Encoder_TypeDef TLE5012B_t;
-extern Encoder_TypeDef ABZ_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 extern FOC_TypeDef FOC_HFI_t;
 
 extern uint16_t Anticog_1[2048];
@@ -259,11 +238,11 @@ void Sensored_Currentloop(void)
 	Encoder_TypeDef *Encoder_t;
 	
 #ifdef USE_ABZ_ENCODER
-	Encoder_t=&ABZ_t;
+	Encoder_t=&ABZ_Enc_t;
 #endif
 	
 #ifdef USE_SPI_ENCODER
-	Encoder_t=&TLE5012B_t;
+	Encoder_t=&SPI_Encoder_t;
 #endif
 	/*电流采样及处理*/
 	Current_Ers=Current_Cal(&FOC_Sensored_t,&CurrentOffset_t);
@@ -273,19 +252,6 @@ void Sensored_Currentloop(void)
 	/*电流采样运行正常且编码器读取正常*/
 	if(Current_Ers==FOC_OK && Encoder_Ers==FOC_OK)
 	{
-//		enc_index=TLE5012B_t.raw_value/16;
-		
-//		FOC_Sensored_t.Ia=(float)Anticog_1[enc_index];
-//		FOC_Sensored_t.Ib=(float)Anticog_2[enc_index];
-//		FOC_Sensored_t.Ic=(float)Anticog_3[enc_index];
-		
-//		if(Anticog_1[enc_index]!=0&&Anticog_2[enc_index]!=0&&Anticog_3[enc_index]!=0)
-//		{
-//			FOC_Sensored_t.Ia-=((float)((int16_t)Anticog_1[enc_index]-(int16_t)CurrentOffset_t.A_Offset))*0.04029304f;
-//			FOC_Sensored_t.Ib-=((float)((int16_t)Anticog_2[enc_index]-(int16_t)CurrentOffset_t.B_Offset))*0.04029304f;
-//			FOC_Sensored_t.Ic-=((float)((int16_t)Anticog_3[enc_index]-(int16_t)CurrentOffset_t.C_Offset))*0.04029304f;
-//		}
-		
 		/*Clarke变换*/
 		Clarke_Transform(&FOC_Sensored_t);
 		
@@ -320,25 +286,27 @@ void Sensored_Speedloop(void)
 	Encoder_TypeDef *Encoder_t;
 	
 #ifdef USE_ABZ_ENCODER
-	Encoder_t=&ABZ_t;
+	Encoder_t=&ABZ_Enc_t;
 #endif
 	
 #ifdef USE_SPI_ENCODER
-	Encoder_t=&TLE5012B_t;
+	Encoder_t=&SPI_Encoder_t;
+;
 #endif
 
 //	if(PID_Speed.ref_value<=314.0f)
 //	{
 //		PID_Speed.ref_value+=0.0628f;
 //	}
-	//PID_Speed.samp_value=Encoder_t->velocity;
-	//PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+	PID_Speed.samp_value=Encoder_t->velocity;
+	PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+	
 }
 
 void Sensored_Positionloop(void)
 {
 #ifdef USE_ABZ_ENCODER
-	//PID_Position.samp_value=ABZ_GetCalAngle(&ABZ_t);
+	//PID_Position.samp_value=ABZ_GetCalAngle(&ABZ_Enc_t);
 #endif
 
 #ifdef USE_SPI_ENCODER
@@ -349,23 +317,23 @@ void Sensored_Positionloop(void)
 
 void FOC_Task_Sensored(void)
 {
-	/*电流环执行频率为10kHz*/
-	if(++TE_Currentloop_t.Cnt_20kHz>=2)
+	/*电流环执行频率为20kHz*/
+	if(++TE_Currentloop_t.Cnt_20kHz>=1)
 	{
 		Sensored_Currentloop();
 		TE_Currentloop_t.Cnt_20kHz=0;
 	}
 	
-	/*速度环执行频率为5kHz*/
-	if(++TE_Speedloop_t.Cnt_20kHz>=4)
+	/*速度环执行频率为10kHz*/
+	if(++TE_Speedloop_t.Cnt_20kHz>=2)
 	{
-		//Open_Voltageloop(&FOC_Sensored_t,2);
+		//Open_Voltageloop(&FOC_Sensored_t,15);
 		Sensored_Speedloop();
 		TE_Speedloop_t.Cnt_20kHz=0;
 	}
 	
-	/*位置环执行频率为1kHz*/
-	if(++TE_Positionloop_t.Cnt_20kHz>=20)
+	/*位置环执行频率为5kHz*/
+	if(++TE_Positionloop_t.Cnt_20kHz>=4)
 	{
 		//Sensored_Positionloop();
 		TE_Positionloop_t.Cnt_20kHz=0;

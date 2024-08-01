@@ -217,11 +217,3 @@ Key_Event Key_GetStatus(uint8_t KEYx)
 	
     return key_event;
 }
-
-//uint8_t key1_val,key2_val;
-//key1_val=Key_GetStatus(KEY1);
-//key2_val=Key_GetStatus(KEY2);
-//if(key1_val==KE_ShortPress)
-//{
-//	.....
-//}

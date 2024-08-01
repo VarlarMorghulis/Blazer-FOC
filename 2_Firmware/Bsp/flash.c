@@ -1,7 +1,7 @@
 #include "flash.h"
 
-extern Encoder_TypeDef TLE5012B_t;
-extern Encoder_TypeDef ABZ_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 extern Motor_TypeDef Motor_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
@@ -47,8 +47,8 @@ void Flash_Save(void)
 	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
 	
 #ifdef USE_ABZ_ENCODER
-	temp[0]=(uint32_t)ABZ_t.sensor_dir;
-	temp[1]=(uint32_t)ABZ_t.zero_enc_offset;
+	temp[0]=(uint32_t)ABZ_Enc_t.sensor_dir;
+	temp[1]=(uint32_t)ABZ_Enc_t.zero_enc_offset;
 	temp[2]=(uint32_t)Motor_t.Pole_Pairs;
 	temp[3]=(uint32_t)CurrentOffset_t.A_Offset;
 	temp[4]=(uint32_t)CurrentOffset_t.B_Offset;
@@ -56,8 +56,8 @@ void Flash_Save(void)
 #endif
 
 #ifdef USE_SPI_ENCODER
-	temp[0]=(uint32_t)TLE5012B_t.sensor_dir;
-	temp[1]=(uint32_t)TLE5012B_t.zero_enc_offset;
+	temp[0]=(uint32_t)SPI_Encoder_t.sensor_dir;
+	temp[1]=(uint32_t)SPI_Encoder_t.zero_enc_offset;
 	temp[2]=(uint32_t)Motor_t.Pole_Pairs;
 	temp[3]=(uint32_t)CurrentOffset_t.A_Offset;
 	temp[4]=(uint32_t)CurrentOffset_t.B_Offset;
@@ -89,9 +89,9 @@ void Flash_Read(void)
 	}
 	
 #ifdef USE_ABZ_ENCODER
-	ABZ_t.sensor_dir=(int8_t)temp[0];
-	ABZ_t.zero_enc_offset=(uint16_t)temp[1];
-	ABZ_TIM->CNT=ABZ_t.zero_enc_offset;
+	ABZ_Enc_t.sensor_dir=(int8_t)temp[0];
+	ABZ_Enc_t.zero_enc_offset=(uint16_t)temp[1];
+	ABZ_TIM->CNT=ABZ_Enc_t.zero_enc_offset;
 	Motor_t.Pole_Pairs=(uint8_t)temp[2];
 	CurrentOffset_t.A_Offset=(uint16_t)temp[3];
 	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
@@ -99,9 +99,9 @@ void Flash_Read(void)
 #endif
 	
 #ifdef USE_SPI_ENCODER
-	TLE5012B_t.sensor_dir=(int8_t)temp[0];
-	TLE5012B_t.zero_enc_offset=(uint16_t)temp[1];
-	//Motor_t.Pole_Pairs=(uint8_t)temp[2];
+	SPI_Encoder_t.sensor_dir=(int8_t)temp[0];
+	SPI_Encoder_t.zero_enc_offset=(uint16_t)temp[1];
+	Motor_t.Pole_Pairs=(uint8_t)temp[2];
 	CurrentOffset_t.A_Offset=(uint16_t)temp[3];
 	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
 	CurrentOffset_t.C_Offset=(uint16_t)temp[5];

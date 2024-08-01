@@ -162,18 +162,50 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>517</LineNumber>
+          <LineNumber>306</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134246988</Address>
+          <Address>134227766</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\System\menu.c</Filename>
+          <Filename>..\Bsp\encoder.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Blazer_FOC\../System/menu.c\517</Expression>
+          <Expression>\\Blazer_FOC\../Bsp/encoder.c\306</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>354</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229052</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Foc\foc_calibration.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Blazer_FOC\../Foc/foc_calibration.c\354</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>308</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>..\Bsp\encoder.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -215,72 +247,57 @@
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TLE5012B_t,0x0A</ItemText>
+          <ItemText>SendMsg_t,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>CAN_RxHeaderStruct,0x0A</ItemText>
+          <ItemText>FOC_Sensored_t</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SendMsg_t,0x0A</ItemText>
+          <ItemText>FOC_HFI_t</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>FOC_Sensored_t</ItemText>
+          <ItemText>FOC_Openloop_t</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tx_data,0x0A</ItemText>
+          <ItemText>Motor_Rs</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ABZ_t,0x0A</ItemText>
+          <ItemText>enc_temp[256]</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>FOC_HFI_t</ItemText>
+          <ItemText>enc_temp,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Z_detect_flag</ItemText>
+          <ItemText>lut_enc,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>15</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nowMenu,0x0A</ItemText>
+          <ItemText>SPI_Encoder_Raw,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>16</count>
           <WinNumber>1</WinNumber>
-          <ItemText>key1_event</ItemText>
+          <ItemText>SPI_Encoder_Type</ItemText>
         </Ww>
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>key2_event</ItemText>
-        </Ww>
-        <Ww>
-          <count>18</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>FOC_Openloop_t</ItemText>
-        </Ww>
-        <Ww>
-          <count>19</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Motor_Rs</ItemText>
-        </Ww>
-        <Ww>
-          <count>20</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Iav</ItemText>
+          <ItemText>SPI_Encoder_t,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

@@ -146,7 +146,6 @@ ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t
 		FOC_t->Ia=((float)((int16_t)ADC1->JDR1-CurrentOffset_t->A_Offset))*SAMPLE_CURR_FACTOR;
 		FOC_t->Ib=((float)((int16_t)ADC1->JDR2-CurrentOffset_t->B_Offset))*SAMPLE_CURR_FACTOR;
 		FOC_t->Ic=((float)((int16_t)ADC1->JDR3-CurrentOffset_t->C_Offset))*SAMPLE_CURR_FACTOR;
-		//FOC_t->Ia=-FOC_t->Ib - FOC_t->Ic;
 		return FOC_OK;
 	}
 }

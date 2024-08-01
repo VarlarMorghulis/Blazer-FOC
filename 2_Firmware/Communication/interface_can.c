@@ -7,10 +7,13 @@ ReceiveMsg_TypeDef ReceiveMsg_t=
 	.ID=0x01
 };
 
+uint8_t CAN_Rxflag=0;
+
 extern FOC_State FOC_State_t;
 extern PID_TypeDef PID_Iq;
-extern Encoder_TypeDef TLE5012B_t;
-extern Encoder_TypeDef ABZ_t;
+extern PID_TypeDef PID_Speed;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
@@ -41,28 +44,31 @@ void CAN_Filter_Init(void)
 
 void CAN_DataTransform(void)
 {
-	/*将接收到的-16384 -- +16384转化为-20A -- +20A的设定电流*/
-	PID_Iq.ref_value=((int16_t)(ReceiveMsg_t.given_current))*0.001220703f;
-	PID_Iq.ref_value=_constrain(PID_Iq.ref_value,-20.0f,20.0f);
+	/*将接收到的-16384 -- +16384转化为-40pi -- +40pi rad/s的设定转速*/
+	PID_Speed.ref_value=((int16_t)(ReceiveMsg_t.given_speed))*20.0f*_2PI/16384.0f;
+	/*速度限幅处理*/
+	PID_Speed.ref_value=_constrain(PID_Speed.ref_value,-125.663706f,125.663706f);
+	
+	/*将-40A -- +40A的当前电流转化为-16384 -- +16384的待发送数据*/
+	SendMsg_t.real_current=(uint16_t)((int16_t)(FOC_Sensored_t.Iq*40.0f/16384.0f));
 	
 #ifdef USE_SPI_ENCODER
 	/*发送编码器角度原始值*/
-	SendMsg_t.angle=TLE5012B_t.raw_value;
+	SendMsg_t.enc=SPI_Encoder_t.raw_value;
 	/*发送编码器速度由rad/s转为rpm*/
-	SendMsg_t.speed=(uint16_t)((int16_t)(TLE5012B_t.velocity*9.549296585f));
+	SendMsg_t.speed_rpm=(uint16_t)((int16_t)(SPI_Encoder_t.velocity*9.549296585f));
 #endif
 
 #ifdef USE_ABZ_ENCODER
 	/*发送编码器角度原始值*/
-	SendMsg_t.angle=ABZ_t.raw_value;
+	SendMsg_t.enc=ABZ_Enc_t.raw_value;
 	/*发送编码器速度由rad/s转为rpm*/
-	SendMsg_t.speed=(uint16_t)((int16_t)(ABZ_t.velocity*9.549296585f));
+	SendMsg_t.speed_rpm=(uint16_t)((int16_t)(ABZ_Enc_t.velocity*9.549296585f));
 #endif
-	/*将-20A -- +20A的当前电流转化为-16384 -- +16384的待发送数据*/
-	SendMsg_t.real_current=(uint16_t)((int16_t)(FOC_Sensored_t.Iq*819.2f));
+
 }
 
-uint8_t CAN_Rxflag=0;
+
 
 /**
    * @brief  CAN1数据接收函数
@@ -88,9 +94,9 @@ void CANRxIRQHandler(void)
 		/*有感闭环模式*/
 		FOC_State_t=FOC_Sensored;
 		
-		ReceiveMsg_t.given_current=0;
-		ReceiveMsg_t.given_current|=rx_data[0]<<8*1;
-		ReceiveMsg_t.given_current|=rx_data[1];
+		ReceiveMsg_t.given_speed=0;
+		ReceiveMsg_t.given_speed|=rx_data[0]<<8*1;
+		ReceiveMsg_t.given_speed|=rx_data[1];
 		
 		CAN_DataTransform();
 	}
@@ -103,9 +109,9 @@ void CANRxIRQHandler(void)
 		CAN_Rxflag=1;
 	}
 	
-	ReceiveMsg_t.given_current=0;
-	ReceiveMsg_t.given_current|=rx_data[0]<<8*1;
-	ReceiveMsg_t.given_current|=rx_data[1];
+	ReceiveMsg_t.given_speed=0;
+	ReceiveMsg_t.given_speed|=rx_data[0]<<8*1;
+	ReceiveMsg_t.given_speed|=rx_data[1];
 		
 	CAN_DataTransform();
 #endif
@@ -135,13 +141,13 @@ void CAN_SendMessage(void)
 	CAN_DataTransform();
 	
 	/*转子机械角度高8位*/
-	tx_data[0]=SendMsg_t.angle>>8;
+	tx_data[0]=SendMsg_t.enc>>8;
 	/*转子机械角度低8位*/
-	tx_data[1]=SendMsg_t.angle;
+	tx_data[1]=SendMsg_t.enc;
 	/*转子速度高8位*/
-	tx_data[2]=SendMsg_t.speed>>8;
+	tx_data[2]=SendMsg_t.speed_rpm>>8;
 	/*转子速度低8位*/
-	tx_data[3]=SendMsg_t.speed;
+	tx_data[3]=SendMsg_t.speed_rpm;
 	/*实际转矩电流高8位*/
 	tx_data[4]=SendMsg_t.real_current>>8;
 	/*实际转矩电流低8位*/
@@ -163,7 +169,8 @@ void CAN_LostConnect_Handle(void)
 {
 	/*超时则清空电机之前的运行数据,防止重新连接后过冲*/
 	PID_Iq.ref_value=0.0f;
-//	Motor_Release();
+	PID_Speed.ref_value=0.0f;
+	
 	LED_G(0);
 	/*将CAN接收标志位置0*/
 	CAN_Rxflag=0;

@@ -15,6 +15,8 @@ void Board_Init(void)
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_2);/*B*/
 	ABZ_Resolution_Init();
 	
+	Encoder_ParamInit();
+	
 	/*电机相关初始化*/
 	/*使能PWM通道输出*/
 	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);

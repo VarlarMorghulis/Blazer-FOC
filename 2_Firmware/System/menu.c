@@ -292,7 +292,7 @@ void Menu_Show(uint8_t key)
     nowMenu = now;
 }
 
-extern Encoder_TypeDef ABZ_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 void Draw_Main_font(int8_t x, int8_t y)
 {
 	char ID_str[10],Vbus_str[10],Resolution_str[10];
@@ -320,7 +320,7 @@ void Draw_Main_font(int8_t x, int8_t y)
 	
 #ifdef USE_ABZ_ENCODER
 	u8g2_DrawStr(&u8g2,80,55,"ABZ");
-	sprintf(Resolution_str,"%d",ABZ_t.resolution);
+	sprintf(Resolution_str,"%d",ABZ_Enc_t.cpr);
 	u8g2_DrawStr(&u8g2,80,70,Resolution_str);
 #endif
 

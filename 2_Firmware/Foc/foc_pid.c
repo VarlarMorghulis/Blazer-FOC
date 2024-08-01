@@ -32,7 +32,7 @@ float Speed_PI_Ctrl(PID_TypeDef *PID)
 	
 	PID->error_sum+=PID->error*PID->Ki*SPEED_PID_PERIOD;
 	
-	PID->error_sum=_constrain(PID->error_sum,-PID->error_sum_max,PID->error_sum_max);
+	//PID->error_sum=_constrain(PID->error_sum,-PID->error_sum_max,PID->error_sum_max);
 	
 	PID->output=PID->Kp*PID->error+
 				PID->error_sum;

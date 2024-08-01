@@ -4,10 +4,10 @@
 #include "foc_utils.h"
 
 /*电流环周期*/
-#define CURRENT_PID_PERIOD	0.0001f
+#define CURRENT_PID_PERIOD	0.00005f
 
 /*速度环周期*/
-#define SPEED_PID_PERIOD	0.0002f
+#define SPEED_PID_PERIOD	0.0001f
 
 typedef struct
 {

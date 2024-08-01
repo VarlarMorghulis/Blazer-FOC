@@ -7,7 +7,7 @@ uint16_t Anticog_3[2048];
 FOC_TypeDef FOC_Encoder_Calibration_t=
 {
 	.Udc=1.0f,
-	.Ud=0.1f,
+	.Ud=0.08f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 };
@@ -16,6 +16,14 @@ FOC_TypeDef FOC_Anticogging_Calibration_t=
 {
 	.Udc=1.0f,
 	.Ud=0.0f,
+	.Uq=0.0f,
+	.Tpwm=PWM_TIM_PERIOD,
+};
+
+FOC_TypeDef FOC_Encoder_Linearization_t=
+{
+	.Udc=1.0f,
+	.Ud=0.08f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 };
@@ -36,23 +44,7 @@ TaskElement_TypeDef TE_Encoder_Calibration_t=
 	.Errstate=FOC_OK
 };
 
-TaskElement_TypeDef TE_Anticogging_Calibration_t=
-{
-	.Init_Flag=0,
-	.Run_Flag=0,
-	.Cnt_20kHz=0,
-	.Errstate=FOC_OK
-};
-
-TaskElement_TypeDef TE_Calib_Currentloop_t=
-{
-	.Init_Flag=0,
-	.Run_Flag=0,
-	.Cnt_20kHz=0,
-	.Errstate=FOC_OK
-};
-
-TaskElement_TypeDef TE_Calib_Speedloop_t=
+TaskElement_TypeDef TE_Encoder_Linearization_t=
 {
 	.Init_Flag=0,
 	.Run_Flag=0,
@@ -67,60 +59,22 @@ CurrentOffset_TypeDef CurrentOffset_t=
 	.C_Offset=2048,
 };
 
-/*
-PID_TypeDef PID_Id_Calib=
-{
-	.ref_value=0.0f,
-	.Kp=0.25f,
-	.Ki=145.7f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
+enum 
+{	
+	Calib_ADC,
+	Calib_Encoder,
+	Linearize_Encoder,
+	Calib_Anticogging,
+    Calib_Done
 };
-
-PID_TypeDef PID_Iq_Calib=
-{
-	.ref_value=0.0f,
-	.Kp=0.25f,
-	.Ki=145.7f,
-	.error_sum_max=8.0f,
-	.output_max=13.0f
-};
-*/
-PID_TypeDef PID_Id_Calib=
-{
-	.ref_value=0.0f,
-	.Kp=0.2985f,
-	.Ki=644.38f,
-	.error_sum_max=0.3f,
-	.output_max=0.577f
-};
-
-PID_TypeDef PID_Iq_Calib=
-{
-	.ref_value=0.0f,
-	.Kp=0.2985f,
-	.Ki=644.38f,
-	.error_sum_max=0.3f,
-	.output_max=0.577f
-};
-
-PID_TypeDef PID_Speed_Calib=
-{
-	.ref_value=0.3141593f,
-	.Kp=0.4f,
-	.Ki=2.0f,
-	.error_sum_max=5.0f,
-	.output_max=8.0f
-};
-
-enum {Calib_ADC,Calib_Encoder,Calib_Anticogging,Calib_Done};
 uint8_t Calib_State=Calib_ADC;
+
 uint8_t Z_use_flag;
 uint8_t Z_detect_flag;
 
 extern FOC_State FOC_State_t;
-extern Encoder_TypeDef TLE5012B_t;
-extern Encoder_TypeDef ABZ_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern Motor_TypeDef Motor_t;
 
@@ -174,7 +128,8 @@ void FOC_Task_ADC_Calibration(void)
 }
 
 /**
-   * @brief  电角度零偏校准任务 2ms执行一次
+   * @brief  编码器校准任务
+			 获取编码器零偏和极性 辨识电机极对数
    * @param  无
    * @retval 无
    */
@@ -197,7 +152,7 @@ void FOC_Task_Encoder_Calibration(void)
 			if(i<=1000)
 			{
 				/*电角度由0缓慢自增到2PI*/
-				FOC_Encoder_Calibration_t.theta_el=_2PI*i/1000.0f;
+				FOC_Encoder_Calibration_t.theta_el=_normalizeAngle(_2PI*2.0f*i/1000.0f);
 				I_Park_Transform(&FOC_Encoder_Calibration_t);
 				SVPWM_Cal(&FOC_Encoder_Calibration_t);
 				SetPWM(&FOC_Encoder_Calibration_t);
@@ -211,8 +166,8 @@ void FOC_Task_Encoder_Calibration(void)
 			else
 			{
 				/*记录电角度为2PI时定时器计数值*/
-				ABZ_Update(&ABZ_t);
-				mid_angle=ABZ_GetCalAngle(&ABZ_t);
+				ABZ_Update(&ABZ_Enc_t);
+				mid_angle=ABZ_GetCalAngle(&ABZ_Enc_t);
 				i=1000;
 				run_flag=1;
 			}
@@ -224,7 +179,7 @@ void FOC_Task_Encoder_Calibration(void)
 			if(i>=0)
 			{
 				/*电角度由2PI缓慢自减到0*/
-				FOC_Encoder_Calibration_t.theta_el=_2PI*i/1000.0f;
+				FOC_Encoder_Calibration_t.theta_el=_normalizeAngle(_2PI*2.0f*i/1000.0f);
 				I_Park_Transform(&FOC_Encoder_Calibration_t);
 				SVPWM_Cal(&FOC_Encoder_Calibration_t);
 				SetPWM(&FOC_Encoder_Calibration_t);
@@ -238,22 +193,22 @@ void FOC_Task_Encoder_Calibration(void)
 			else
 			{
 				/*记录电角度为0时定时器计数值*/
-				ABZ_Update(&ABZ_t);
-				end_angle=ABZ_GetCalAngle(&ABZ_t);
+				ABZ_Update(&ABZ_Enc_t);
+				end_angle=ABZ_GetCalAngle(&ABZ_Enc_t);
 				
 				/*编码器极性取决于电角度自增方向与编码器变化方向*/
 				/*电角度自增,编码器角度也呈自增变化,则极性为正,反之为负*/
 				/*编码器极性为正*/
 				if(mid_angle-end_angle>0.1f)
 				{
-					ABZ_t.sensor_dir=1;
-					Motor_t.Pole_Pairs=(uint8_t)(_2PI/(mid_angle-end_angle)+0.5f);
+					ABZ_Enc_t.sensor_dir=1;
+					Motor_t.Pole_Pairs=(uint8_t)(_2PI*2.0f/(mid_angle-end_angle)+0.5f);
 				}
 				/*编码器极性为负*/
 				else if(mid_angle-end_angle<-0.1f)
 				{
-					ABZ_t.sensor_dir=-1;
-					Motor_t.Pole_Pairs=(uint8_t)(_2PI/(end_angle-mid_angle)+0.5f);
+					ABZ_Enc_t.sensor_dir=-1;
+					Motor_t.Pole_Pairs=(uint8_t)(_2PI*2.0f/(end_angle-mid_angle)+0.5f);
 				}
 				/*编码器没读数或者电机基本没动*/
 				else
@@ -275,9 +230,9 @@ void FOC_Task_Encoder_Calibration(void)
 			ABZ_TIM->CNT=0;
 			
 			/*清空编码器角度差和圈数*/
-			ABZ_t.d_angle=0.0f;
-			ABZ_t.velocity=0.0f;
-			ABZ_t.loop=0;
+			ABZ_Enc_t.d_angle=0.0f;
+			ABZ_Enc_t.velocity=0.0f;
+			ABZ_Enc_t.loop=0;
 			
 			i=0;
 			run_flag=3;
@@ -310,7 +265,7 @@ void FOC_Task_Encoder_Calibration(void)
 			/*检测到Z相脉冲*/
 			else if(Z_detect_flag==1)
 			{
-				ABZ_t.zero_enc_offset=ABZ_TIM->CNT;
+				ABZ_Enc_t.zero_enc_offset=ABZ_TIM->CNT;
 				
 				i=0;
 				run_flag=0;
@@ -323,53 +278,52 @@ void FOC_Task_Encoder_Calibration(void)
 				/*状态跳转*/
 				Calib_State=Calib_Done;
 			}
-			
-
 		}
-		
 		
 		TE_Encoder_Calibration_t.Cnt_20kHz=0;
 	}
 }
 #endif
 
+
 #ifdef USE_SPI_ENCODER
 void FOC_Task_Encoder_Calibration(void)
 {
-	static int16_t i=0;
+	static int i=0;
 	static uint8_t run_flag;/*0电角度自增强拖 1电角度自减强拖 2记录编码器零偏*/
 	static float mid_angle,end_angle;
 	static uint32_t zero_enc_sum;
 	
-	/*2ms执行一次*/
 	TE_Encoder_Calibration_t.Cnt_20kHz++;
 	
-	if(TE_Encoder_Calibration_t.Cnt_20kHz>=40)
+	/*4ms执行一次*/
+	if(TE_Encoder_Calibration_t.Cnt_20kHz>=80)
 	{
 		/*自增强拖*/
 		if(run_flag==0)
 		{
-			if(i<=1000)
+			if(i<=2000)
 			{
 				/*电角度由0缓慢自增到2PI*/
-				FOC_Encoder_Calibration_t.theta_el=_2PI*i/1000.0f;
+				FOC_Encoder_Calibration_t.theta_el=_normalizeAngle(_2PI*2.0f*i/2000.0f);
 				I_Park_Transform(&FOC_Encoder_Calibration_t);
 				SVPWM_Cal(&FOC_Encoder_Calibration_t);
 				SetPWM(&FOC_Encoder_Calibration_t);
 				i++;
 			}
-			/*让电角度固定在2PI一段时间,使读数更稳定*/
-			else if(i<=1250)
+			/*让电角度固定在4PI一段时间,使读数更稳定*/
+			else if(i<=2200)
 			{
+				/*更新当前的编码器值*/
+				SPI_Encoder_Update(&SPI_Encoder_t);
+				/*记录电角度为2PI时编码器的值*/
+				mid_angle+=SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
 				i++;
 			}
 			else
 			{
-				/*更新当前的编码器值*/
-				TLE5012B_Update(&TLE5012B_t);
-				/*记录电角度为2PI时编码器的值*/
-				mid_angle=TLE5012B_GetCalAngle(&TLE5012B_t);
-				i=1000;
+				mid_angle/=200.0f;
+				i=2000;
 				run_flag=1;
 			}
 		}
@@ -380,37 +334,38 @@ void FOC_Task_Encoder_Calibration(void)
 			if(i>=0)
 			{
 				/*电角度由2PI缓慢自减到0*/
-				FOC_Encoder_Calibration_t.theta_el=_2PI*i/1000.0f;
+				FOC_Encoder_Calibration_t.theta_el=_normalizeAngle(_2PI*2.0f*i/2000.0f);
 				I_Park_Transform(&FOC_Encoder_Calibration_t);
 				SVPWM_Cal(&FOC_Encoder_Calibration_t);
 				SetPWM(&FOC_Encoder_Calibration_t);
 				i--;
 			}
 			/*让电角度固定在0一段时间,使读数更稳定*/
-			else if(i>=-250)
+			else if(i>=-200)
 			{
+				/*更新当前的编码器值*/
+				SPI_Encoder_Update(&SPI_Encoder_t);
+				/*记录电角度为0时编码器的值*/
+				end_angle+=SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
 				i--;
 			}
 			else
 			{
-				/*更新当前的编码器值*/
-				TLE5012B_Update(&TLE5012B_t);
-				/*记录电角度为0时编码器的值*/
-				end_angle=TLE5012B_GetCalAngle(&TLE5012B_t);
+				end_angle/=200.0f;
 				
 				/*编码器极性取决于电角度自增方向与编码器变化方向*/
 				/*电角度自增,编码器角度也呈自增变化,则极性为正,反之为负*/
 				/*编码器极性为正*/
 				if(mid_angle-end_angle>0.1f)
 				{
-					TLE5012B_t.sensor_dir=1;
-					Motor_t.Pole_Pairs=(uint8_t)(_2PI/(mid_angle-end_angle)+0.5f);
+					SPI_Encoder_t.sensor_dir=1;
+					Motor_t.Pole_Pairs=(uint8_t)(_2PI*2.0f/(mid_angle-end_angle)+0.5f);
 				}
 				/*编码器极性为负*/
 				else if(mid_angle-end_angle<-0.1f)
 				{
-					TLE5012B_t.sensor_dir=-1;
-					Motor_t.Pole_Pairs=(uint8_t)(_2PI/(end_angle-mid_angle)+0.5f);
+					SPI_Encoder_t.sensor_dir=-1;
+					Motor_t.Pole_Pairs=(uint8_t)(_2PI*2.0f/(end_angle-mid_angle)+0.5f);
 				}
 				/*编码器没读数或者电机基本没动*/
 				else
@@ -431,7 +386,7 @@ void FOC_Task_Encoder_Calibration(void)
 		{
 			if(i<100)
 			{
-				zero_enc_sum+=ReadTLE5012B(READ_ANGLE_VALUE);
+				zero_enc_sum+=ReadSPIEncoder_Raw();
 				i++;
 			}
 			else
@@ -440,22 +395,17 @@ void FOC_Task_Encoder_Calibration(void)
 				zero_enc_sum/=100;
 				
 				/*记录编码器零偏*/
-				TLE5012B_t.zero_enc_offset=TLE5012B_t.resolution-(uint16_t)zero_enc_sum;
+				SPI_Encoder_t.zero_enc_offset=SPI_Encoder_t.cpr-(uint16_t)zero_enc_sum;
 				
 				/*清空编码器角度差和圈数*/
-				TLE5012B_t.d_angle=0.0f;
-				TLE5012B_t.velocity=0.0f;
-				TLE5012B_t.loop=0;
+				SPI_Encoder_t.d_angle=0.0f;
+				SPI_Encoder_t.velocity=0.0f;
+				SPI_Encoder_t.loop=0;
 				
 				i=0;
-				
-				run_flag=0;
-				
-				/*校准参数存储*/
-				Flash_Save();
-				
+				run_flag=0;	
 				/*状态跳转*/
-				//Calib_State=Calib_Anticogging;
+				//Calib_State=Linearize_Encoder;
 				Calib_State=Calib_Done;
 			}
 		}
@@ -465,150 +415,103 @@ void FOC_Task_Encoder_Calibration(void)
 }
 #endif
 
-void Calib_Currentloop(void)
-{
-	/*电流采样运行正常*/
-	if(Current_Cal(&FOC_Anticogging_Calibration_t,&CurrentOffset_t)==FOC_OK)
-	{
-		/*编码器更新*/
-		TLE5012B_Update(&TLE5012B_t);
-		
-		/*Clarke变换*/
-		Clarke_Transform(&FOC_Anticogging_Calibration_t);
-			
-		/*Park变换*/
-		Park_Transform(&FOC_Anticogging_Calibration_t);
-			
-		/*PID计算输出*/
-		PID_Id_Calib.samp_value=FOC_Anticogging_Calibration_t.Id;
-		PID_Iq_Calib.samp_value=FOC_Anticogging_Calibration_t.Iq;
-		FOC_Anticogging_Calibration_t.Ud=Current_PI_Ctrl(&PID_Id_Calib);
-		FOC_Anticogging_Calibration_t.Uq=Current_PI_Ctrl(&PID_Iq_Calib);
-			
-		/*反Park变换*/
-		I_Park_Transform(&FOC_Anticogging_Calibration_t);
-	}
-	else
-	{
-		TE_Calib_Currentloop_t.Errstate=FOC_FAULT;
-	}
-	
-}
+extern float angle_ref;
 
-void Calib_Speedloop(void)
-{
-	Encoder_TypeDef *Encoder_t;
-	
-	Encoder_t=&TLE5012B_t;
-	
-	/*编码器读取正常*/
-	if(Encoder_Cal(&FOC_Anticogging_Calibration_t,Encoder_t,Motor_t.Pole_Pairs)==FOC_OK)
-	{
-		PID_Speed_Calib.samp_value=Encoder_t->velocity;
-		PID_Iq_Calib.ref_value=Speed_PI_Ctrl(&PID_Speed_Calib);
-	}
-	else
-	{
-		TE_Calib_Speedloop_t.Errstate=FOC_FAULT;
-	}
-	
-}
+uint16_t enc_temp[256];
+uint16_t lut_enc[256];
 
 /**
-   * @brief  抗齿槽转矩校准任务
+   * @brief  编码器位置角度线性化任务
+			 
    * @param  无
    * @retval 无
    */
-void FOC_Task_Anticogging_Calibration(void)
+void FOC_Task_Encoder_Linearization(void)
 {
-	/*存放Ia,Ib,Ic的偏置值*/
-	float Iph[3]={0.0f,0.0f,0.0f};
-	/*采样计数变量,0-200*/
-	static uint16_t samp_cnt;
-	uint16_t enc_val;
-	static float run_flag;
+	const int n=256;
+	const int n2=100*Motor_t.Pole_Pairs;
+	float delta=_2PI*Motor_t.Pole_Pairs/(n*n2);
+	static float theta_ref;
 	
-	if(TE_Anticogging_Calibration_t.Init_Flag==0)
-	{
-		Flash_Read();
-		//Flash_Anticogging_Clear();
-		TE_Anticogging_Calibration_t.Init_Flag=1;
-	}
+	static int i=0;
+	static int j=0;
+	static int index=0;
 	
-	/*速度闭环开始后先跑5s,等速度稳定*/
+	static uint8_t run_flag=0;
+	
+	/*强拖一圈*/
 	if(run_flag==0)
 	{
-		if(++TE_Anticogging_Calibration_t.Cnt_20kHz<=100000)
-		{	
-			/*电流环执行频率为10kHz*/
-			if(++TE_Calib_Currentloop_t.Cnt_20kHz>=2)
+		/*一圈内等间距地采集256个点的编码器值*/
+		if(i<n)
+		{
+			if(j<n2)
 			{
-				Calib_Currentloop();
-				TE_Calib_Currentloop_t.Cnt_20kHz=0;
+				theta_ref+=SPI_Encoder_t.sensor_dir*delta;
+
+				FOC_Encoder_Linearization_t.theta_el=_normalizeAngle(theta_ref);
+				I_Park_Transform(&FOC_Encoder_Linearization_t);
+				SVPWM_Cal(&FOC_Encoder_Linearization_t);
+				SetPWM(&FOC_Encoder_Linearization_t);
+				
+				j++;
 			}
-			
-			/*速度环执行频率为5kHz*/
-			if(++TE_Calib_Speedloop_t.Cnt_20kHz>=4)
+			else
 			{
-				Calib_Speedloop();
-				TE_Calib_Speedloop_t.Cnt_20kHz=0;
+				enc_temp[i]=ReadSPIEncoder_Raw();
+				j=0;
+				i++;
 			}
-			
-			SVPWM_Cal(&FOC_Anticogging_Calibration_t);
-			SetPWM(&FOC_Anticogging_Calibration_t);
 		}
 		else
 		{
-			TE_Anticogging_Calibration_t.Cnt_20kHz=0;
+			i=0;
+			j=0;
 			run_flag=1;
 		}
-	}
+	}	
 	
-	/*开始记录电流*/
+	/*数据处理*/
 	else if(run_flag==1)
 	{
-		/*电流环执行频率为10kHz*/
-		if(++TE_Calib_Currentloop_t.Cnt_20kHz>=2)
+		/*找到编码器过零点时刻的采样点*/
+		while(enc_temp[i]<enc_temp[i+1] && i<n-1)
 		{
-			Calib_Currentloop();
-			TE_Calib_Currentloop_t.Cnt_20kHz=0;
+			i++;
 		}
 		
-		/*速度环执行频率为5kHz*/
-		if(++TE_Calib_Speedloop_t.Cnt_20kHz>=4)
+		index=i;
+		
+		/*以零点为分界,编码器值从小到大排序*/
+		for(i=0;i<index+1;i++)
 		{
-			Calib_Speedloop();
-			TE_Calib_Speedloop_t.Cnt_20kHz=0;
+			lut_enc[i-index+n]=enc_temp[i];
+		}
+		for(i=index+1;i<n;i++)
+		{
+			lut_enc[i-index-1]=enc_temp[i];
 		}
 		
-		SVPWM_Cal(&FOC_Anticogging_Calibration_t);
-		SetPWM(&FOC_Anticogging_Calibration_t);
+		/*在最后补一位,后续查表时判断逻辑更加简介*/
+		//lut_enc[256]=lut_enc[0]+32767;
 		
-		if(++TE_Anticogging_Calibration_t.Cnt_20kHz>=200)
-		{
-			enc_val=TLE5012B_t.raw_value/16;
-//			Iph[0]=FOC_Anticogging_Calibration_t.Ia;
-//			Iph[1]=FOC_Anticogging_Calibration_t.Ic;
-//			Iph[2]=FOC_Anticogging_Calibration_t.Ib;
-//			Flash_Anticog_Save(enc_val,Iph);
-			Anticog_1[enc_val]=ADC1->JDR1;
-			Anticog_2[enc_val]=ADC1->JDR2;
-			Anticog_3[enc_val]=ADC1->JDR3;
-			samp_cnt++;
-			TE_Anticogging_Calibration_t.Cnt_20kHz=0;
-		}
-		
-		if(samp_cnt>=2000)
-		{
-			samp_cnt=0;
-			
-			run_flag=0;
-			
-			/*状态跳转*/
-			Calib_State=Calib_Done;
-		}
+		/*重置变量*/
+		i=0;
+		j=0;
+		index=0;
+		run_flag=0;
+		Calib_State=Calib_Done;	
 	}
+}
 
+
+void FOC_Task_Param_Save(void)
+{
+	/*校准参数存储*/
+	Flash_Save();
+	
+	Calib_State=Calib_ADC;
+	FOC_State_t=FOC_Wait;
 }
 
 /**
@@ -628,15 +531,12 @@ void FOC_Task_Calibration(void)
 			FOC_Task_Encoder_Calibration();
 		break;
 		
-		case Calib_Anticogging:
-			FOC_Task_Anticogging_Calibration();
+		case Linearize_Encoder:
+			FOC_Task_Encoder_Linearization();
 		break;
 		
 		case Calib_Done:
-		{	
-			Calib_State=Calib_ADC;
-			FOC_State_t=FOC_Wait;
-		}
+			FOC_Task_Param_Save();
 		break;
 		
 		default:break;

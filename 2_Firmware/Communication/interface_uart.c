@@ -5,26 +5,33 @@ Frame_TypeDef Frame_t=
 	.tail=0x7F800000//结束帧为固定的4个字节
 };
 
+extern float theta_ref;
+extern float theta_actual;
+
 extern FOC_TypeDef	FOC_Encoder_Calibration_t;
 extern FOC_TypeDef FOC_Sensored_t;
-extern Encoder_TypeDef TLE5012B_t;
-extern Encoder_TypeDef ABZ_t;
+extern Motor_TypeDef Motor_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
 extern HFI_TypeDef HFI_t;
 extern FOC_TypeDef FOC_HFI_t;
 extern FOC_TypeDef FOC_Anticogging_Calibration_t;
 extern FOC_TypeDef FOC_Openloop_t;
+extern PID_TypeDef PID_Id;
+extern PID_TypeDef PID_Iq;
+extern PID_TypeDef PID_Speed;
 extern float Motor_Rs;
 
 void Vofa_Upload(void)
-{
-	Frame_t.fdata[0]=(float)TLE5012B_t.raw_value;
-	Frame_t.fdata[1]=(float)TIM1->CCR1;
-	Frame_t.fdata[2]=(float)TIM1->CCR2;
-	Frame_t.fdata[3]=(float)TIM1->CCR3;
-	Frame_t.fdata[4]=(float)ADC1->JDR1;
-	Frame_t.fdata[5]=(float)ADC1->JDR2;
-	Frame_t.fdata[6]=(float)ADC1->JDR3;
-//	Frame_t.fdata[7]=FOC_HFI_t.Iq_l;
+{	
+	Frame_t.fdata[0]=(float)PID_Id.ref_value;
+	Frame_t.fdata[1]=(float)PID_Id.samp_value;
+	Frame_t.fdata[2]=(float)PID_Iq.ref_value;
+	Frame_t.fdata[3]=(float)PID_Iq.samp_value;
+	Frame_t.fdata[4]=(float)PID_Speed.ref_value;
+	Frame_t.fdata[5]=(float)PID_Speed.samp_value;
+	Frame_t.fdata[6]=(float)SPI_Encoder_t.velocity;
+//	Frame_t.fdata[7]=FOC_HFI_t.Iq_l; 
 //	Frame_t.fdata[8]=FOC_HFI_t.Id_h;
 //	Frame_t.fdata[9]=FOC_HFI_t.Id_l;
 //	Frame_t.fdata[10]=0.0f;

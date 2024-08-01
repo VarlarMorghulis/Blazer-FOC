@@ -7,11 +7,15 @@ uint16_t Menu_Cnt;
 uint16_t CanTx_Cnt;
 uint8_t menu_key;
 uint32_t CAN_Rx_timeout;
+uint16_t MT6816_Raw;
 extern uint8_t Z_confirm_flag;
 extern uint8_t CAN_Txflag;
 extern FOC_State FOC_State_t;
+uint16_t SPI_Encoder_Raw;
+
 void BSP1kHzIRQHandler(void)
 {
+
 #ifdef USE_ABZ_ENCODER
 	if(Z_confirm_flag==1&&FOC_State_t!=FOC_Reminder)
 		CAN_SendMessage();
@@ -22,7 +26,7 @@ void BSP1kHzIRQHandler(void)
 	{
 		if(++CanTx_Cnt>=2)
 		{
-			CAN_SendMessage();
+			//CAN_SendMessage();
 			CanTx_Cnt=0;
 		}
 	}	
@@ -59,7 +63,7 @@ void BSP1kHzIRQHandler(void)
 		/*CAN_Rx_timeout每次在CANRxIRQHandler()中清零*/
 		if(++CAN_Rx_timeout>=500)
 		{
-			CAN_LostConnect_Handle();
+			//CAN_LostConnect_Handle();
 		}
 	}
 }
