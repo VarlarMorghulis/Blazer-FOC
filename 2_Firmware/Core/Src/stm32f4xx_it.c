@@ -360,6 +360,14 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	}
 }
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart==&huart1)
+	{		
+		//UARTRxIRQHandler();
+	}
+}
+
 /**
    * @brief  启用ABZ编码器模式时,Z相外部中断函数,校正运行中的误差
    * @param  无

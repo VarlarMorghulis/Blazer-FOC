@@ -110,8 +110,8 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.00175f,
-	.Ki=2.0f,
+	.Kp=0.001f,
+	.Ki=0.5f,
 	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
@@ -119,8 +119,8 @@ PID_TypeDef PID_Id=
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.00175f,
-	.Ki=2.0f,
+	.Kp=0.001f,
+	.Ki=0.5f,
 	.error_sum_max=0.577f,
 	.output_max=0.577f
 };
@@ -150,29 +150,26 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Speed=
 {
 	.ref_value=20.0f,
-	.Kp=0.8f,
-	.Ki=0.0f,
-	.error_sum_max=6.0f,
+	.Kp=1.8f,
+	.Ki=6.0f,
+	.error_sum_max=8.0f,
 	/*速度环输出最大值就是电流环目标最大值*/
-	.output_max=6.0f
+	.output_max=8.0f
 };
 
 PID_TypeDef PID_Position=
 {
-	.ref_value=0.0f,
-	.Kp=3.0f,
-	.output_max=6.28f
+	.ref_value=62.8f,
+	.Kp=6.0f,
+	.output_max=3.14f
 };
 
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
+extern FOC_TypeDef FOC_Sensorless_t;
 extern FOC_TypeDef FOC_HFI_t;
-
-extern uint16_t Anticog_1[2048];
-extern uint16_t Anticog_2[2048];
-extern uint16_t Anticog_3[2048];
 
 /**
    * @brief  电压速度开环
@@ -228,7 +225,7 @@ void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime)
 
 uint16_t enc_index;
 /**
-   * @brief  有感模式电流环函数 10kHz频率
+   * @brief  有感模式电流环函数 20kHz频率
    * @param  无
    * @retval 无
    */
@@ -277,7 +274,7 @@ void Sensored_Currentloop(void)
 }
 
 /**
-   * @brief  有感模式速度环函数 5kHz频率
+   * @brief  有感模式速度环函数 10kHz频率
    * @param  无
    * @retval 无
    */
@@ -291,7 +288,6 @@ void Sensored_Speedloop(void)
 	
 #ifdef USE_SPI_ENCODER
 	Encoder_t=&SPI_Encoder_t;
-;
 #endif
 
 //	if(PID_Speed.ref_value<=314.0f)
@@ -310,9 +306,9 @@ void Sensored_Positionloop(void)
 #endif
 
 #ifdef USE_SPI_ENCODER
-	//PID_Position.samp_value=TLE5012B_GetCalAngle(&TLE5012B_t);
+	PID_Position.samp_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
 #endif
-	//PID_Speed.ref_value=Position_P_Ctrl(&PID_Position);
+	PID_Speed.ref_value=Position_P_Ctrl(&PID_Position);
 }
 
 void FOC_Task_Sensored(void)
@@ -328,7 +324,8 @@ void FOC_Task_Sensored(void)
 	if(++TE_Speedloop_t.Cnt_20kHz>=2)
 	{
 		//Open_Voltageloop(&FOC_Sensored_t,15);
-		Sensored_Speedloop();
+		//Sensored_Speedloop();
+		//Fluxobserver_Process();
 		TE_Speedloop_t.Cnt_20kHz=0;
 	}
 	
@@ -353,14 +350,67 @@ void FOC_Task_Sensored(void)
 	}
 }
 
+/**
+   * @brief  无感模式电流环函数 20kHz频率
+   * @param  无
+   * @retval 无
+   */
+
+void Sensorless_Currentloop(void)
+{
+	ErrorState Current_Ers;
+
+	/*电流采样及处理*/
+	Current_Ers=Current_Cal(&FOC_Sensorless_t,&CurrentOffset_t);
+	/*磁链观测器获取角度*/
+	Fluxobserver_Process();
+	
+	/*电流采样正常*/
+	if(Current_Ers==FOC_OK)
+	{
+		/*Clarke变换*/
+		Clarke_Transform(&FOC_Sensorless_t);
+		
+		/*Park变换*/
+		Park_Transform(&FOC_Sensorless_t);
+		
+		/*PID计算输出*/
+		PID_Id.samp_value=FOC_Sensorless_t.Id;
+		PID_Iq.samp_value=FOC_Sensorless_t.Iq;
+		FOC_Sensorless_t.Ud=Current_PI_Ctrl(&PID_Id);
+		FOC_Sensorless_t.Uq=Current_PI_Ctrl(&PID_Iq);
+		
+		/*反Park变换*/
+		I_Park_Transform(&FOC_Sensorless_t);
+	}
+	else
+	{
+		if(Current_Ers==FOC_FAULT)
+			TE_Currentloop_t.Errstate=FOC_FAULT;	
+	}
+}
+
 void FOC_Task_Sensorless(void)
 {
-	if(++TE_Sensorless_t.Cnt_20kHz>=2)
+	/*电流环执行频率为20kHz*/
+	if(++TE_Currentloop_t.Cnt_20kHz>=1)
 	{
-		HFI_Process();
-		TE_Sensorless_t.Cnt_20kHz=0;
+		Sensorless_Currentloop();
+		TE_Currentloop_t.Cnt_20kHz=0;
 	}
 	
+	/*各闭环都正常才会改变占空比*/
+	if(TE_Currentloop_t.Errstate == FOC_OK &&
+	   TE_Speedloop_t.Errstate   == FOC_OK)
+	{
+		SVPWM_Cal(&FOC_Sensorless_t);
+		SetPWM(&FOC_Sensorless_t);
+		
+	}
+	else
+	{
+		FOC_State_t=FOC_Error;
+	}
 }
 
 void FOC_Task_Openloop(void)

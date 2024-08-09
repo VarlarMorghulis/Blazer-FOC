@@ -6,7 +6,7 @@ enum
 	MT6816
 };
 
-uint8_t SPI_Encoder_Type=MT6816;
+uint8_t SPI_Encoder_Type=TLE5012B;
 
 /*Ö´ÐÐÆµÂÊ20000Hz½ØÖ¹ÆµÂÊ100Hz*/
 IIR_Butterworth_TypeDef Encoder_IIR_LPF_t=
@@ -71,7 +71,7 @@ void Encoder_ParamInit(void)
    */
 uint16_t ReadTLE5012B_Raw(uint16_t Reg)
 {
-	uint16_t ReceiveDat;
+	uint16_t ReceiveDat=0;
 	
 	ENC_CS_ENABLE;
 	HAL_SPI_Transmit(&enc_spi,(uint8_t *)(&Reg),1,0x10);
@@ -91,7 +91,7 @@ uint16_t ReadMT6816_Raw(void)
 	uint16_t sample_data;		
 	uint8_t no_mag_flag;	
 	uint8_t pc_flag;	
-	uint16_t angle;
+	uint16_t angle=0;
 	
 	uint16_t data_t[2];
 	uint16_t data_r[2];

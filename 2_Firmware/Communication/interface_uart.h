@@ -4,7 +4,7 @@
 #include "common_inc.h"
 
 //通道数量
-#define CH_COUNT	7
+#define CH_COUNT	8
 typedef struct
 {
 	float fdata[CH_COUNT];
@@ -12,5 +12,6 @@ typedef struct
 }Frame_TypeDef;
 
 void Vofa_Upload(void);
-
+void UART_ReceiveEnable(void);
+void UARTRxIRQHandler(void);
 #endif

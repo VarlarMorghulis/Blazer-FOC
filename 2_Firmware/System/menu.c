@@ -272,6 +272,7 @@ void Menu_Show(uint8_t key)
 	}
 	else
 	{
+		NoFun();
 		Show_Function(nowMenu->Show, 0, 0);
 		nowMenu = now->last;
 		Show_Function(nowMenu->Show, -65, 0);
@@ -377,7 +378,7 @@ void Draw_Info_font(int8_t x, int8_t y)
 
 void NoFun(void)
 {
-	
+	FOC_State_t=FOC_Wait;
 }
 
 void Calib(void)
@@ -492,8 +493,6 @@ void CAN_ID(void)
 	u8g2_DrawStr(&u8g2,39,50,can_id_str);
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
-	
-
 }
 
 void Current(void)
@@ -506,7 +505,7 @@ void Run(void)
 {
 	char Iq_ref_str[10],Iq_now_str[10];
 	
-	FOC_State_t=FOC_Sensored;
+	FOC_State_t=FOC_Sensorless;
 	
 	u8g2_SetFont(&u8g2,u8g2_font_ncenB10_tf);
 	u8g2_DrawStr(&u8g2,10,20,"Current");

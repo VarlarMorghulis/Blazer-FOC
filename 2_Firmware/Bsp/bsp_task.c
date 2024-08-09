@@ -12,6 +12,7 @@ extern uint8_t Z_confirm_flag;
 extern uint8_t CAN_Txflag;
 extern FOC_State FOC_State_t;
 uint16_t SPI_Encoder_Raw;
+extern PID_TypeDef PID_Speed;
 
 void BSP1kHzIRQHandler(void)
 {

@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=1</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx,ARM_MATH_CM4</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                       ../Drivers/STM32F4xx_HAL_Driver/Inc;                       ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                       ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                       ../Drivers/CMSIS/Include;                       D:\Keil5\ARM\CMSIS\5.4.0\CMSIS\Include;                       ..\U8g2;                       ..\Bsp;                       ..\Foc;                       ..\Communication;                       ..\System</IncludePath>
+              <IncludePath>../Core/Inc;                             ../Drivers/STM32F4xx_HAL_Driver/Inc;                             ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                             ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                             ../Drivers/CMSIS/Include;                             D:\Keil5\ARM\CMSIS\5.4.0\CMSIS\Include;                             ..\U8g2;                             ..\Bsp;                             ..\Foc;                             ..\Communication;                             ..\System</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -724,9 +724,9 @@
               <FilePath>..\Foc\foc_calibration.c</FilePath>
             </File>
             <File>
-              <FileName>foc_hfi.c</FileName>
+              <FileName>foc_sensorless.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Foc\foc_hfi.c</FilePath>
+              <FilePath>..\Foc\foc_sensorless.c</FilePath>
             </File>
             <File>
               <FileName>foc_identification.c</FileName>

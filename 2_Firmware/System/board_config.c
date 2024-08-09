@@ -46,4 +46,6 @@ void Board_Init(void)
 	
 	OLED_Init();
 	Menu_Init();
+	
+	//UART_ReceiveEnable();
 }

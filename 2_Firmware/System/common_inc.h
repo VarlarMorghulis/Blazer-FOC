@@ -31,7 +31,7 @@
 /*Foc*/
 #include "foc_algorithm.h"
 #include "foc_calibration.h"
-#include "foc_hfi.h"
+#include "foc_sensorless.h"
 #include "foc_identification.h"
 #include "foc_param.h"
 #include "foc_pid.h"
