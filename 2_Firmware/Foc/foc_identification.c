@@ -8,10 +8,29 @@ TaskElement_TypeDef TE_Rs_Identification_t=
 	.Errstate=FOC_OK
 };
 
-extern FOC_State FOC_State_t;
+TaskElement_TypeDef TE_Ls_Identification_t=
+{
+	.Init_Flag=0,
+	.Run_Flag=0,
+	.Cnt_20kHz=0,
+	.Errstate=FOC_OK
+};
 
+FOC_TypeDef FOC_Ls_Identification_t=
+{
+	.Udc=1.0f,
+	.Ud=0.0f,
+	.Uq=0.0f,
+	.Tpwm=PWM_TIM_PERIOD,
+};
+
+extern FOC_State FOC_State_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Motor_TypeDef Motor_t;
+extern CurrentOffset_TypeDef CurrentOffset_t;
+extern AnalogParam_TypeDef AnalogParam_t;
 enum {Ident_Rs,Ident_Ls,Ident_Flux};
-uint8_t Ident_State=Ident_Rs;
+uint8_t Ident_State=Ident_Ls;
 
 float Motor_Rs;
 
@@ -36,18 +55,18 @@ void FOC_Task_Rs_Identification(void)
 	U_sum+=(float)ADC1->JDR4*U_gain*duty;
 	I_sum+=((float)(2048-(int16_t)ADC1->JDR1))*I_gain;
 	
-	/*20ms执行一次*/
-	if(++TE_Rs_Identification_t.Cnt_20kHz>=800)
+	/*100ms执行一次*/
+	if(++TE_Rs_Identification_t.Cnt_20kHz>=2000)
 	{
 		TE_Rs_Identification_t.Cnt_20kHz=0;
 		
 		/*均值滤波*/
-		Uav=U_sum/800.0f;
-		Iav=I_sum/800.0f;
+		Uav=U_sum/2000.0f;
+		Iav=I_sum/2000.0f;
 		U_sum=0.0f;
 		I_sum=0.0f;
 		
-		if(Iav<20.0f)
+		if(Iav<15.0f)
 		{
 			duty+=0.001f;
 			TIM1->CCR1=(uint16_t)(4200.0f*duty);
@@ -60,7 +79,7 @@ void FOC_Task_Rs_Identification(void)
 			TIM1->CCR1=4200;
 			TIM1->CCR2=4200;
 			TIM1->CCR3=4200;
-			Motor_Rs=Uav/Iav*2.0f/3.0f;
+			Motor_Rs=Uav/Iav*2.0f/3.0f-0.018f;
 			/*状态跳转*/
 			FOC_State_t=FOC_Wait;
 		}
@@ -76,9 +95,17 @@ void FOC_Task_Rs_Identification(void)
 			FOC_State_t=FOC_Error;
 		}
 	}
-
-		
 }
+
+float Motor_Ls;
+float sin_func[20]=
+{0.0f, 0.309017f, 0.587785f, 0.809017f, 0.951057f, 1.0f, 0.951057f, 0.809017f, 0.587785f, 0.309017f,
+ 0.0f,-0.309017f,-0.587785f,-0.809017f,-0.951057f,-1.0f,-0.951057f,-0.809017f,-0.587785f,-0.309017f};
+ 
+float Iq_Array[128]={0};
+float FFTInput_Array[256]={0};
+float FFTOutput_Array[64]={0};
+float Iq_Amplitude[2]={0};
 
 /**
    * @brief  相电感辨识任务
@@ -87,7 +114,97 @@ void FOC_Task_Rs_Identification(void)
    */
 void FOC_Task_Ls_Identification(void)
 {
+	ErrorState Encoder_Ers,Current_Ers;
+	static uint16_t i,j,k,l,m;
+	static uint8_t step=0;
 	
+	float Upeak,Ipeak;
+	
+	Upeak=0.1f*AnalogParam_t.vbus;
+	/*注入1kHz的Uq正弦波*/
+	FOC_Ls_Identification_t.Uq=0.1f * sin_func[i];
+	i++;
+	if(i>=20)
+		i=0;
+	
+		/*电流采样及处理*/
+		Current_Ers=Current_Cal(&FOC_Ls_Identification_t,&CurrentOffset_t);
+		/*Clarke变换*/
+		Clarke_Transform(&FOC_Ls_Identification_t);
+		/*Park变换*/
+		Park_Transform(&FOC_Ls_Identification_t);
+	
+	/*获取编码器角度*/
+	Encoder_Ers=Encoder_Cal(&FOC_Ls_Identification_t,&SPI_Encoder_t,Motor_t.Pole_Pairs);
+	/*反Park变换*/
+	I_Park_Transform(&FOC_Ls_Identification_t);
+	/*SVPWM计算*/
+	SVPWM_Cal(&FOC_Ls_Identification_t);
+	/*占空比设置*/
+	SetPWM(&FOC_Ls_Identification_t);
+	
+	/*等待一段时间,直到电压和电流都达到稳态*/
+	if(step==0)
+	{
+		if(++TE_Ls_Identification_t.Cnt_20kHz>=40000)
+		{
+			step=1;
+			TE_Ls_Identification_t.Cnt_20kHz=0;
+		}	
+	}
+	/*Iq电流采样*/
+	else if(step==1)
+	{
+
+		
+		Iq_Array[j]=FOC_Ls_Identification_t.Iq;
+		
+		if(++j>=128)
+		{
+			step=2;
+			j=0;
+		}
+
+	}
+	/*数据处理*/
+	else if(step==2)
+	{
+		for(k=0;k<128;k++)
+		{
+			/*实部赋值*/
+			FFTInput_Array[2*k]=Iq_Array[k];
+			/*虚部赋值*/
+			FFTInput_Array[2*k+1]=0.0f;
+		}
+		/*傅里叶变换*/
+		arm_cfft_f32(&arm_cfft_sR_f32_len128,FFTInput_Array,0,1);
+		/*从0-20000Hz等间距提取128个点的幅值*/
+		arm_cmplx_mag_f32(FFTInput_Array,FFTOutput_Array,128);
+		for(l=0;l<64;l++)
+			FFTOutput_Array[l]/=64.0f;
+		/*筛选出最大的幅值*/
+		for(l=0;l<10;l++)
+		{
+			Iq_Amplitude[0]=FFTOutput_Array[1+l];
+			if(Iq_Amplitude[1]<Iq_Amplitude[0])
+				Iq_Amplitude[1]=Iq_Amplitude[0];
+		}
+		Ipeak=Iq_Amplitude[1];
+		Motor_Ls=Upeak/Ipeak/(_2PI*1000.0f);
+		step=3;
+	}
+	else if(step==3)
+	{
+		/*重置变量*/
+		step=0;
+		i=0;
+		j=0;
+		k=0;
+		l=0;
+		m=0;
+		/*状态跳转*/
+		FOC_State_t=FOC_Wait;
+	}
 }
 
 /**
@@ -117,10 +234,8 @@ void FOC_Task_Identification(void)
 			FOC_Task_Ls_Identification();
 		break;
 			
-		case Ident_Flux:
-		{	
+		case Ident_Flux:	
 			FOC_Task_Flux_Identification();
-		}
 		break;
 		
 		default:break;

@@ -138,7 +138,7 @@ void FOC_Task_Encoder_Calibration(void)
 {
 	static int16_t i=0;
 	/*0电角度自增强拖 1电角度自减强拖 2电角度置0 3开环旋转寻找Z相*/
-	static uint8_t run_flag;
+	static uint8_t step;
 	static float mid_angle,end_angle;
 	
 	/*2ms执行一次*/
@@ -147,7 +147,7 @@ void FOC_Task_Encoder_Calibration(void)
 	if(TE_Encoder_Calibration_t.Cnt_20kHz>=40)
 	{
 		/*自增强拖*/
-		if(run_flag==0)
+		if(step==0)
 		{
 			if(i<=1000)
 			{
@@ -169,12 +169,12 @@ void FOC_Task_Encoder_Calibration(void)
 				ABZ_Update(&ABZ_Enc_t);
 				mid_angle=ABZ_GetCalAngle(&ABZ_Enc_t);
 				i=1000;
-				run_flag=1;
+				step=1;
 			}
 		}
 		
 		/*自减强拖*/
-		else if(run_flag==1)
+		else if(step==1)
 		{
 			if(i>=0)
 			{
@@ -220,12 +220,12 @@ void FOC_Task_Encoder_Calibration(void)
 				}
 				
 				i=0;
-				run_flag=2;
+				step=2;
 			}
 		}
 		
 		/*清空定时器计数值,电角度置0*/
-		else if(run_flag==2)
+		else if(step==2)
 		{
 			ABZ_TIM->CNT=0;
 			
@@ -235,11 +235,11 @@ void FOC_Task_Encoder_Calibration(void)
 			ABZ_Enc_t.loop=0;
 			
 			i=0;
-			run_flag=3;
+			step=3;
 		}
 		
 		/*开环旋转直到检测到Z相脉冲*/
-		else if(run_flag==3)
+		else if(step==3)
 		{
 			Z_use_flag=1;
 			/*暂时还没检测到Z相脉冲*/
@@ -268,7 +268,7 @@ void FOC_Task_Encoder_Calibration(void)
 				ABZ_Enc_t.zero_enc_offset=ABZ_TIM->CNT;
 				
 				i=0;
-				run_flag=0;
+				step=0;
 				Z_use_flag=0;
 				Z_detect_flag=0;
 				
@@ -290,7 +290,7 @@ void FOC_Task_Encoder_Calibration(void)
 void FOC_Task_Encoder_Calibration(void)
 {
 	static int i=0;
-	static uint8_t run_flag;/*0电角度自增强拖 1电角度自减强拖 2记录编码器零偏*/
+	static uint8_t step;/*0电角度自增强拖 1电角度自减强拖 2记录编码器零偏*/
 	static float mid_angle,end_angle;
 	static uint32_t zero_enc_sum;
 	
@@ -300,7 +300,7 @@ void FOC_Task_Encoder_Calibration(void)
 	if(TE_Encoder_Calibration_t.Cnt_20kHz>=80)
 	{
 		/*自增强拖*/
-		if(run_flag==0)
+		if(step==0)
 		{
 			if(i<=2000)
 			{
@@ -324,12 +324,12 @@ void FOC_Task_Encoder_Calibration(void)
 			{
 				mid_angle/=200.0f;
 				i=2000;
-				run_flag=1;
+				step=1;
 			}
 		}
 		
 		/*自减强拖*/
-		else if(run_flag==1)
+		else if(step==1)
 		{
 			if(i>=0)
 			{
@@ -377,12 +377,12 @@ void FOC_Task_Encoder_Calibration(void)
 				}
 				
 				i=0;
-				run_flag=2;
+				step=2;
 			}
 		}
 		
 		/*记录编码器零偏*/
-		else if(run_flag==2)
+		else if(step==2)
 		{
 			if(i<100)
 			{
@@ -403,7 +403,7 @@ void FOC_Task_Encoder_Calibration(void)
 				SPI_Encoder_t.loop=0;
 				
 				i=0;
-				run_flag=0;	
+				step=0;	
 				/*状态跳转*/
 				//Calib_State=Linearize_Encoder;
 				Calib_State=Calib_Done;
@@ -437,10 +437,10 @@ void FOC_Task_Encoder_Linearization(void)
 	static int j=0;
 	static int index=0;
 	
-	static uint8_t run_flag=0;
+	static uint8_t step=0;
 	
 	/*强拖一圈*/
-	if(run_flag==0)
+	if(step==0)
 	{
 		/*一圈内等间距地采集256个点的编码器值*/
 		if(i<n)
@@ -467,12 +467,12 @@ void FOC_Task_Encoder_Linearization(void)
 		{
 			i=0;
 			j=0;
-			run_flag=1;
+			step=1;
 		}
 	}	
 	
 	/*数据处理*/
-	else if(run_flag==1)
+	else if(step==1)
 	{
 		/*找到编码器过零点时刻的采样点*/
 		while(enc_temp[i]<enc_temp[i+1] && i<n-1)
@@ -499,7 +499,7 @@ void FOC_Task_Encoder_Linearization(void)
 		i=0;
 		j=0;
 		index=0;
-		run_flag=0;
+		step=0;
 		Calib_State=Calib_Done;	
 	}
 }

@@ -206,28 +206,6 @@ void HFI_Process(void)
 	SetPWM(&FOC_HFI_t);
 }
 
-float utils_fast_atan2(float y, float x) 
-{
-    float abs_y = fabsf(y) + 1e-20f; // kludge to prevent 0/0 condition
-    float angle;
-
-    if (x >= 0) {
-        float r = (x - abs_y) / (x + abs_y);
-        float rsq = r * r;
-        angle = ((0.1963f * rsq) - 0.9817f) * r + (_PI / 4.0f);
-    } else {
-        float r = (x + abs_y) / (abs_y - x);
-        float rsq = r * r;
-        angle = ((0.1963f * rsq) - 0.9817f) * r + (3.0f * _PI / 4.0f);
-    }
-
-    if (y < 0) {
-        return(-angle);
-    } else {
-        return(angle);
-    }
-}
-
 /**
    * @brief  非线性磁链观测器
    * @param  无
@@ -261,7 +239,17 @@ void Fluxobserver_Process(void)
 	Fluxobserver_t.sin = (Fluxobserver_t.x2 - Ls * Fluxobserver_t.Ibeta ) / Flux;
 	
 	/*反正切提取角度*/
-	Fluxobserver_t.theta=utils_fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos);
+	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos);
+	
+	if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp >4.5f)
+		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp - _2PI)*20000.0f;
+	else if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp <-4.5f)
+		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp + _2PI)*20000.0f;
+	else
+		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp)*20000.0f;
+	
+	Fluxobserver_t.theta_temp = Fluxobserver_t.theta_e;
+	
 	/*将角度归一化至0-2pi*/
-	FOC_Sensorless_t.theta_el=_normalizeAngle(Fluxobserver_t.theta);
+	FOC_Sensorless_t.theta_el=_normalizeAngle(Fluxobserver_t.theta_e);
 }

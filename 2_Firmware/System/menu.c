@@ -383,26 +383,26 @@ void NoFun(void)
 
 void Calib(void)
 {
-	static uint8_t run_flag=0;
+	static uint8_t step=0;
 	
-	if(run_flag==0)
+	if(step==0)
 	{
 		FOC_State_t=FOC_Wait;
 	}
 	if(key1_event==KE_ShortPress)
 	{
 		FOC_State_t=FOC_Calibration;
-		run_flag=1;
+		step=1;
 	}
-	else if(run_flag==1)
+	else if(step==1)
 	{
 		if(FOC_State_t==FOC_Wait)
-			run_flag=2;
+			step=2;
 		else if(FOC_State_t==FOC_Error)
-			run_flag=3;
+			step=3;
 	}
 
-	if(run_flag==0)
+	if(step==0)
 	{
 		u8g2_DrawStr(&u8g2,0,20,"Please set the");
 		u8g2_DrawStr(&u8g2,0,40,"motor free be-");
@@ -410,27 +410,27 @@ void Calib(void)
 		u8g2_DrawTriangle(&u8g2,120,15,115,10,115,20);
 		
 	}
-	else if(run_flag==1)
+	else if(step==1)
 	{
 		u8g2_SetFont(&u8g2,u8g2_font_6x12_mf);
 		u8g2_DrawStr(&u8g2,20,40,"Calibrating...");
 		u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
 	}
-	else if(run_flag==2)
+	else if(step==2)
 	{
 		u8g2_SetFont(&u8g2,u8g2_font_6x12_mf);
 		u8g2_DrawStr(&u8g2,40,40,"Succeed!");
 		u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
 		u8g2_DrawTriangle(&u8g2,110,70,105,65,105,75);
 		u8g2_DrawTriangle(&u8g2,120,70,115,65,115,75);
-		run_flag=0;
+		step=0;
 	}
-	else if(run_flag==3)
+	else if(step==3)
 	{
 		u8g2_SetFont(&u8g2,u8g2_font_6x12_mf);
 		u8g2_DrawStr(&u8g2,40,40,"Failed!");
 		u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
-		run_flag=0;
+		step=0;
 	}
 }
 
@@ -442,20 +442,20 @@ void Setting(void)
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
 void CAN_ID(void)
 {
-	static uint8_t run_flag=0;
+	static uint8_t step=0;
 	char can_id_str[10];
 
-	if(run_flag==0)
+	if(step==0)
 	{
 		u8g2_ClearBuffer(&u8g2);
 		/*长按进入ID配置*/
 		if(key1_event==KE_LongPress)
 		{
 			key1_event=KE_Dummy;
-			run_flag=1;
+			step=1;
 		}
 	}
-	if(run_flag==1)
+	if(step==1)
 	{
 		/*ID增加*/
 		if(key1_event==KE_ShortPress)
@@ -476,12 +476,12 @@ void CAN_ID(void)
 		if(key1_event==KE_LongPress)
 		{
 			Flash_CAN_ID_Save();
-			run_flag=0;
+			step=0;
 		}
 	}
 
 	/*只有在ID配置时有小箭头标识*/
-	if(run_flag==1)
+	if(step==1)
 	{
 		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
 		u8g2_DrawTriangle(&u8g2,25,40,31,32,31,48);
@@ -504,8 +504,12 @@ extern PID_TypeDef PID_Iq;
 void Run(void)
 {
 	char Iq_ref_str[10],Iq_now_str[10];
-	
-	FOC_State_t=FOC_Sensorless;
+	static uint8_t step;
+	if(step==0)
+	{
+		FOC_State_t=FOC_Sensorless;
+		step=1;
+	}
 	
 	u8g2_SetFont(&u8g2,u8g2_font_ncenB10_tf);
 	u8g2_DrawStr(&u8g2,10,20,"Current");

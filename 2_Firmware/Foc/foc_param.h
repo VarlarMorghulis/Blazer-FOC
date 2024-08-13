@@ -12,7 +12,7 @@
 
 //#define Motor_8318
 //#define Motor_5065
-#define Motor_Wade
+#define Motor_Tmotor_U7
 //#define Motor_Tmotor_U10
 //#define Motor_LD2808
 typedef enum

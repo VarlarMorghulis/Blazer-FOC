@@ -16,6 +16,7 @@ extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
 extern HFI_TypeDef HFI_t;
 extern FOC_TypeDef FOC_HFI_t;
+extern FOC_TypeDef FOC_Ls_Identification_t;
 extern FOC_TypeDef FOC_Anticogging_Calibration_t;
 extern FOC_TypeDef FOC_Openloop_t;
 extern PID_TypeDef PID_Id;
@@ -23,7 +24,9 @@ extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
 extern float Motor_Rs;
 extern Fluxobserver_TypeDef Fluxobserver_t;
-
+uint16_t indent_i;
+extern float Iq_Array[128];
+extern float sin_func[20];
 void Vofa_Upload(void)
 {	
 //	Frame_t.fdata[0]=(float)PID_Id.ref_value;
@@ -38,14 +41,22 @@ void Vofa_Upload(void)
 //	Frame_t.fdata[9]=(float)FOC_Sensored_t.Ic;
 //	Frame_t.fdata[10]=0.0f;
 	
-	Frame_t.fdata[0]=(float)Fluxobserver_t.Ialpha;
-	Frame_t.fdata[1]=(float)Fluxobserver_t.Ibeta;
-	Frame_t.fdata[2]=(float)Fluxobserver_t.Ualpha;
-	Frame_t.fdata[3]=(float)Fluxobserver_t.Ubeta;
-	Frame_t.fdata[4]=(float)Fluxobserver_t.cos;
-	Frame_t.fdata[5]=(float)Fluxobserver_t.sin;
-	Frame_t.fdata[6]=(float)FOC_Sensorless_t.theta_el;
-	Frame_t.fdata[7]=(float)FOC_Sensored_t.theta_el;
+//	Frame_t.fdata[0]=(float)Fluxobserver_t.Ialpha;
+//	Frame_t.fdata[1]=(float)Fluxobserver_t.Ibeta;
+//	Frame_t.fdata[2]=(float)Fluxobserver_t.Ualpha;
+//	Frame_t.fdata[3]=(float)Fluxobserver_t.Ubeta;
+//	Frame_t.fdata[4]=(float)Fluxobserver_t.cos;
+//	Frame_t.fdata[5]=(float)Fluxobserver_t.sin;
+//	Frame_t.fdata[6]=(float)FOC_Sensorless_t.theta_el;
+//	Frame_t.fdata[7]=(float)FOC_Sensored_t.theta_el;
+	
+	Frame_t.fdata[0]=FOC_Ls_Identification_t.Iq;
+	Frame_t.fdata[1]=FOC_Ls_Identification_t.Uq;
+	//Frame_t.fdata[1]=sin_func[indent_i];
+	//Frame_t.fdata[1]=arm_sin_f32(_2PI/20.0f*indent_i);
+//	indent_i++;
+//	if(indent_i>=20)
+//		indent_i=0;
 	/*高频注入变量查看*/
 //	Frame_t.fdata[0]=HFI_t.inj_volt;
 //	Frame_t.fdata[1]=FOC_HFI_t.Ia;

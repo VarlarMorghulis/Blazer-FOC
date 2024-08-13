@@ -42,10 +42,10 @@ void Motor_Beep_PlayNote(uint16_t tone,uint16_t duration)
 void FOC_Task_Reminder(void)
 {
 	static uint16_t note_index;
-	static uint8_t run_flag;
+	static uint8_t step;
 	
 	/*上电后等待一段时间*/
-	if(run_flag==0)
+	if(step==0)
 	{
 		if(TE_Reminder_t.Cnt_20kHz<=40000)
 		{
@@ -54,12 +54,12 @@ void FOC_Task_Reminder(void)
 		else 
 		{
 			TE_Reminder_t.Cnt_20kHz=0;
-			run_flag=1;
+			step=1;
 		}
 	}
 	
 	/*开始播放提示音*/
-	else if(run_flag==1)
+	else if(step==1)
 	{
 		/*依次播放各个音符*/
 		if(note_index<sizeof(Note_t)/sizeof(Note_TypeDef))
@@ -82,7 +82,7 @@ void FOC_Task_Reminder(void)
 
 		else 
 		{
-			run_flag=2;
+			step=2;
 			note_index=0;
 			TE_Reminder_t.Cnt_20kHz=0;
 			__HAL_TIM_SET_PRESCALER(&htim1,T_NONE);
@@ -90,7 +90,7 @@ void FOC_Task_Reminder(void)
 		}
 	}
 	/*播放完成后等待一段时间*/
-	else if(run_flag==2)
+	else if(step==2)
 	{
 		/*等待1s*/
 		if(TE_Reminder_t.Cnt_20kHz<=20000)
@@ -99,7 +99,7 @@ void FOC_Task_Reminder(void)
 		}
 		else 
 		{
-			run_flag=0;
+			step=0;
 			TE_Reminder_t.Cnt_20kHz=0;
 			FOC_State_t=FOC_Wait;
 		}

@@ -4,10 +4,10 @@
 #include "foc_utils.h"
 
 /*电流环周期*/
-#define CURRENT_PID_PERIOD	0.00005f
+#define Current_Ts	0.00005f
 
 /*速度环周期*/
-#define SPEED_PID_PERIOD	0.0001f
+#define Speed_Ts	0.0001f
 
 typedef struct
 {
@@ -17,8 +17,8 @@ typedef struct
 	float Kp,Ki,Kd;
 	/*当前误差 上一次误差 累加误差*/
 	float error,error_last,error_sum;
-	/*累加误差允许的最大值 输出量允许的最大值 (绝对值)*/
-	float error_sum_max,output_max;
+	/*输出量允许的最大值 (绝对值)*/
+	float output_max;
 	/*输出量*/
 	float output;
 }PID_TypeDef;

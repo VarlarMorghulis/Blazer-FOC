@@ -89,7 +89,7 @@ uint16_t ReadTLE5012B_Raw(uint16_t Reg)
 uint16_t ReadMT6816_Raw(void)
 {
 	uint16_t sample_data;		
-	uint8_t no_mag_flag;	
+	//uint8_t no_mag_flag;	
 	uint8_t pc_flag;	
 	uint16_t angle=0;
 	
@@ -128,7 +128,7 @@ uint16_t ReadMT6816_Raw(void)
 	if(pc_flag)
 	{
 		angle = sample_data >> 2;
-		no_mag_flag = (uint8_t)(sample_data & (0x0001 << 1));
+		//no_mag_flag = (uint8_t)(sample_data & (0x0001 << 1));
 	}
 
 	return angle;

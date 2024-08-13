@@ -65,7 +65,7 @@ void Vbus_Update(void)
 	}
 	
 	/*Ç·Ñ¹¹ýÑ¹±£»¤*/
-	if(AnalogParam_t.vbus<=10.0f||AnalogParam_t.vbus>=27.0f)
+	if(AnalogParam_t.vbus<=10.0f||AnalogParam_t.vbus>=27.0f||FOC_State_t!=FOC_Reminder)
 	{
 		//FOC_State_t=FOC_Wait;
 	}

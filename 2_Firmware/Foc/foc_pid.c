@@ -1,5 +1,6 @@
 #include "foc_pid.h"
 
+float dead_current=0.2f;
 /**
    * @brief  电流环 使用PI控制 位置式
    * @param  PID结构体地址
@@ -7,14 +8,16 @@
    */
 float Current_PI_Ctrl(PID_TypeDef *PID)
 {
-	PID->error=PID->ref_value-PID->samp_value;
+	PID->error=PID->ref_value - PID->samp_value;
 	
-	PID->error_sum+=PID->error*PID->Ki*CURRENT_PID_PERIOD;
+	if(PID->error < dead_current && PID->error > -PID->error)
+		PID->error=0.0f;
 	
-	PID->error_sum=_constrain(PID->error_sum,-PID->error_sum_max,PID->error_sum_max);
+	PID->error_sum += PID->error*PID->Ki * Current_Ts;
 	
-	PID->output=PID->Kp*PID->error+
-				PID->error_sum;
+	PID->error_sum=_constrain(PID->error_sum,-PID->output_max,PID->output_max);
+	
+	PID->output=PID->Kp * PID->error + PID->error_sum;
 	
 	PID->output=_constrain(PID->output,-PID->output_max,PID->output_max);
 	
@@ -28,30 +31,19 @@ float Current_PI_Ctrl(PID_TypeDef *PID)
    */
 float Speed_PI_Ctrl(PID_TypeDef *PID)
 {
-	PID->error=PID->ref_value-PID->samp_value;
+	PID->error=PID->ref_value - PID->samp_value;
 	
-	PID->error_sum+=PID->error*PID->Ki*SPEED_PID_PERIOD;
+	PID->error_sum += PID->error * PID->Ki* Speed_Ts;
 	
-	PID->error_sum=_constrain(PID->error_sum,-PID->error_sum_max,PID->error_sum_max);
+	PID->error_sum=_constrain(PID->error_sum,-PID->output_max,PID->output_max);
 	
-	if(PID->error > 0.5f*PID->ref_value || PID->error < -0.5f*PID->ref_value)
+	if(PID->error > 0.5f * PID->ref_value || PID->error < -0.5f * PID->ref_value)
 		PID->error_sum=0.0f;
-
-	PID->output=PID->Kp*PID->error+
-				PID->error_sum;
+	
+	PID->output=PID->Kp * PID->error + PID->error_sum;
 	
 	PID->output=_constrain(PID->output,-PID->output_max,PID->output_max);
-
-//	PID->error=PID->ref_value-PID->samp_value;
-//	
-//	PID->u=PID->error_sum + PID->Kp * PID->error;
-//	
-//	PID->output=_constrain(PID->u,-PID->output_max,PID->output_max);
-
-//	PID->exc=PID->u -PID->output;
-//	
-//	PID->error_sum +=(PID->Ki * PID->error - PID->Kc * PID->exc)*SPEED_PID_PERIOD;
-
+	
 	return PID->output;
 }
 

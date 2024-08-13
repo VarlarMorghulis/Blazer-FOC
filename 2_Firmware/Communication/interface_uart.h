@@ -4,7 +4,7 @@
 #include "common_inc.h"
 
 //通道数量
-#define CH_COUNT	8
+#define CH_COUNT	2
 typedef struct
 {
 	float fdata[CH_COUNT];

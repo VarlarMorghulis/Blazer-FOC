@@ -44,7 +44,9 @@ typedef struct
 	float phi_err;
 	float x1_last,x2_last;
 	float x1,x2;
-	float theta;
+	float theta_e,omega_e;
+	float theta_m,omega_m;
+	float theta_temp;
 }Fluxobserver_TypeDef;
 
 typedef struct

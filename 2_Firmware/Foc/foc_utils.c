@@ -1,6 +1,5 @@
 #include "foc_utils.h"
 
-//
 /**
    * @brief  角度归一化函数,使输出角度在0-2PI范围内
    * @param  angle 原始角度
@@ -15,24 +14,6 @@ float _normalizeAngle(float angle)
 	a=angle-a_int*_2PI;
 	
 	return a>=0?a:(a+_2PI);
-}
-
-/**
-   * @brief  一阶互补滤波函数
-   * @param  ka(0-1)滤波系数,Ka越小,滤波效果越强,相位迟滞越大
-			 *sample 当前滤波数据指针 *sample_last 上一次滤波数据指针 
-   * @retval 滤波后的数据
-   */
-float LowPassFilter_Handle(float ka,float *sample,float *sample_last)
-{
-	float output;
-	
-	*sample=ka*(*sample)+(1-ka)*(*sample_last);
-	*sample_last=*sample;
-	
-	output=*sample;
-	
-	return output;
 }
 
 /**
@@ -54,6 +35,55 @@ float IIR_Butterworth_Handle(float input,IIR_Butterworth_TypeDef * IIR_Butterwor
 	
 	IIR_Butterworth_t->state_n_2=IIR_Butterworth_t->state_n_1;
 	IIR_Butterworth_t->state_n_1=IIR_Butterworth_t->state_n;
+	
+	return output;
+}
+
+float fast_abs(float x)
+{
+	return x >=0 ? x : -x;
+}
+/**
+   * @brief  快速反正切函数
+   * @param  y x
+   * @retval angle 角度值(弧度制)
+   */
+float fast_atan2(float y, float x) 
+{
+    float abs_y = fast_abs(y) + 1e-20f; // kludge to prevent 0/0 condition
+    float angle;
+
+    if (x >= 0) {
+        float r = (x - abs_y) / (x + abs_y);
+        float rsq = r * r;
+        angle = ((0.1963f * rsq) - 0.9817f) * r + (_PI / 4.0f);
+    } else {
+        float r = (x + abs_y) / (abs_y - x);
+        float rsq = r * r;
+        angle = ((0.1963f * rsq) - 0.9817f) * r + (3.0f * _PI / 4.0f);
+    }
+
+    if (y < 0) {
+        return(-angle);
+    } else {
+        return(angle);
+    }
+}
+
+/**
+   * @brief  一阶互补滤波函数
+   * @param  ka(0-1)滤波系数,Ka越小,滤波效果越强,相位迟滞越大
+			 *sample 当前滤波数据指针 *sample_last 上一次滤波数据指针 
+   * @retval 滤波后的数据
+   */
+float LowPassFilter_Handle(float ka,float *sample,float *sample_last)
+{
+	float output;
+	
+	*sample=ka*(*sample)+(1-ka)*(*sample_last);
+	*sample_last=*sample;
+	
+	output=*sample;
 	
 	return output;
 }

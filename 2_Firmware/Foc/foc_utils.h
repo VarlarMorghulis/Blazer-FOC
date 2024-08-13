@@ -19,6 +19,8 @@ typedef struct
 }IIR_Butterworth_TypeDef;
 
 float _normalizeAngle(float angle);
+float fast_abs(float x);
+float fast_atan2(float y, float x);
 float LowPassFilter_Handle(float Ka,float *Sample,float *Sample_last);
 float IIR_Butterworth_Handle(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t);
 

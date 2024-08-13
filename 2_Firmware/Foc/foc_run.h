@@ -20,10 +20,15 @@ typedef struct
 #include "common_inc.h"
 
 void Open_Voltageloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs);
+void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime);
+void FOC_Task_Openloop(void);
+
 void Sensored_Currentloop(void);
 void Sensored_Speedloop(void);
-void FOC_Sensored_Positionloop(void);
+void Sensored_Positionloop(void);
 void FOC_Task_Sensored(void);
+
+void Sensorless_Currentloop(void);
 void FOC_Task_Sensorless(void);
-void FOC_Task_Openloop(void);
+
 #endif

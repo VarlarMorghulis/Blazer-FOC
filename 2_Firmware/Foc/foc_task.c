@@ -9,62 +9,47 @@ FOC_State FOC_State_t=FOC_Reminder;
    */
 void FOC20kHzIRQHandler(void)
 {
+	//Vofa_Upload();
 	switch(FOC_State_t)
 	{
 		/*上电蜂鸣提示*/
 		case FOC_Reminder:
-		{
 			FOC_Task_Reminder();
-		}
 		break;
 		
 		/*校准任务*/
 		case FOC_Calibration:
-		{
 			FOC_Task_Calibration();
-		}
 		break;
 		
 		/*辨识任务*/
 		case FOC_Identification:
-		{
 			FOC_Task_Identification();
-		}
 		break;
 		
 		/*有感模式*/		
 		case FOC_Sensored:
-		{
 			FOC_Task_Sensored();
-		}
 		break;
 		
 		/*无感模式*/
 		case FOC_Sensorless:
-		{
 			FOC_Task_Sensorless();
-		}
 		break;
 		
 		/*开环模式*/
 		case FOC_Openloop:
-		{
 			FOC_Task_Openloop();
-		}
 		break;
 		
 		/*闲置状态*/
 		case FOC_Wait:
-		{
 			Motor_Release();
-		}
 		break;
 		
 		/*错误状态*/
 		case FOC_Error:
-		{
 			Motor_Release();
-		}
 		
 		default:break;
 	}
