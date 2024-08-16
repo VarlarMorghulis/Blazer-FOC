@@ -9,7 +9,6 @@ FOC_State FOC_State_t=FOC_Reminder;
    */
 void FOC20kHzIRQHandler(void)
 {
-	//Vofa_Upload();
 	switch(FOC_State_t)
 	{
 		/*上电蜂鸣提示*/
@@ -45,12 +44,13 @@ void FOC20kHzIRQHandler(void)
 		/*闲置状态*/
 		case FOC_Wait:
 			Motor_Release();
+			FOC_StructUnbind();
 		break;
 		
 		/*错误状态*/
 		case FOC_Error:
 			Motor_Release();
-		
+			FOC_StructUnbind();
 		default:break;
 	}
 	

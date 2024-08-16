@@ -296,7 +296,7 @@ void Menu_Show(uint8_t key)
 extern Encoder_TypeDef ABZ_Enc_t;
 void Draw_Main_font(int8_t x, int8_t y)
 {
-	char ID_str[10],Vbus_str[10],Resolution_str[10];
+	char ID_str[10],Vbus_str[10];
 	
 	u8g2_ClearBuffer(&u8g2);
 	
@@ -507,7 +507,7 @@ void Run(void)
 	static uint8_t step;
 	if(step==0)
 	{
-		FOC_State_t=FOC_Sensorless;
+		FOC_State_t=FOC_Sensored;
 		step=1;
 	}
 	

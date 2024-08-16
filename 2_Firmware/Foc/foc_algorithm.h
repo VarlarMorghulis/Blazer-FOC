@@ -29,7 +29,7 @@ typedef struct
 	/*电角度过渡变量*/
 	float theta_temp;
 	/*电角度*/
-	float theta_el;
+	float theta_e;
 	float Tcmp1,Tcmp2,Tcmp3,Tpwm;
 	/*扇区*/
 	uint8_t sector;

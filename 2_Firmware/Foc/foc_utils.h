@@ -7,8 +7,7 @@
 #define _2PI 	6.2831853072f
 #define _3PI_2 	4.7123889804f
 
-/*ÏÞ·ùº¯Êý*/
-#define _constrain(amt,low,high) ((amt<low)?(low):((amt>high)?high:amt))
+#define _SQRT_3	1.732050807f
 
 typedef struct
 {
@@ -18,6 +17,7 @@ typedef struct
 	float gain0,gain1;
 }IIR_Butterworth_TypeDef;
 
+float _constrain(float amt,float low,float high);
 float _normalizeAngle(float angle);
 float fast_abs(float x);
 float fast_atan2(float y, float x);

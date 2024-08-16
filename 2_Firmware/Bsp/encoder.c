@@ -188,7 +188,7 @@ void SPI_Encoder_Update(Encoder_TypeDef *SPI_Encoder_t)
 	}
 
 	/*角度差x编码器更新频率算出速度*/
-	SPI_Encoder_t->velocity=SPI_Encoder_t->sensor_dir * SPI_Encoder_t->d_angle * 20000.0f;
+	SPI_Encoder_t->velocity = SPI_Encoder_t->sensor_dir * SPI_Encoder_t->d_angle * 20000.0f;
 	
 	/*二阶巴特沃斯低通滤波*/
 	SPI_Encoder_t->velocity=IIR_Butterworth_Handle(SPI_Encoder_t->velocity,&Encoder_IIR_LPF_t);
@@ -250,7 +250,7 @@ void ABZ_Update(Encoder_TypeDef *ABZ_Enc_t)
 	}
 
 	/*角度差x编码器更新频率算出速度*/
-	ABZ_Enc_t->velocity=ABZ_Enc_t->sensor_dir * ABZ_Enc_t->d_angle * 10000.0f;
+	ABZ_Enc_t->velocity = ABZ_Enc_t->sensor_dir * ABZ_Enc_t->d_angle * 20000.0f;
 	
 	/*二阶巴特沃斯低通滤波*/
 	ABZ_Enc_t->velocity=IIR_Butterworth_Handle(ABZ_Enc_t->velocity,&Encoder_IIR_LPF_t);
@@ -286,7 +286,7 @@ void ENC_Z_EXTIIRQHandler(void)
 
 ErrorState Encoder_Cal(FOC_TypeDef *FOC_t,Encoder_TypeDef *Encoder_t,uint8_t Pole_Pairs)
 {
-	float angle_el;
+	float angle_e;
 	
 #ifdef USE_ABZ_ENCODER
 	/*编码器更新*/
@@ -323,8 +323,8 @@ ErrorState Encoder_Cal(FOC_TypeDef *FOC_t,Encoder_TypeDef *Encoder_t,uint8_t Pol
 	else
 	{
 		/*电角度计算*/
-		angle_el=Encoder_t->sensor_dir * Pole_Pairs * Encoder_t->angle_now;
-		FOC_t->theta_el=_normalizeAngle(angle_el);
+		angle_e = Encoder_t->sensor_dir * Pole_Pairs * Encoder_t->angle_now;
+		FOC_t->theta_e = _normalizeAngle(angle_e);
 		return FOC_OK;
 	}
 }

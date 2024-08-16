@@ -5,8 +5,8 @@ HFI_TypeDef HFI_t=
 	.inj_volt_amp=0.5f,
 	.inj_volt=0.0f,
 	.cnt=0,
-	.theta_el=0.0f,
-	.w_el=0.0f
+	.theta_e=0.0f,
+	.w_e=0.0f
 };
 
 /*滤波器系数均由MATLAB中FilterDesigner计算得出*/
@@ -186,9 +186,9 @@ void HFI_Process(void)
 	/*锁相环提取转子角速度和角度*/
 	PLL_t.error=IIR_Butterworth_Handle(FOC_HFI_t.Iq_h * HFI_t.sin_val,&ERR_IIR_LPF_t);
 	PLL_Handle(&PLL_t);
-	HFI_t.w_el=PLL_t.output;
-	HFI_t.theta_el=PLL_t.output_sum;
-	FOC_HFI_t.theta_el=HFI_t.theta_el;
+	HFI_t.w_e=PLL_t.output;
+	HFI_t.theta_e=PLL_t.output_sum;
+	FOC_HFI_t.theta_e=HFI_t.theta_e;
 	
 	/*电流环PID计算输出*/
 	PID_Id.samp_value=FOC_HFI_t.Id_l;
@@ -205,6 +205,8 @@ void HFI_Process(void)
 	SVPWM_Cal(&FOC_HFI_t);
 	SetPWM(&FOC_HFI_t);
 }
+
+
 
 /**
    * @brief  非线性磁链观测器
@@ -239,17 +241,16 @@ void Fluxobserver_Process(void)
 	Fluxobserver_t.sin = (Fluxobserver_t.x2 - Ls * Fluxobserver_t.Ibeta ) / Flux;
 	
 	/*反正切提取角度*/
-	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos);
+	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos)+_PI;
 	
-	if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp >4.5f)
-		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp - _2PI)*20000.0f;
-	else if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp <-4.5f)
-		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp + _2PI)*20000.0f;
-	else
-		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp)*20000.0f;
+//	if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp >4.5f)
+//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp - _2PI)*20000.0f;
+//	else if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp <-4.5f)
+//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp + _2PI)*20000.0f;
+//	else
+//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp)*20000.0f;
+//	
+//	Fluxobserver_t.theta_temp = Fluxobserver_t.theta_e;
 	
-	Fluxobserver_t.theta_temp = Fluxobserver_t.theta_e;
-	
-	/*将角度归一化至0-2pi*/
-	FOC_Sensorless_t.theta_el=_normalizeAngle(Fluxobserver_t.theta_e);
+
 }

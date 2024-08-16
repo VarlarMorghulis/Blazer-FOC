@@ -1,6 +1,16 @@
 #include "foc_utils.h"
 
 /**
+   * @brief  限幅函数
+   * @param  amt 待限幅的变量 low 下限 high上限 
+   * @retval 限幅后的值
+   */
+float _constrain(float amt,float low,float high)
+{
+	return ((amt<low)?(low):((amt>high)?high:amt));
+}
+
+/**
    * @brief  角度归一化函数,使输出角度在0-2PI范围内
    * @param  angle 原始角度
    * @retval 归一化后的角度
@@ -11,9 +21,9 @@ float _normalizeAngle(float angle)
 	int a_int;
 	
 	a_int=(int)(angle/_2PI);
-	a=angle-a_int*_2PI;
+	a = angle - a_int * _2PI;
 	
-	return a>=0?a:(a+_2PI);
+	return a>=0 ? a : (a+_2PI);
 }
 
 /**
@@ -33,8 +43,8 @@ float IIR_Butterworth_Handle(float input,IIR_Butterworth_TypeDef * IIR_Butterwor
 									    +IIR_Butterworth_t->b1 * IIR_Butterworth_t->state_n_1
 										+IIR_Butterworth_t->b2 * IIR_Butterworth_t->state_n_2);
 	
-	IIR_Butterworth_t->state_n_2=IIR_Butterworth_t->state_n_1;
-	IIR_Butterworth_t->state_n_1=IIR_Butterworth_t->state_n;
+	IIR_Butterworth_t->state_n_2 = IIR_Butterworth_t->state_n_1;
+	IIR_Butterworth_t->state_n_1 = IIR_Butterworth_t->state_n;
 	
 	return output;
 }
@@ -80,12 +90,13 @@ float LowPassFilter_Handle(float ka,float *sample,float *sample_last)
 {
 	float output;
 	
-	*sample=ka*(*sample)+(1-ka)*(*sample_last);
-	*sample_last=*sample;
+	*sample = ka * (*sample) + (1-ka) * (*sample_last);
+	*sample_last = *sample;
 	
-	output=*sample;
+	output = *sample;
 	
 	return output;
 }
+
 
 

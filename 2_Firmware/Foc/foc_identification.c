@@ -2,16 +2,14 @@
 
 TaskElement_TypeDef TE_Rs_Identification_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
+	.Step=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
 
 TaskElement_TypeDef TE_Ls_Identification_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
+	.Step=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
@@ -116,9 +114,10 @@ void FOC_Task_Ls_Identification(void)
 {
 	ErrorState Encoder_Ers,Current_Ers;
 	static uint16_t i,j,k,l,m;
-	static uint8_t step=0;
 	
 	float Upeak,Ipeak;
+	
+	FOC_StructBind(&FOC_Ls_Identification_t);
 	
 	Upeak=0.1f*AnalogParam_t.vbus;
 	/*注入1kHz的Uq正弦波*/
@@ -144,30 +143,28 @@ void FOC_Task_Ls_Identification(void)
 	SetPWM(&FOC_Ls_Identification_t);
 	
 	/*等待一段时间,直到电压和电流都达到稳态*/
-	if(step==0)
+	if(TE_Ls_Identification_t.Step==0)
 	{
 		if(++TE_Ls_Identification_t.Cnt_20kHz>=40000)
 		{
-			step=1;
+			TE_Ls_Identification_t.Step=1;
 			TE_Ls_Identification_t.Cnt_20kHz=0;
 		}	
 	}
 	/*Iq电流采样*/
-	else if(step==1)
+	else if(TE_Ls_Identification_t.Step==1)
 	{
-
-		
 		Iq_Array[j]=FOC_Ls_Identification_t.Iq;
 		
 		if(++j>=128)
 		{
-			step=2;
+			TE_Ls_Identification_t.Step=2;
 			j=0;
 		}
 
 	}
 	/*数据处理*/
-	else if(step==2)
+	else if(TE_Ls_Identification_t.Step==2)
 	{
 		for(k=0;k<128;k++)
 		{
@@ -191,12 +188,12 @@ void FOC_Task_Ls_Identification(void)
 		}
 		Ipeak=Iq_Amplitude[1];
 		Motor_Ls=Upeak/Ipeak/(_2PI*1000.0f);
-		step=3;
+		TE_Ls_Identification_t.Step=3;
 	}
-	else if(step==3)
+	else if(TE_Ls_Identification_t.Step==3)
 	{
 		/*重置变量*/
-		step=0;
+		TE_Ls_Identification_t.Step=0;
 		i=0;
 		j=0;
 		k=0;

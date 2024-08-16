@@ -3,10 +3,10 @@
 
 #include "foc_utils.h"
 
-/*电流环周期*/
+/*电流环周期(s)*/
 #define Current_Ts	0.00005f
 
-/*速度环周期*/
+/*速度环周期(s)*/
 #define Speed_Ts	0.0001f
 
 typedef struct

@@ -2,40 +2,30 @@
 
 TaskElement_TypeDef TE_Currentloop_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
 
 TaskElement_TypeDef TE_Speedloop_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
 
 TaskElement_TypeDef TE_Positionloop_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
 
 TaskElement_TypeDef TE_Sensorless_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
 
 TaskElement_TypeDef TE_Openloop_t=
 {
-	.Init_Flag=0,
-	.Run_Flag=0,
 	.Cnt_20kHz=0,
 	.Errstate=FOC_OK
 };
@@ -113,7 +103,7 @@ PID_TypeDef PID_Id=
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=0.0f,
+	.ref_value=3.0f,
 	.Kp=0.00035f,
 	.Ki=0.35f,
 	.output_max=0.577f
@@ -141,11 +131,11 @@ PID_TypeDef PID_Iq=
 
 PID_TypeDef PID_Speed=
 {
-	.ref_value=300.0f,
-	.Kp=1.5f,
+	.ref_value=0.628f,
+	.Kp=2.0f,
 	.Ki=3.0f,
 	/*速度环输出最大值就是电流环目标最大值*/
-	.output_max=5.0f
+	.output_max=10.0f
 };
 
 PID_TypeDef PID_Position=
@@ -172,7 +162,7 @@ void Open_Voltageloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs)
 {
 	FOC_t->theta_temp+=0.0002f*FOC_t->Speed;
 	FOC_t->theta_temp=_normalizeAngle(FOC_t->theta_temp);
-	FOC_t->theta_el=_normalizeAngle(FOC_t->theta_temp*Pole_Pairs);
+	FOC_t->theta_e=_normalizeAngle(FOC_t->theta_temp*Pole_Pairs);
 	I_Park_Transform(FOC_t);
 	SVPWM_Cal(FOC_t);
 	SetPWM(FOC_t);
@@ -193,7 +183,7 @@ void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime)
 	}
 	FOC_t->theta_temp+=0.0001f*FOC_t->Speed_now;
 	FOC_t->theta_temp=_normalizeAngle(FOC_t->theta_temp);
-	FOC_t->theta_el=_normalizeAngle(FOC_t->theta_temp*Pole_Pairs);
+	FOC_t->theta_e=_normalizeAngle(FOC_t->theta_temp*Pole_Pairs);
 	
 	/*Clarke变换*/
 	Clarke_Transform(FOC_t);
@@ -213,6 +203,50 @@ void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime)
 	SVPWM_Cal(FOC_t);
 	
 	SetPWM(FOC_t);
+}
+
+/**
+   * @brief  电流强拖启动
+   * @param  threshold 强拖切无感的速度分界值
+   * @retval 无
+   */
+void IF_Start(FOC_TypeDef *FOC_t,float runtime,float threshold)
+{
+	ErrorState Current_Ers;
+	
+	Current_Ers=Current_Cal(FOC_t,&CurrentOffset_t);
+	
+	if(FOC_t->Speed_now<threshold)
+	{
+		FOC_t->Speed_now+=threshold/runtime*0.00005f;
+	}
+	FOC_t->theta_temp+=0.00005f*FOC_t->Speed_now;
+	FOC_t->theta_temp=_normalizeAngle(FOC_t->theta_temp);
+	FOC_t->theta_e=_normalizeAngle(FOC_t->theta_temp);
+	
+	/*电流采样正常*/
+	if(Current_Ers==FOC_OK)
+	{
+		/*Clarke变换*/
+		Clarke_Transform(FOC_t);
+			
+		/*Park变换*/
+		Park_Transform(FOC_t);
+			
+		/*PID计算输出*/
+		PID_Id.samp_value=FOC_t->Id;
+		PID_Iq.samp_value=FOC_t->Iq;
+		FOC_t->Ud=Current_PI_Ctrl(&PID_Id);
+		FOC_t->Uq=Current_PI_Ctrl(&PID_Iq);
+	
+		/*反Park变换*/
+		I_Park_Transform(FOC_t);
+	}
+	else
+	{
+		if(Current_Ers==FOC_FAULT)
+			TE_Currentloop_t.Errstate=FOC_FAULT;	
+	}
 }
 
 void FOC_Task_Openloop(void)
@@ -317,6 +351,8 @@ void Sensored_Positionloop(void)
 
 void FOC_Task_Sensored(void)
 {
+	FOC_StructBind(&FOC_Sensored_t);
+	
 	/*电流环执行频率为20kHz*/
 	if(++TE_Currentloop_t.Cnt_20kHz>=1)
 	{
@@ -327,7 +363,7 @@ void FOC_Task_Sensored(void)
 	/*速度环执行频率为10kHz*/
 	if(++TE_Speedloop_t.Cnt_20kHz>=2)
 	{
-		//Sensored_Speedloop();
+		Sensored_Speedloop();
 		TE_Speedloop_t.Cnt_20kHz=0;
 	}
 	
@@ -364,7 +400,7 @@ void Sensorless_Currentloop(void)
 	/*电流采样及处理*/
 	Current_Ers=Current_Cal(&FOC_Sensorless_t,&CurrentOffset_t);
 	/*磁链观测器获取角度*/
-	Fluxobserver_Process();
+	//Fluxobserver_Process();
 	
 	/*电流采样正常*/
 	if(Current_Ers==FOC_OK)
@@ -402,19 +438,36 @@ void Sensorless_Speedloop(void)
 	PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
 }
 
+uint8_t switch_flag;
+float speed;
 void FOC_Task_Sensorless(void)
 {
+	FOC_StructBind(&FOC_Sensorless_t);
+	
 	/*电流环执行频率为20kHz*/
 	if(++TE_Currentloop_t.Cnt_20kHz>=1)
 	{
-		Sensorless_Currentloop();
+		//Sensorless_Currentloop();
+//		if(FOC_Sensorless_t.Speed_now<900.0f)
+//		{
+			//IF_Start(&FOC_Sensorless_t,0.5f,1000.0f);
+		//}
+//		else if(FOC_Sensorless_t.Speed_now>900.0f)
+//		{
+			//PID_Iq.ref_value=3.0f;
+			/*将角度归一化至0-2pi*/
+			FOC_Sensorless_t.theta_e=_normalizeAngle(Fluxobserver_t.theta_e);
+			Sensorless_Currentloop();
+//		}
+		Fluxobserver_Process();
+		
 		TE_Currentloop_t.Cnt_20kHz=0;
 	}
 	
 	/*速度环执行频率为10kHz*/
 	if(++TE_Speedloop_t.Cnt_20kHz>=2)
 	{
-		Sensorless_Speedloop();
+		//Sensorless_Speedloop();
 		TE_Speedloop_t.Cnt_20kHz=0;
 	}
 	

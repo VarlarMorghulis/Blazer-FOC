@@ -17,10 +17,8 @@ typedef enum
 
 typedef struct
 {
-	/*初始化标志位 0执行初始化 1不执行*/
-	uint8_t Init_Flag;
-	/*运行任务标志位 0运行 1不运行*/
-	uint8_t Run_Flag;
+	/*运行状态标志位*/
+	uint8_t Step;
 	/*中断计数变量*/
 	uint32_t Cnt_20kHz;
 	/*运行状态*/

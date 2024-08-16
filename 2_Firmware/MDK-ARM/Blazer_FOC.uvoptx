@@ -162,9 +162,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>354</LineNumber>
+          <LineNumber>338</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134232644</Address>
+          <Address>134232620</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -173,14 +173,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Foc\foc_calibration.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Blazer_FOC\../Foc/foc_calibration.c\354</Expression>
+          <Expression>\\Blazer_FOC\../Foc/foc_calibration.c\338</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
           <LineNumber>308</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134231306</Address>
+          <Address>134231258</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -190,6 +190,22 @@
           <Filename>..\Bsp\encoder.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Blazer_FOC\../Bsp/encoder.c\308</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>354</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>..\Foc\foc_calibration.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

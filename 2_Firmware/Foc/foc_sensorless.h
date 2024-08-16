@@ -22,9 +22,9 @@ typedef struct
 	/*生成高频电压的计数变量*/
 	uint32_t cnt;
 	/*电角度*/
-	float theta_el;
+	float theta_e;
 	/*电角速度*/
-	float w_el;
+	float w_e;
 }HFI_TypeDef;
 
 typedef struct

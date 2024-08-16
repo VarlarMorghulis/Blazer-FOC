@@ -21,4 +21,9 @@ typedef enum
 	FOC_FAULT
 }ErrorState;
 
+#include "common_inc.h"
+
+void FOC_StructBind(FOC_TypeDef *FOC_t);
+void FOC_StructUnbind(void);
+
 #endif
