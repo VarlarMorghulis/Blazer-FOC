@@ -302,7 +302,7 @@ void Draw_Main_font(int8_t x, int8_t y)
 	
 	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
 	
-	sprintf(ID_str,"%d",ReceiveMsg_t.ID);
+	sprintf(ID_str,"%d",ReceiveMsg_t.NodeID);
 	u8g2_DrawStr(&u8g2, 0, 18, "0x0");
     u8g2_DrawStr(&u8g2, 35, 18, ID_str);
 		
@@ -460,16 +460,16 @@ void CAN_ID(void)
 		/*ID增加*/
 		if(key1_event==KE_ShortPress)
 		{
-			ReceiveMsg_t.ID++;
-			if(ReceiveMsg_t.ID>0x08)
-				ReceiveMsg_t.ID=0x01;
+			ReceiveMsg_t.NodeID++;
+			if(ReceiveMsg_t.NodeID>0x07)
+				ReceiveMsg_t.NodeID=0x01;
 		}
 		/*ID减小*/
 		if(key2_event==KE_ShortPress)
 		{
-			ReceiveMsg_t.ID--;
-			if(ReceiveMsg_t.ID<0X01)
-				ReceiveMsg_t.ID=0x08;
+			ReceiveMsg_t.NodeID--;
+			if(ReceiveMsg_t.NodeID<0X01)
+				ReceiveMsg_t.NodeID=0x07;
 		}
 		
 		/*保存配置*/
@@ -489,7 +489,7 @@ void CAN_ID(void)
 	
 	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
 	
-	sprintf(can_id_str,"0x0%d",ReceiveMsg_t.ID);
+	sprintf(can_id_str,"0x0%d",ReceiveMsg_t.NodeID);
 	u8g2_DrawStr(&u8g2,39,50,can_id_str);
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);

@@ -4,7 +4,8 @@ SendMsg_TypeDef SendMsg_t;
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.ID=0x01
+	.NodeID=0x01,
+	.ParamID=0x00
 };
 
 uint8_t CAN_Rxflag=0;
@@ -45,7 +46,7 @@ void CAN_Filter_Init(void)
 void CAN_DataTransform(void)
 {
 	/*将接收到的-16384 -- +16384转化为-40pi -- +40pi rad/s的设定转速*/
-	PID_Speed.ref_value=((int16_t)(ReceiveMsg_t.given_speed))*20.0f*_2PI/16384.0f;
+	//PID_Speed.ref_value=((int16_t)(ReceiveMsg_t.given_speed))*20.0f*_2PI/16384.0f;
 	/*速度限幅处理*/
 	PID_Speed.ref_value=_constrain(PID_Speed.ref_value,-125.663706f,125.663706f);
 	
@@ -68,7 +69,7 @@ void CAN_DataTransform(void)
 
 }
 
-
+//void DataTransform(uint8_t param,)
 
 /**
    * @brief  CAN1数据接收函数
@@ -78,16 +79,41 @@ void CAN_DataTransform(void)
 void CANRxIRQHandler(void)
 {
 	CAN_RxHeaderTypeDef CAN_RxHeaderStruct;
-	uint8_t rx_data[2];
+	uint8_t node_id;
+	uint8_t param_id;
+	uint8_t rx_data[4];
+	int32_t int_data=0;
 	
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	
-	/*主控发送的扩展ID与驱动板ID对应*/
-	if(CAN_RxHeaderStruct.ExtId==ReceiveMsg_t.ID+0x150)
+	/*提取高3位*/
+	node_id  = CAN_RxHeaderStruct.StdId >> 8;
+	/*提取低8位*/
+	param_id = CAN_RxHeaderStruct.StdId & 0x0FF;
+	
+	/*接收到的节点ID与驱动的节点ID对应*/
+	if(node_id == ReceiveMsg_t.NodeID)
 	{
 		/*将接收超时标志位清零,类似看门狗的实现方式*/
 		CAN_Rx_timeout=0;
+
+#ifdef USE_SPI_ENCODER
+		if(CAN_Rxflag==0)
+		{	/*有感闭环模式*/
+			FOC_State_t=FOC_Sensored;
+			CAN_Rxflag=1;
+		}
 		
+		int_data |= rx_data[0] << 8*3;
+		int_data |= rx_data[1] << 8*2;
+		int_data |= rx_data[2] << 8*1;
+		int_data |= rx_data[3];
+		
+		ReceiveMsg_t.data=(float)int_data;
+		
+		//CAN_DataTransform();
+#endif
+
 #ifdef USE_ABZ_ENCODER
 	if(Z_confirm_flag==1)
 	{
@@ -102,19 +128,7 @@ void CANRxIRQHandler(void)
 	}
 #endif
 
-#ifdef USE_SPI_ENCODER
-	if(CAN_Rxflag==0)
-	{	/*有感闭环模式*/
-		FOC_State_t=FOC_Sensored;
-		CAN_Rxflag=1;
-	}
-	
-	ReceiveMsg_t.given_speed=0;
-	ReceiveMsg_t.given_speed|=rx_data[0]<<8*1;
-	ReceiveMsg_t.given_speed|=rx_data[1];
-		
-	CAN_DataTransform();
-#endif
+
 	LED_G_TOGGLE;
 	}
 }
@@ -131,9 +145,9 @@ void CAN_SendMessage(void)
 	uint8_t tx_data[8];
 	uint32_t pTxMailbox=0;
 	
-	CAN_TxHeaderStruct.StdId=0;
-	CAN_TxHeaderStruct.ExtId=ReceiveMsg_t.ID;
-	CAN_TxHeaderStruct.IDE=CAN_ID_EXT;
+	CAN_TxHeaderStruct.StdId=ReceiveMsg_t.NodeID;
+	CAN_TxHeaderStruct.ExtId=0;
+	CAN_TxHeaderStruct.IDE=CAN_ID_STD;
 	CAN_TxHeaderStruct.RTR=CAN_RTR_DATA;/*数据帧*/
 	CAN_TxHeaderStruct.DLC=0x08;/*8个字节的载荷数据*/
 	CAN_TxHeaderStruct.TransmitGlobalTime=ENABLE;

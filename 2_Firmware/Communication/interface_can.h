@@ -5,8 +5,11 @@
 
 typedef struct
 {
-	uint8_t ID;
-	uint16_t given_speed;
+	/*节点ID*/
+	uint8_t NodeID;
+	/*参数ID*/
+	uint8_t ParamID;
+	float data;
 }ReceiveMsg_TypeDef;
 
 typedef struct

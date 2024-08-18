@@ -229,7 +229,7 @@ void Flash_CAN_ID_Save(void)
 	/*²Á³ýÉÈÇø*/
 	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
 	
-	temp=(uint32_t)ReceiveMsg_t.ID;
+	temp=(uint32_t)ReceiveMsg_t.NodeID;
 	
 	addr=ADDR_FLASH_SECTOR_8;
 
@@ -252,5 +252,5 @@ void Flash_CAN_ID_Read(void)
 	if(temp>0x08)
 		temp=0x01;
 	
-	ReceiveMsg_t.ID=(uint8_t)temp;
+	ReceiveMsg_t.NodeID=(uint8_t)temp;
 }
