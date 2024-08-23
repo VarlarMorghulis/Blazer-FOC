@@ -3,6 +3,17 @@
 
 #include "common_inc.h"
 
+typedef enum
+{
+	CAN_SET_POLEPARIS=0,
+	CAN_SET_MRPM,
+	CAN_SET_NODE_ID,
+	CAN_CALIB_ENCODER,
+	CAN_SET_ENCODER_TYPE,
+	CAN_SET_MAX_CURRENT,
+	CAN_SET_MAX_MRPM,
+	CAN_SET_MAX_ACC,
+}CAN_PARAM_ID;
 typedef struct
 {
 	/*½ÚµãID*/
@@ -11,14 +22,6 @@ typedef struct
 	uint8_t ParamID;
 	float data;
 }ReceiveMsg_TypeDef;
-
-typedef struct
-{
-	uint16_t enc;
-	uint16_t speed_rpm;
-	uint16_t real_current;
-	uint8_t temperature;
-}SendMsg_TypeDef;
 
 void CAN_Filter_Init(void);
 void CAN_DataTransform(void);

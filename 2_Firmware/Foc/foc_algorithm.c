@@ -163,3 +163,15 @@ void Motor_Release(void)
 	TIM1->CCR2=4200;
 	TIM1->CCR3=4200;
 } 
+
+/**
+   * @brief  电机刹车设置函数
+   * @param  无
+   * @retval 无
+   */
+void Motor_Brake(void)
+{
+	TIM1->CCR1=0;
+	TIM1->CCR2=0;
+	TIM1->CCR3=0;
+} 

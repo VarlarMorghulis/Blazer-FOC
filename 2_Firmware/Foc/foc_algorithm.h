@@ -46,4 +46,5 @@ void SVPWM_Cal(FOC_TypeDef *FOC_x);
 void SetPWM(FOC_TypeDef *FOC_x);
 ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t);
 void Motor_Release(void);
+void Motor_Brake(void);
 #endif

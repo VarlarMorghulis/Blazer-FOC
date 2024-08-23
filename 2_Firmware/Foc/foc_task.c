@@ -49,7 +49,7 @@ void FOC20kHzIRQHandler(void)
 		
 		/*´íÎó×´Ì¬*/
 		case FOC_Error:
-			Motor_Release();
+			Motor_Brake();
 			FOC_StructUnbind();
 		default:break;
 	}

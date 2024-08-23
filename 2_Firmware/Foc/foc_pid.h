@@ -26,5 +26,6 @@ typedef struct
 float Current_PI_Ctrl(PID_TypeDef *PID);
 float Speed_PI_Ctrl(PID_TypeDef *PID);
 float Position_P_Ctrl(PID_TypeDef *PID);
+void Clear_PID_Param(PID_TypeDef *PID);
 
 #endif
