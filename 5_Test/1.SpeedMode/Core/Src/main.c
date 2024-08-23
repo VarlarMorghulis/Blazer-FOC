@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "delay.h"
+#include "interface_can.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,7 +91,11 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
-
+  delay_init(100);
+  /*使能TIM7中断*/
+  HAL_TIM_Base_Start_IT(&htim7);
+  /*CAN1过滤器初始化*/
+  CAN_Filter_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */

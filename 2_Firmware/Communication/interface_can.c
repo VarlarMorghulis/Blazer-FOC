@@ -19,7 +19,7 @@ extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
 
 /**
-   * @brief  CAN1滤波器初始化函数
+   * @brief  CAN1过滤器初始化函数
    * @param  无
    * @retval 无
    */
@@ -70,7 +70,7 @@ void CANRxIRQHandler(void)
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	
 	/*提取高3位*/
-	node_id  = CAN_RxHeaderStruct.ExtId & 0x700;
+	node_id  = CAN_RxHeaderStruct.ExtId >> 8;
 	/*提取低8位*/
 	param_id = CAN_RxHeaderStruct.ExtId & 0x0FF;
 	
