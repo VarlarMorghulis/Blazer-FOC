@@ -45,6 +45,11 @@ void CAN_Filter_Init(void)
     HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
+/**
+   * @brief  CAN参数处理
+   * @param  param_id 参数ID data 数据
+   * @retval 无
+   */
 void CAN_Param_Handle(uint8_t param_id,float data)
 {
 	switch(param_id)
@@ -58,6 +63,10 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 				sensored_mode=Speed_Mode;
 			else if(data==2.0f)
 				sensored_mode=Position_Mode;
+		break;
+		
+		case CAN_SET_CURRENT:
+			PID_Iq.ref_value = data;
 		break;
 		
 		case CAN_SET_MRPM:
