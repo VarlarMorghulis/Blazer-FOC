@@ -176,15 +176,15 @@ void HFI_Process(void)
 	Park_Transform(&FOC_HFI_t);
 	
 	/*d轴q轴响应电流低通滤波,提取基波电流*/
-	FOC_HFI_t.Id_l=IIR_Butterworth_Handle(FOC_HFI_t.Id,&D_IIR_LPF_t);
-	FOC_HFI_t.Iq_l=IIR_Butterworth_Handle(FOC_HFI_t.Iq,&Q_IIR_LPF_t);
+	FOC_HFI_t.Id_l=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_LPF_t);
+	FOC_HFI_t.Iq_l=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_LPF_t);
 	
 	/*d轴q轴响应电流带通滤波,提取高频电流*/
-	FOC_HFI_t.Id_h=IIR_Butterworth_Handle(FOC_HFI_t.Id,&D_IIR_BPF_t);
-	FOC_HFI_t.Iq_h=IIR_Butterworth_Handle(FOC_HFI_t.Iq,&Q_IIR_BPF_t);
+	FOC_HFI_t.Id_h=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_BPF_t);
+	FOC_HFI_t.Iq_h=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_BPF_t);
 	
 	/*锁相环提取转子角速度和角度*/
-	PLL_t.error=IIR_Butterworth_Handle(FOC_HFI_t.Iq_h * HFI_t.sin_val,&ERR_IIR_LPF_t);
+	PLL_t.error=IIR_Butterworth(FOC_HFI_t.Iq_h * HFI_t.sin_val,&ERR_IIR_LPF_t);
 	PLL_Handle(&PLL_t);
 	HFI_t.w_e=PLL_t.output;
 	HFI_t.theta_e=PLL_t.output_sum;

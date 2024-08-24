@@ -8,19 +8,7 @@ extern ReceiveMsg_TypeDef ReceiveMsg_t;
 
 #define ADDR_FLASH_START			ADDR_FLASH_SECTOR_8
 
-uint32_t FloatToIntBit(float x)
-{
-	uint32_t *pInt;
-	pInt=(uint32_t*)(&x);
-	return *pInt;
-}
 
-float IntBitToFloat(uint32_t x)
-{
-	float * pInt;
-	pInt=(float *)(&x);
-	return *pInt;
-}
 
 /**
    * @brief  电机极对数和编码器参数保存 使用扇区9

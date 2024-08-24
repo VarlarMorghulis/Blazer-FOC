@@ -27,11 +27,37 @@ float _normalizeAngle(float angle)
 }
 
 /**
+   * @brief  将浮点数转换为uint32_t
+             此转换方法不会丢失精度
+   * @param  x 待转换的浮点数
+   * @retval *pInt 转换完的uint32_t
+   */
+uint32_t FloatToIntBit(float x)
+{
+	uint32_t *pInt;
+	pInt=(uint32_t*)(&x);
+	return *pInt;
+}
+
+/**
+   * @brief  将uint32_t转换为float
+             此转换方法不会丢失精度
+   * @param  x 待转换的uint32_t
+   * @retval *pFloat 转换完的浮点数
+   */
+float IntBitToFloat(uint32_t x)
+{
+	float * pFloat;
+	pFloat=(float *)(&x);
+	return *pFloat;
+}
+
+/**
    * @brief  IIR数字滤波函数 使用二阶巴特沃斯滤波
    * @param  input 待滤波变量 滤波器结构体指针 
    * @retval output 滤波后输出变量
    */
-float IIR_Butterworth_Handle(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t)
+float IIR_Butterworth(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t)
 {
 	float output;
 	
@@ -82,11 +108,11 @@ float fast_atan2(float y, float x)
 
 /**
    * @brief  一阶互补滤波函数
-   * @param  ka(0-1)滤波系数,Ka越小,滤波效果越强,相位迟滞越大
+   * @param  ka(0-1)滤波系数,ka越小,滤波效果越强,相位迟滞越大
 			 *sample 当前滤波数据指针 *sample_last 上一次滤波数据指针 
    * @retval 滤波后的数据
    */
-float LowPassFilter_Handle(float ka,float *sample,float *sample_last)
+float LowPassFilter(float ka,float *sample,float *sample_last)
 {
 	float output;
 	

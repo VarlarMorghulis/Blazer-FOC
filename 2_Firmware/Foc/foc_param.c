@@ -1,5 +1,20 @@
 #include "foc_param.h"
 
+InterfaceParam_TypeDef InterfaceParam_t;
+
+extern PID_TypeDef PID_Id;
+extern PID_TypeDef PID_Iq;
+extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_Position;
+
+void FOC_Param_Init(void)
+{
+	InterfaceParam_t.current_max=40.0f;
+	PID_Speed.output_max=InterfaceParam_t.current_max;
+	
+	//InterfaceParam_t.accup_max=
+}
+
 FOC_TypeDef *FOC_Param_t;
 FOC_TypeDef FOC_Idle_t=
 {
@@ -29,3 +44,4 @@ void FOC_StructUnbind(void)
 {
 	FOC_Param_t=&FOC_Idle_t;
 }
+

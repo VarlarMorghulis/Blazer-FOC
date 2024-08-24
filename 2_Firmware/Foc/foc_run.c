@@ -60,7 +60,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
@@ -68,7 +68,7 @@ PID_TypeDef PID_Iq=
 	.ref_value=0.0f,
 	.Kp=0.013f,
 	.Ki=121.0f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 #endif
 
@@ -79,7 +79,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.0006f,
 	.Ki=2.5f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
@@ -87,26 +87,26 @@ PID_TypeDef PID_Iq=
 	.ref_value=5.0f,
 	.Kp=0.0006f,
 	.Ki=2.5f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 #endif
 
-/*Tmotor_U10*/
+/*Tmotor_U7*/
 #ifdef Motor_Tmotor_U7
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
 	.Kp=0.00035f,
 	.Ki=0.35f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
 {
-	.ref_value=3.0f,
+	.ref_value=0.0f,
 	.Kp=0.00035f,
 	.Ki=0.35f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 #endif
 
@@ -117,7 +117,7 @@ PID_TypeDef PID_Id=
 	.ref_value=0.0f,
 	.Kp=0.0011f,
 	.Ki=2.375f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
@@ -125,26 +125,26 @@ PID_TypeDef PID_Iq=
 	.ref_value=0.0f,
 	.Kp=0.0011f,
 	.Ki=2.375f,
-	.output_max=0.577f
+	.output_max=0.57735f
 };
 #endif
 
 PID_TypeDef PID_Speed=
 {
-	.ref_value=0.628f,
-	.Kp=2.0f,
-	.Ki=3.0f,
-	/*速度环输出最大值就是电流环目标最大值*/
-	.output_max=10.0f
+	.ref_value=0.0f,
+	.Kp=0.2f,
+	.Ki=0.35f,
 };
 
 PID_TypeDef PID_Position=
 {
-	.ref_value=62.8f,
-	.Kp=6.0f,
-	.output_max=3.14f
+	.ref_value=0.0f,
+	.Kp=0.2f,
+	.Ki=0.05f,
+	.output_max=62.8f
 };
 
+uint8_t sensored_mode;
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern Encoder_TypeDef SPI_Encoder_t;
@@ -328,10 +328,6 @@ void Sensored_Speedloop(void)
 	Encoder_t=&SPI_Encoder_t;
 #endif
 
-//	if(PID_Speed.ref_value<=314.0f)
-//	{
-//		PID_Speed.ref_value+=0.0628f;
-//	}
 	PID_Speed.samp_value=Encoder_t->velocity;
 	PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
 	
@@ -353,27 +349,59 @@ void FOC_Task_Sensored(void)
 {
 	FOC_StructBind(&FOC_Sensored_t);
 	
-	/*电流环执行频率为20kHz*/
-	if(++TE_Currentloop_t.Cnt_20kHz>=1)
+	switch(sensored_mode)
 	{
-		Sensored_Currentloop();
-		TE_Currentloop_t.Cnt_20kHz=0;
+		case Current_Mode:
+			/*电流环执行频率为20kHz*/
+			if(++TE_Currentloop_t.Cnt_20kHz>=1)
+			{
+				Sensored_Currentloop();
+				TE_Currentloop_t.Cnt_20kHz=0;
+			}
+		break;
+		
+		case Speed_Mode:
+			/*电流环执行频率为20kHz*/
+			if(++TE_Currentloop_t.Cnt_20kHz>=1)
+			{
+				Sensored_Currentloop();
+				TE_Currentloop_t.Cnt_20kHz=0;
+			}
+			
+			/*速度环执行频率为10kHz*/
+			if(++TE_Speedloop_t.Cnt_20kHz>=2)
+			{
+				Sensored_Speedloop();
+				TE_Speedloop_t.Cnt_20kHz=0;
+			}
+		break;
+		
+		case Position_Mode:
+			/*电流环执行频率为20kHz*/
+			if(++TE_Currentloop_t.Cnt_20kHz>=1)
+			{
+				Sensored_Currentloop();
+				TE_Currentloop_t.Cnt_20kHz=0;
+			}
+			
+			/*速度环执行频率为10kHz*/
+			if(++TE_Speedloop_t.Cnt_20kHz>=2)
+			{
+				Sensored_Speedloop();
+				TE_Speedloop_t.Cnt_20kHz=0;
+			}
+			
+			/*位置环执行频率为5kHz*/
+			if(++TE_Positionloop_t.Cnt_20kHz>=4)
+			{
+				Sensored_Positionloop();
+				TE_Positionloop_t.Cnt_20kHz=0;
+			}
+		break;
+		
+		default:break;
 	}
-	
-	/*速度环执行频率为10kHz*/
-	if(++TE_Speedloop_t.Cnt_20kHz>=2)
-	{
-		Sensored_Speedloop();
-		TE_Speedloop_t.Cnt_20kHz=0;
-	}
-	
-	/*位置环执行频率为5kHz*/
-	if(++TE_Positionloop_t.Cnt_20kHz>=4)
-	{
-		//Sensored_Positionloop();
-		TE_Positionloop_t.Cnt_20kHz=0;
-	}
-	
+
 	/*各闭环都正常才会改变占空比*/
 	if(TE_Currentloop_t.Errstate == FOC_OK &&
 	   TE_Speedloop_t.Errstate   == FOC_OK)

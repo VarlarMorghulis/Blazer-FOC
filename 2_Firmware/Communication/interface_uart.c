@@ -13,6 +13,7 @@ extern HFI_TypeDef HFI_t;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_Position;
 extern Fluxobserver_TypeDef Fluxobserver_t;
 
 void Vofa_Upload(void)
@@ -25,6 +26,8 @@ void Vofa_Upload(void)
 	Frame_t.fdata[5]=FOC_Param_t->theta_e;
 	Frame_t.fdata[6]=PID_Speed.ref_value;
 	Frame_t.fdata[7]=SPI_Encoder_t.velocity;
+	Frame_t.fdata[8]=PID_Position.ref_value;
+	Frame_t.fdata[9]=PID_Position.samp_value;
 	
 	/*由于float和uint32_t都为4个字节,因此无需再做结构体数据对齐*/
 	HAL_UART_Transmit_DMA(&huart1,(uint8_t *)&Frame_t,sizeof(Frame_TypeDef));

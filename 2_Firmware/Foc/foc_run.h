@@ -5,9 +5,10 @@
 
 typedef enum
 {
-	FOC_Current_Mode,
-	FOC_CurrentSpeed_Mode,
-}FOC_Sensored_Mode; 
+	Current_Mode=0,
+	Speed_Mode,
+	Position_Mode,
+}Sensored_Mode; 
 
 typedef struct
 {

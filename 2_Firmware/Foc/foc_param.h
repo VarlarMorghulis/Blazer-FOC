@@ -21,8 +21,17 @@ typedef enum
 	FOC_FAULT
 }ErrorState;
 
+typedef struct
+{
+	float pole_pairs;
+	float current_max;
+	float speed_max;
+	float accup_max;
+}InterfaceParam_TypeDef;
+
 #include "common_inc.h"
 
+void FOC_Param_Init(void);
 void FOC_StructBind(FOC_TypeDef *FOC_t);
 void FOC_StructUnbind(void);
 

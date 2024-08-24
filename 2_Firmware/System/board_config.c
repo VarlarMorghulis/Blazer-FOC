@@ -37,15 +37,17 @@ void Board_Init(void)
 	HAL_ADCEx_InjectedStart(&hadc1);
 	/*使能ADC1注入组中断*/
 	__HAL_ADC_ENABLE_IT(&hadc1,ADC_IT_JEOC);
-	
-	/*CAN1初始化*/
-	CAN_Filter_Init();
-	
+		
 	/*使能TIM7中断*/
 	HAL_TIM_Base_Start_IT(&htim7);
 	
 	OLED_Init();
 	Menu_Init();
 	
-	//UART_ReceiveEnable();
+	/*CAN1过滤器*/
+	CAN_Filter_Init();
+	
+	/*CAN1初始化*/
+	FOC_Param_Init();
+
 }

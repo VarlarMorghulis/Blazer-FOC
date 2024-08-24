@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=1</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; .\Bsp; .\Communication</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Bsp;..\Communication</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -526,12 +526,12 @@
             <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Bsp\delay.c</FilePath>
+              <FilePath>..\Bsp\delay.c</FilePath>
             </File>
             <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Bsp\led.c</FilePath>
+              <FilePath>..\Bsp\led.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -541,7 +541,7 @@
             <File>
               <FileName>interface_can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Communication\interface_can.c</FilePath>
+              <FilePath>..\Communication\interface_can.c</FilePath>
             </File>
           </Files>
         </Group>

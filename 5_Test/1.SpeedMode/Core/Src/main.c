@@ -46,6 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+extern uint8_t can_tx_flag;
+float motor_speed[4]={60.0f,120.0f,29.5f,240.0f};
 
 /* USER CODE END PV */
 
@@ -96,6 +98,11 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim7);
   /*CAN1过滤器初始化*/
   CAN_Filter_Init();
+  /*设置启动模式*/
+  set_blazer_start(0x00,1.0f);
+  set_blazer_start(0x01,1.0f);
+  set_blazer_start(0x02,1.0f);
+  set_blazer_start(0x03,1.0f);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,7 +110,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	if(can_tx_flag==1)
+	{
+		set_blazer_speed(0x00,motor_speed[0]);
+		set_blazer_speed(0x01,motor_speed[1]);
+		set_blazer_speed(0x02,motor_speed[2]);
+		set_blazer_speed(0x03,motor_speed[3]);
+		can_tx_flag=0;
+	}
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

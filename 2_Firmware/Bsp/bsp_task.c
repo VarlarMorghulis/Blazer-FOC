@@ -7,7 +7,6 @@ uint16_t Menu_Cnt;
 uint16_t CanTx_Cnt;
 uint8_t menu_key;
 uint32_t CAN_Rx_timeout;
-uint16_t MT6816_Raw;
 extern uint8_t Z_confirm_flag;
 extern uint8_t CAN_Txflag;
 extern FOC_State FOC_State_t;

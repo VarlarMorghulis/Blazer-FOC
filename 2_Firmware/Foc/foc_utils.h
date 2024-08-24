@@ -1,6 +1,8 @@
 #ifndef __FOC_UTILS_H__
 #define __FOC_UTILS_H__
 
+#include "main.h"
+
 #define _PI 	3.1415926536f
 #define _PI_2 	1.5707963268f
 #define _PI_3 	1.0471975512f
@@ -19,9 +21,11 @@ typedef struct
 
 float _constrain(float amt,float low,float high);
 float _normalizeAngle(float angle);
+uint32_t FloatToIntBit(float x);
+float IntBitToFloat(uint32_t x);
 float fast_abs(float x);
 float fast_atan2(float y, float x);
-float LowPassFilter_Handle(float Ka,float *Sample,float *Sample_last);
-float IIR_Butterworth_Handle(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t);
+float LowPassFilter(float Ka,float *Sample,float *Sample_last);
+float IIR_Butterworth(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t);
 
 #endif

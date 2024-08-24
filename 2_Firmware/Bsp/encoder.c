@@ -191,7 +191,7 @@ void SPI_Encoder_Update(Encoder_TypeDef *SPI_Encoder_t)
 	SPI_Encoder_t->velocity = SPI_Encoder_t->sensor_dir * SPI_Encoder_t->d_angle * 20000.0f;
 	
 	/*二阶巴特沃斯低通滤波*/
-	SPI_Encoder_t->velocity=IIR_Butterworth_Handle(SPI_Encoder_t->velocity,&Encoder_IIR_LPF_t);
+	SPI_Encoder_t->velocity=IIR_Butterworth(SPI_Encoder_t->velocity,&Encoder_IIR_LPF_t);
 	
 	/*迭代数据*/
 	SPI_Encoder_t->angle_last=SPI_Encoder_t->angle_now;
@@ -253,7 +253,7 @@ void ABZ_Update(Encoder_TypeDef *ABZ_Enc_t)
 	ABZ_Enc_t->velocity = ABZ_Enc_t->sensor_dir * ABZ_Enc_t->d_angle * 20000.0f;
 	
 	/*二阶巴特沃斯低通滤波*/
-	ABZ_Enc_t->velocity=IIR_Butterworth_Handle(ABZ_Enc_t->velocity,&Encoder_IIR_LPF_t);
+	ABZ_Enc_t->velocity=IIR_Butterworth(ABZ_Enc_t->velocity,&Encoder_IIR_LPF_t);
 	
 	/*迭代数据*/
 	ABZ_Enc_t->angle_last=ABZ_Enc_t->angle_now;

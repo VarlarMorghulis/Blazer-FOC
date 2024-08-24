@@ -1,8 +1,8 @@
 #include "foc_task.h"
 
-FOC_State FOC_State_t=FOC_Reminder;
+FOC_State FOC_State_t=FOC_Wait;
 
-/**
+/**.6+
    * @brief  FOC一级状态机
    * @param  无
    * @retval 无

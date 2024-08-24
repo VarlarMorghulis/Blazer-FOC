@@ -7,16 +7,19 @@ ReceiveMsg_TypeDef ReceiveMsg_t=
 };
 
 uint8_t CAN_Rxflag=0;
+uint8_t start_en=0;
 
 extern FOC_State FOC_State_t;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_Position;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
+extern uint8_t sensored_mode;
 
 /**
    * @brief  CAN1过滤器初始化函数
@@ -46,6 +49,17 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 {
 	switch(param_id)
 	{
+		case CAN_SET_START_ENABLE:
+			start_en=1;
+
+			if(data==0)
+				sensored_mode=Current_Mode;
+			else if(data==1.0f)
+				sensored_mode=Speed_Mode;
+			else if(data==2.0f)
+				sensored_mode=Position_Mode;
+		break;
+		
 		case CAN_SET_MRPM:
 			PID_Speed.ref_value = data / 60.0f * _2PI;
 		break;
@@ -63,9 +77,9 @@ void CANRxIRQHandler(void)
 {
 	CAN_RxHeaderTypeDef CAN_RxHeaderStruct;
 	uint8_t node_id;
-	uint8_t param_id;
+	uint8_t param_id=0x08;
 	uint8_t rx_data[4];
-	int32_t int_data=0;
+	uint32_t u32_data=0;
 	
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	
@@ -80,34 +94,35 @@ void CANRxIRQHandler(void)
 		/*心跳标志位置零*/
 		CAN_Rx_timeout=0;
 		
-		if(CAN_Rxflag==0)
-		{	/*有感闭环模式*/
+		if(CAN_Rxflag==0&&start_en==1)
+		{	
+			/*有感闭环模式*/
 			FOC_State_t=FOC_Sensored;
 			CAN_Rxflag=1;
 		}
 		
-		int_data |= rx_data[0] << 24;
-		int_data |= rx_data[1] << 16;
-		int_data |= rx_data[2] << 8;
-		int_data |= rx_data[3];
+		u32_data |= rx_data[0] << 24;
+		u32_data |= rx_data[1] << 16;
+		u32_data |= rx_data[2] << 8;
+		u32_data |= rx_data[3];
 		
 		ReceiveMsg_t.ParamID=param_id;
-		ReceiveMsg_t.data=(float)int_data;
+		ReceiveMsg_t.data=IntBitToFloat(u32_data);
 		
 		CAN_Param_Handle(ReceiveMsg_t.ParamID,ReceiveMsg_t.data);
 		
 		LED_G_TOGGLE;
 	}
+	CAN_RxHeaderStruct.ExtId=0;
 }
 
-
-	
 void CAN_LostConnect_Handle(void)
 {
 	/*超时则清空电机之前的运行数据,防止重新连接后过冲*/
 	Clear_PID_Param(&PID_Id);
 	Clear_PID_Param(&PID_Iq);
 	Clear_PID_Param(&PID_Speed);
+	Clear_PID_Param(&PID_Position);
 	
 	LED_G(0);
 	/*将CAN接收标志位置0*/

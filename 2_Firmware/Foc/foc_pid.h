@@ -9,6 +9,9 @@
 /*速度环周期(s)*/
 #define Speed_Ts	0.0001f
 
+/*位置环周期(s)*/
+#define Position_Ts 0.0002f
+
 typedef struct
 {
 	/*目标值 反馈值*/

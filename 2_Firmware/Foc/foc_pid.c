@@ -1,5 +1,6 @@
 #include "foc_pid.h"
 
+/*电流死区(A)*/
 float dead_current=0.2f;
 /**
    * @brief  电流环 使用PI控制 位置式
@@ -15,13 +16,13 @@ float Current_PI_Ctrl(PID_TypeDef *PID)
 	
 	PID->error_sum += PID->error * PID->Ki * Current_Ts;
 	
-	PID->error_sum = _constrain(PID->error_sum,-PID->output_max,PID->output_max);
+	PID->error_sum = _constrain(PID->error_sum,-1.0f,1.0f);
 	
 	PID->output = PID->Kp * PID->error + PID->error_sum;
 	
-	PID->output= _constrain(PID->output,-PID->output_max,PID->output_max);
+	PID->output= _constrain(PID->output,-1.0f,1.0f);
 	
-	return PID->output;
+	return PID->output * PID->output_max;
 }
 
 /**
@@ -35,16 +36,16 @@ float Speed_PI_Ctrl(PID_TypeDef *PID)
 	
 	PID->error_sum += PID->error * PID->Ki * Speed_Ts;
 	
-	PID->error_sum = _constrain(PID->error_sum,-PID->output_max,PID->output_max);
+	PID->error_sum = _constrain(PID->error_sum,-1.0f,1.0f);
 	
 	if(PID->error > 0.5f * PID->ref_value || PID->error < -0.5f * PID->ref_value)
 		PID->error_sum=0.0f;
 	
 	PID->output = PID->Kp * PID->error + PID->error_sum;
 	
-	PID->output = _constrain(PID->output,-PID->output_max,PID->output_max);
+	PID->output= _constrain(PID->output,-1.0f,1.0f);
 	
-	return PID->output;
+	return PID->output * PID->output_max;
 }
 
 /**
@@ -56,14 +57,15 @@ float Position_P_Ctrl(PID_TypeDef *PID)
 {
 	PID->error = PID->ref_value - PID->samp_value;
 	
-//	if(PID->error<=0.01f&&PID->error>=-0.01f)//死区设置
-//		PID->error=0;
+	PID->error_sum += PID->error * PID->Ki * Position_Ts;
+	
+	PID->error_sum = _constrain(PID->error_sum,-1.0f,1.0f);
 	
 	PID->output = PID->Kp * PID->error;
 	
-	PID->output= _constrain(PID->output,-PID->output_max,PID->output_max);
+	PID->output= _constrain(PID->output,-1.0f,1.0f);
 
-	return PID->output;
+	return PID->output * PID->output_max;
 }
 
 void Clear_PID_Param(PID_TypeDef *PID)

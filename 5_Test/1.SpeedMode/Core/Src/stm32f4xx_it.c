@@ -245,12 +245,12 @@ void TIM7_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-float speed=60.0f;
+uint8_t can_tx_flag;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim == (&htim7))
     {
-		set_blazer_speed(0x02,speed);
+		can_tx_flag=1;
     }
 }
 /* USER CODE END 1 */
