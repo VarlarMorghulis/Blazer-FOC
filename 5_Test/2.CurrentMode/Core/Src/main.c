@@ -110,6 +110,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	/*1kHz发送,标志位在stm32f4xx_it.c中改变*/
 	if(can_tx_flag==1)
 	{
 		set_blazer_current(0x00,motor_current[0]);

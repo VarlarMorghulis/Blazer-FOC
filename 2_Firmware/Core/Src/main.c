@@ -62,6 +62,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 extern u8g2_t u8g2;
 extern uint16_t Menu_Cnt;
+extern uint8_t flashsave_flag;
 /* USER CODE END 0 */
 
 /**
@@ -119,6 +120,14 @@ int main(void)
 	{
 		Choose_Menu();
 		Menu_Cnt=0;
+	}
+	if(flashsave_flag==1)
+	{
+		__disable_irq();
+		/*²ÎÊý´æ´¢µ½Flash*/
+		Param_FlashSave();
+		flashsave_flag=0;
+		__enable_irq();
 	}
 	
   }

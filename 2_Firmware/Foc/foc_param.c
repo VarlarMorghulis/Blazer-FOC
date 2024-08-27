@@ -2,17 +2,50 @@
 
 InterfaceParam_TypeDef InterfaceParam_t;
 
+extern ReceiveMsg_TypeDef ReceiveMsg_t;
+extern uint8_t SPI_Encoder_Type;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
+extern Motor_TypeDef Motor_t;
+extern CurrentOffset_TypeDef CurrentOffset_t;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
 extern PID_TypeDef PID_Position;
 
+void All_InterfaceParam_Save(void)
+{
+	InterfaceParam_t.node_id=(float)ReceiveMsg_t.NodeID;
+	InterfaceParam_t.enc_type=(float)SPI_Encoder_Type;
+	InterfaceParam_t.sensor_dir=(float)SPI_Encoder_t.sensor_dir;
+	InterfaceParam_t.zero_enc_offset=(float)SPI_Encoder_t.zero_enc_offset;
+	InterfaceParam_t.currentoffset_a=(float)CurrentOffset_t.A_Offset;
+	InterfaceParam_t.currentoffset_b=(float)CurrentOffset_t.B_Offset;
+	InterfaceParam_t.currentoffset_c=(float)CurrentOffset_t.C_Offset;
+	InterfaceParam_t.pole_pairs=(float)Motor_t.Pole_Pairs;
+	InterfaceParam_t.current_max=10.0f;
+//	InterfaceParam_t.node_id=1.0f;
+//	InterfaceParam_t.enc_type=2.0f;
+//	InterfaceParam_t.sensor_dir=3.0f;
+//	InterfaceParam_t.zero_enc_offset=4.0f;
+//	InterfaceParam_t.currentoffset_a=5.0f;
+//	InterfaceParam_t.currentoffset_b=6.0f;
+//	InterfaceParam_t.currentoffset_c=7.0f;
+//	InterfaceParam_t.pole_pairs=8.0f;
+//	InterfaceParam_t.current_max=8.2f;
+}
+
 void FOC_Param_Init(void)
 {
-	InterfaceParam_t.current_max=40.0f;
-	PID_Speed.output_max=InterfaceParam_t.current_max;
-	
-	//InterfaceParam_t.accup_max=
+	ReceiveMsg_t.NodeID=(uint8_t)InterfaceParam_t.node_id;
+	SPI_Encoder_Type=(uint8_t)InterfaceParam_t.enc_type;
+	SPI_Encoder_t.sensor_dir=(int8_t)InterfaceParam_t.sensor_dir;
+	SPI_Encoder_t.zero_enc_offset=(uint16_t)InterfaceParam_t.zero_enc_offset;
+	CurrentOffset_t.A_Offset=(uint16_t)InterfaceParam_t.currentoffset_a;
+	CurrentOffset_t.B_Offset=(uint16_t)InterfaceParam_t.currentoffset_b;
+	CurrentOffset_t.C_Offset=(uint16_t)InterfaceParam_t.currentoffset_c;
+	Motor_t.Pole_Pairs=(uint8_t)InterfaceParam_t.pole_pairs;
+	//PID_Speed.output_max=InterfaceParam_t.current_max;
 }
 
 FOC_TypeDef *FOC_Param_t;

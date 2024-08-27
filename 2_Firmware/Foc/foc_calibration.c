@@ -62,7 +62,8 @@ extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern Motor_TypeDef Motor_t;
-
+extern InterfaceParam_TypeDef InterfaceParam_t;
+extern uint8_t flashsave_flag;
 
 /**
    * @brief  ADC电流采样零偏校准任务 执行频率为20kHz
@@ -71,19 +72,19 @@ extern Motor_TypeDef Motor_t;
    */
 void FOC_Task_ADC_Calibration(void)
 {
-	static uint32_t A_offset_sum,B_offset_sum,C_offset_sum;
+	static float A_offset_sum,B_offset_sum,C_offset_sum;
 	
 	if(++TE_ADC_Calibration_t.Cnt_20kHz<=10000)
 	{
-		A_offset_sum+=ADC1->JDR1;
-		B_offset_sum+=ADC1->JDR2;
-		C_offset_sum+=ADC1->JDR3;
+		A_offset_sum+=(float)ADC1->JDR1;
+		B_offset_sum+=(float)ADC1->JDR2;
+		C_offset_sum+=(float)ADC1->JDR3;
 	}
 	else
 	{
-		CurrentOffset_t.A_Offset=A_offset_sum/10000;
-		CurrentOffset_t.B_Offset=B_offset_sum/10000;
-		CurrentOffset_t.C_Offset=C_offset_sum/10000;
+		CurrentOffset_t.A_Offset=(uint16_t)(A_offset_sum/10000.0f);
+		CurrentOffset_t.B_Offset=(uint16_t)(B_offset_sum/10000.0f);
+		CurrentOffset_t.C_Offset=(uint16_t)(C_offset_sum/10000.0f);
 		
 		A_offset_sum=0;
 		B_offset_sum=0;
@@ -493,8 +494,15 @@ void FOC_Task_Encoder_Linearization(void)
 
 void FOC_Task_Param_Save(void)
 {
-	/*校准参数存储*/
-	Flash_Save();
+	InterfaceParam_t.currentoffset_a=(float)CurrentOffset_t.A_Offset;
+	InterfaceParam_t.currentoffset_b=(float)CurrentOffset_t.B_Offset;
+	InterfaceParam_t.currentoffset_c=(float)CurrentOffset_t.C_Offset;
+	InterfaceParam_t.sensor_dir=(float)SPI_Encoder_t.sensor_dir;
+	InterfaceParam_t.zero_enc_offset=(float)SPI_Encoder_t.zero_enc_offset;
+	InterfaceParam_t.pole_pairs=(float)Motor_t.Pole_Pairs;
+	
+	flashsave_flag=1;
+	//Flash_Save();
 	
 	Calib_State=Calib_ADC;
 	FOC_State_t=FOC_Wait;

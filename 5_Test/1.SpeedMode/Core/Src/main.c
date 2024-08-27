@@ -47,7 +47,7 @@
 
 /* USER CODE BEGIN PV */
 extern uint8_t can_tx_flag;
-float motor_speed[4]={60.0f,120.0f,29.5f,240.0f};
+float motor_speed[4]={60.0f,120.0f,180.0f,240.0f};
 
 /* USER CODE END PV */
 
@@ -110,6 +110,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	/*1kHz发送,标志位在stm32f4xx_it.c中改变*/
 	if(can_tx_flag==1)
 	{
 		set_blazer_speed(0x00,motor_speed[0]);

@@ -5,10 +5,14 @@ extern Encoder_TypeDef ABZ_Enc_t;
 extern Motor_TypeDef Motor_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
+extern InterfaceParam_TypeDef InterfaceParam_t;
+
+uint8_t flashsave_flag;
+uint32_t temp_save[];
+uint32_t temp_read[];
+float* struct_ptr=(float*)(&InterfaceParam_t);
 
 #define ADDR_FLASH_START			ADDR_FLASH_SECTOR_8
-
-
 
 /**
    * @brief  电机极对数和编码器参数保存 使用扇区9
@@ -33,6 +37,7 @@ void Flash_Save(void)
     
 	/*擦除扇区*/
 	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
+	
 	
 #ifdef USE_ABZ_ENCODER
 	temp[0]=(uint32_t)ABZ_Enc_t.sensor_dir;
@@ -94,6 +99,60 @@ void Flash_Read(void)
 	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
 	CurrentOffset_t.C_Offset=(uint16_t)temp[5];
 #endif
+}
+
+void Param_FlashSave(void)
+{
+	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
+	uint32_t PageError=0;
+	uint32_t flash_addr;
+	volatile static uint8_t i=0;
+	uint8_t param_num=sizeof(InterfaceParam_TypeDef)/sizeof(float);
+	
+	for(i=0;i<param_num;i++)
+	{
+		temp_save[i]=FloatToIntBit(struct_ptr[i]);
+	}
+	
+	FLASH_EraseInitstruct.TypeErase = FLASH_TYPEERASE_SECTORS;//执行扇区擦除操作
+	FLASH_EraseInitstruct.Sector=FLASH_SECTOR_8;
+	FLASH_EraseInitstruct.NbSectors=1;               
+    FLASH_EraseInitstruct.VoltageRange=FLASH_VOLTAGE_RANGE_3;//擦除的电压范围2.7-3.6V  
+
+	/*解锁Flash*/
+	HAL_FLASH_Unlock();
+    
+	/*擦除扇区*/
+	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
+	
+	flash_addr=ADDR_FLASH_SECTOR_8;
+	for(i=0;i<param_num;i++)
+	{
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,flash_addr,temp_save[i]);	
+		flash_addr+=32;
+	}
+	
+	/*Flash上锁*/
+	HAL_FLASH_Lock();
+}
+
+
+void Param_FlashRead(void)
+{
+	uint32_t flash_addr;
+	volatile static uint8_t i=0;
+	uint8_t param_num=sizeof(InterfaceParam_TypeDef)/sizeof(float);
+	
+	flash_addr=ADDR_FLASH_SECTOR_8;
+	for(i=0;i<param_num;i++)
+	{
+		temp_read[i]=(*((volatile uint32_t *)flash_addr));
+		flash_addr+=32;
+	}
+	for(i=0;i<param_num;i++)
+	{
+		struct_ptr[i]=IntBitToFloat(temp_read[i]);
+	}
 }
 
 void Flash_Anticogging_Clear(void)

@@ -23,14 +23,22 @@ typedef enum
 
 typedef struct
 {
+	float node_id;
+	float enc_type;
+	float sensor_dir;
+	float zero_enc_offset;
+	float currentoffset_a,currentoffset_b,currentoffset_c;
 	float pole_pairs;
 	float current_max;
 	float speed_max;
 	float accup_max;
+	float accdown_max;
+	
 }InterfaceParam_TypeDef;
 
 #include "common_inc.h"
 
+void All_InterfaceParam_Save(void);
 void FOC_Param_Init(void);
 void FOC_StructBind(FOC_TypeDef *FOC_t);
 void FOC_StructUnbind(void);

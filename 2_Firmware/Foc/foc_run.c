@@ -133,7 +133,8 @@ PID_TypeDef PID_Speed=
 {
 	.ref_value=0.0f,
 	.Kp=0.2f,
-	.Ki=0.35f,
+	.Ki=0.2f,
+	.output_max=10.0f
 };
 
 PID_TypeDef PID_Position=
@@ -144,7 +145,8 @@ PID_TypeDef PID_Position=
 	.output_max=62.8f
 };
 
-uint8_t sensored_mode;
+uint8_t sensored_mode=Speed_Mode;
+
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern Encoder_TypeDef SPI_Encoder_t;

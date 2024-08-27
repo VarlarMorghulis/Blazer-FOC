@@ -3,9 +3,16 @@
 void Board_Init(void)
 {
 	/*从Flash读取存储的电机和编码器数据*/
-	Flash_Read();
+	//Flash_Read();
+	Param_FlashRead();
+	
 	/*从Flash读取CAN_ID*/
-	Flash_CAN_ID_Read();
+	//Flash_CAN_ID_Read();
+	
+	/*参数初始化*/
+	FOC_Param_Init();
+	//All_InterfaceParam_Save();
+	//Param_FlashSave();
 	
 	/*延时函数初始化*/
 	delay_init(168);
@@ -47,7 +54,5 @@ void Board_Init(void)
 	/*CAN1过滤器*/
 	CAN_Filter_Init();
 	
-	/*CAN1初始化*/
-	FOC_Param_Init();
 
 }

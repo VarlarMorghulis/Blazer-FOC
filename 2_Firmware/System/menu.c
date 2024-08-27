@@ -440,6 +440,8 @@ void Setting(void)
 }
 
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
+extern InterfaceParam_TypeDef InterfaceParam_t;
+extern uint8_t flashsave_flag;
 void CAN_ID(void)
 {
 	static uint8_t step=0;
@@ -461,21 +463,22 @@ void CAN_ID(void)
 		if(key1_event==KE_ShortPress)
 		{
 			ReceiveMsg_t.NodeID++;
-			if(ReceiveMsg_t.NodeID>0x07)
-				ReceiveMsg_t.NodeID=0x01;
+			if(ReceiveMsg_t.NodeID>7)
+				ReceiveMsg_t.NodeID=0;
 		}
 		/*IDºı–°*/
 		if(key2_event==KE_ShortPress)
 		{
 			ReceiveMsg_t.NodeID--;
-			if(ReceiveMsg_t.NodeID<0X01)
-				ReceiveMsg_t.NodeID=0x07;
+			if((int8_t)ReceiveMsg_t.NodeID<0)
+				ReceiveMsg_t.NodeID=7;
 		}
 		
 		/*±£¥Ê≈‰÷√*/
 		if(key1_event==KE_LongPress)
 		{
-			Flash_CAN_ID_Save();
+			InterfaceParam_t.node_id=(float)ReceiveMsg_t.NodeID;
+			flashsave_flag=1;
 			step=0;
 		}
 	}
@@ -501,6 +504,8 @@ void Current(void)
 }
 
 extern PID_TypeDef PID_Iq;
+extern PID_TypeDef PID_Speed;
+
 void Run(void)
 {
 	char Iq_ref_str[10],Iq_now_str[10];
@@ -517,11 +522,13 @@ void Run(void)
 	
 	if(key1_event==KE_ShortPress)
 	{
-		PID_Iq.ref_value+=1.0f;
+		//PID_Iq.ref_value+=1.0f;
+		PID_Speed.ref_value+=_2PI;
 	}
 	else if(key2_event==KE_ShortPress)
 	{
-		PID_Iq.ref_value-=1.0f;
+		//PID_Iq.ref_value-=1.0f;
+		PID_Speed.ref_value-=_2PI;
 	}
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);

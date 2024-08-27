@@ -69,9 +69,9 @@ uint32_t FloatToIntBit(float x)
 
 float IntBitToFloat(uint32_t x)
 {
-	float * pInt;
-	pInt=(float *)(&x);
-	return *pInt;
+	float * pFloat;
+	pFloat=(float *)(&x);
+	return *pFloat;
 }
 
 /**

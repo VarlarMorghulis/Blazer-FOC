@@ -18,9 +18,9 @@ extern Fluxobserver_TypeDef Fluxobserver_t;
 
 void Vofa_Upload(void)
 {	
-	Frame_t.fdata[0]=FOC_Param_t->Ia;
-	Frame_t.fdata[1]=FOC_Param_t->Ib;
-	Frame_t.fdata[2]=FOC_Param_t->Ic;
+	Frame_t.fdata[0]=(float)ADC1->JDR1;
+	Frame_t.fdata[1]=(float)ADC1->JDR2;
+	Frame_t.fdata[2]=(float)ADC1->JDR3;
 	Frame_t.fdata[3]=FOC_Param_t->Id;
 	Frame_t.fdata[4]=FOC_Param_t->Iq;
 	Frame_t.fdata[5]=FOC_Param_t->theta_e;

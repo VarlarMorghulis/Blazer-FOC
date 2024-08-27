@@ -55,14 +55,26 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 	switch(param_id)
 	{
 		case CAN_SET_START_ENABLE:
-			start_en=1;
-
 			if(data==0)
+			{
+				start_en=1;
 				sensored_mode=Current_Mode;
+			}
 			else if(data==1.0f)
+			{
+				start_en=1;
 				sensored_mode=Speed_Mode;
+			}
 			else if(data==2.0f)
+			{
+				start_en=1;
 				sensored_mode=Position_Mode;
+			}
+			else if(data==3.0f)
+			{
+				start_en=0;
+				FOC_State_t=FOC_Calibration;
+			}
 		break;
 		
 		case CAN_SET_CURRENT:
