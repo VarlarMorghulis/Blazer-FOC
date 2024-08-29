@@ -123,11 +123,13 @@ int main(void)
 	}
 	if(flashsave_flag==1)
 	{
+		/*关闭全局中断*/
 		__disable_irq();
 		/*参数存储到Flash*/
 		Param_FlashSave();
-		flashsave_flag=0;
+		/*打开全局中断*/
 		__enable_irq();
+		flashsave_flag=0;
 	}
 	
   }

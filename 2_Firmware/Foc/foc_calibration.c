@@ -502,7 +502,6 @@ void FOC_Task_Param_Save(void)
 	InterfaceParam_t.pole_pairs=(float)Motor_t.Pole_Pairs;
 	
 	flashsave_flag=1;
-	//Flash_Save();
 	
 	Calib_State=Calib_ADC;
 	FOC_State_t=FOC_Wait;

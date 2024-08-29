@@ -3,16 +3,11 @@
 void Board_Init(void)
 {
 	/*从Flash读取存储的电机和编码器数据*/
-	//Flash_Read();
 	Param_FlashRead();
-	
-	/*从Flash读取CAN_ID*/
-	//Flash_CAN_ID_Read();
 	
 	/*参数初始化*/
 	FOC_Param_Init();
 	//All_InterfaceParam_Save();
-	//Param_FlashSave();
 	
 	/*延时函数初始化*/
 	delay_init(168);
@@ -37,7 +32,6 @@ void Board_Init(void)
 	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
 	
 	/*开启TIM8通道4PWM*/
-	//HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
 	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_4);
 	
 	/*使能ADC1注入组采样*/

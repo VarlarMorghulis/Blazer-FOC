@@ -275,7 +275,7 @@ void ENC_Z_EXTIIRQHandler(void)
 		{
 			if(Z_confirm_flag==0)
 			{
-				Flash_Read();
+				//Flash_Read();
 				LED_G(1);
 				Z_confirm_flag=1;
 			}

@@ -19,14 +19,11 @@
 
 #include "common_inc.h"
 
-void Flash_Save(void);
-void Flash_Read(void);
 void Param_FlashSave(void);
 void Param_FlashRead(void);
 
 void Flash_Anticogging_Clear(void);
 void Flash_Anticog_Save(uint16_t index,float *Iph);
 float Flash_GetAnticogCurrent(uint16_t index,uint8_t Ix);
-void Flash_CAN_ID_Save(void);
-void Flash_CAN_ID_Read(void);
+
 #endif

@@ -2,7 +2,7 @@
 
 ReceiveMsg_TypeDef ReceiveMsg_t=
 {
-	.NodeID=0x01,
+	.NodeID=0x00,
 	.ParamID=0x00
 };
 
@@ -16,10 +16,14 @@ extern PID_TypeDef PID_Speed;
 extern PID_TypeDef PID_Position;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
+extern Motor_TypeDef Motor_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
 extern uint8_t sensored_mode;
+extern ReceiveMsg_TypeDef ReceiveMsg_t;
+extern InterfaceParam_TypeDef InterfaceParam_t;
+extern uint8_t flashsave_flag;
 
 /**
    * @brief  CAN1过滤器初始化函数
@@ -70,11 +74,6 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 				start_en=1;
 				sensored_mode=Position_Mode;
 			}
-			else if(data==3.0f)
-			{
-				start_en=0;
-				FOC_State_t=FOC_Calibration;
-			}
 		break;
 		
 		case CAN_SET_CURRENT:
@@ -85,6 +84,35 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 			PID_Speed.ref_value = data / 60.0f * _2PI;
 		break;
 		
+		case CAN_SET_POS:
+			PID_Position.ref_value = data * _2PI;
+		break;
+		
+		case CAN_SET_NODE_ID:
+			if(data>=0 && data<=7)
+			{
+				ReceiveMsg_t.NodeID=(uint8_t)data;
+				InterfaceParam_t.node_id=data;
+				flashsave_flag=1;
+			}
+		break;
+		
+		case CAN_SET_POLEPARIS:
+			if(data>=2 && data<=40)
+			{
+				Motor_t.Pole_Pairs=(uint8_t)data;
+				InterfaceParam_t.pole_pairs=data;
+				flashsave_flag=1;
+			}
+		break;
+		
+		case CAN_CALIB:
+			if(data==0)
+			{
+				if(start_en==0)
+					FOC_State_t=FOC_Calibration;
+			}
+		break;
 		default:break;
 	}
 }
@@ -115,7 +143,7 @@ void CANRxIRQHandler(void)
 		/*心跳标志位置零*/
 		CAN_Rx_timeout=0;
 		
-		if(CAN_Rxflag==0&&start_en==1)
+		if(CAN_Rxflag==0&&start_en==1&&FOC_State_t==FOC_Wait)
 		{	
 			/*有感闭环模式*/
 			FOC_State_t=FOC_Sensored;
@@ -150,7 +178,6 @@ void CAN_LostConnect_Handle(void)
 	CAN_Rxflag=0;
 	/*进入闲置状态*/
 	FOC_State_t=FOC_Wait;
-	
 }
 
 void CAN_ID_Conflict_Detect(void)

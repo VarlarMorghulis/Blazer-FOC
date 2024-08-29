@@ -1,105 +1,11 @@
 #include "flash.h"
 
-extern Encoder_TypeDef SPI_Encoder_t;
-extern Encoder_TypeDef ABZ_Enc_t;
-extern Motor_TypeDef Motor_t;
-extern CurrentOffset_TypeDef CurrentOffset_t;
-extern ReceiveMsg_TypeDef ReceiveMsg_t;
 extern InterfaceParam_TypeDef InterfaceParam_t;
 
 uint8_t flashsave_flag;
 uint32_t temp_save[];
 uint32_t temp_read[];
 float* struct_ptr=(float*)(&InterfaceParam_t);
-
-#define ADDR_FLASH_START			ADDR_FLASH_SECTOR_8
-
-/**
-   * @brief  电机极对数和编码器参数保存 使用扇区9
-   * @param  
-   * @retval
-   */
-void Flash_Save(void)
-{
-	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
-	uint32_t PageError=0;
-	uint32_t temp[6];
-	uint32_t addr;
-	uint8_t i;
-	
-	FLASH_EraseInitstruct.TypeErase = FLASH_TYPEERASE_SECTORS;//执行扇区擦除操作
-	FLASH_EraseInitstruct.Sector=FLASH_SECTOR_9;
-	FLASH_EraseInitstruct.NbSectors=1;               
-    FLASH_EraseInitstruct.VoltageRange=FLASH_VOLTAGE_RANGE_3;//擦除的电压范围2.7-3.6V  
-
-	/*解锁Flash*/
-	HAL_FLASH_Unlock();
-    
-	/*擦除扇区*/
-	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
-	
-	
-#ifdef USE_ABZ_ENCODER
-	temp[0]=(uint32_t)ABZ_Enc_t.sensor_dir;
-	temp[1]=(uint32_t)ABZ_Enc_t.zero_enc_offset;
-	temp[2]=(uint32_t)Motor_t.Pole_Pairs;
-	temp[3]=(uint32_t)CurrentOffset_t.A_Offset;
-	temp[4]=(uint32_t)CurrentOffset_t.B_Offset;
-	temp[5]=(uint32_t)CurrentOffset_t.C_Offset;
-#endif
-
-#ifdef USE_SPI_ENCODER
-	temp[0]=(uint32_t)SPI_Encoder_t.sensor_dir;
-	temp[1]=(uint32_t)SPI_Encoder_t.zero_enc_offset;
-	temp[2]=(uint32_t)Motor_t.Pole_Pairs;
-	temp[3]=(uint32_t)CurrentOffset_t.A_Offset;
-	temp[4]=(uint32_t)CurrentOffset_t.B_Offset;
-	temp[5]=(uint32_t)CurrentOffset_t.C_Offset;
-#endif
-
-	addr=ADDR_FLASH_SECTOR_9;
-	for(i=0;i<6;i++)
-	{
-		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,addr,temp[i]);	
-		addr+=32;
-	}
-	
-	/*Flash上锁*/
-	HAL_FLASH_Lock();
-}
-
-void Flash_Read(void)
-{
-	uint32_t temp[6];
-	uint32_t addr;
-	uint8_t i;
-	
-	addr=ADDR_FLASH_SECTOR_9;
-	for(i=0;i<6;i++)
-	{
-		temp[i]=(*((volatile uint32_t *)addr));
-		addr+=32;
-	}
-	
-#ifdef USE_ABZ_ENCODER
-	ABZ_Enc_t.sensor_dir=(int8_t)temp[0];
-	ABZ_Enc_t.zero_enc_offset=(uint16_t)temp[1];
-	ABZ_TIM->CNT=ABZ_Enc_t.zero_enc_offset;
-	Motor_t.Pole_Pairs=(uint8_t)temp[2];
-	CurrentOffset_t.A_Offset=(uint16_t)temp[3];
-	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
-	CurrentOffset_t.C_Offset=(uint16_t)temp[5];
-#endif
-	
-#ifdef USE_SPI_ENCODER
-	SPI_Encoder_t.sensor_dir=(int8_t)temp[0];
-	SPI_Encoder_t.zero_enc_offset=(uint16_t)temp[1];
-	Motor_t.Pole_Pairs=(uint8_t)temp[2];
-	CurrentOffset_t.A_Offset=(uint16_t)temp[3];
-	CurrentOffset_t.B_Offset=(uint16_t)temp[4];
-	CurrentOffset_t.C_Offset=(uint16_t)temp[5];
-#endif
-}
 
 void Param_FlashSave(void)
 {
@@ -251,53 +157,4 @@ float Flash_GetAnticogCurrent(uint16_t index,uint8_t Ix)
 	Iph=IntBitToFloat(temp);
 	
 	return Iph;
-}
-
-/**
-   * @brief  CAN_ID参数保存 使用扇区8
-   * @param  无
-   * @retval 无
-   */
-void Flash_CAN_ID_Save(void)
-{
-	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
-	uint32_t PageError=0;
-	uint32_t temp;
-	uint32_t addr;
-	
-	FLASH_EraseInitstruct.TypeErase = FLASH_TYPEERASE_SECTORS;//执行扇区擦除操作
-	FLASH_EraseInitstruct.Sector=FLASH_SECTOR_8;
-	FLASH_EraseInitstruct.NbSectors=1;               
-    FLASH_EraseInitstruct.VoltageRange=FLASH_VOLTAGE_RANGE_3;//擦除的电压范围2.7-3.6V  
-
-	/*解锁Flash*/
-	HAL_FLASH_Unlock();
-    
-	/*擦除扇区*/
-	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
-	
-	temp=(uint32_t)ReceiveMsg_t.NodeID;
-	
-	addr=ADDR_FLASH_SECTOR_8;
-
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,addr,temp);	
-
-	/*Flash上锁*/
-	HAL_FLASH_Lock();
-	
-}
-
-void Flash_CAN_ID_Read(void)
-{
-	uint32_t temp;
-	uint32_t addr;
-	
-	addr=ADDR_FLASH_SECTOR_8;
-
-	temp=(*((volatile uint32_t *)addr));
-	
-	if(temp>0x08)
-		temp=0x01;
-	
-	ReceiveMsg_t.NodeID=(uint8_t)temp;
 }

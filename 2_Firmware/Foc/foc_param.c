@@ -24,15 +24,6 @@ void All_InterfaceParam_Save(void)
 	InterfaceParam_t.currentoffset_c=(float)CurrentOffset_t.C_Offset;
 	InterfaceParam_t.pole_pairs=(float)Motor_t.Pole_Pairs;
 	InterfaceParam_t.current_max=10.0f;
-//	InterfaceParam_t.node_id=1.0f;
-//	InterfaceParam_t.enc_type=2.0f;
-//	InterfaceParam_t.sensor_dir=3.0f;
-//	InterfaceParam_t.zero_enc_offset=4.0f;
-//	InterfaceParam_t.currentoffset_a=5.0f;
-//	InterfaceParam_t.currentoffset_b=6.0f;
-//	InterfaceParam_t.currentoffset_c=7.0f;
-//	InterfaceParam_t.pole_pairs=8.0f;
-//	InterfaceParam_t.current_max=8.2f;
 }
 
 void FOC_Param_Init(void)
