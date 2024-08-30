@@ -1,13 +1,5 @@
 #include "encoder.h"
 
-enum 
-{	
-	TLE5012B,
-	MT6816
-};
-
-uint8_t SPI_Encoder_Type=TLE5012B;
-
 /*执行频率20000Hz截止频率100Hz*/
 IIR_Butterworth_TypeDef Encoder_IIR_LPF_t=
 {
@@ -36,7 +28,7 @@ extern uint16_t lut_enc[257];
 void Encoder_ParamInit(void)
 {
 	/*编码器SPI模式初始化*/
-	switch(SPI_Encoder_Type)
+	switch(SPI_Encoder_t.enc_type)
 	{
 		case TLE5012B:
 			enc_spi.Init.CLKPolarity = SPI_POLARITY_LOW;
@@ -137,7 +129,7 @@ uint16_t ReadMT6816_Raw(void)
 uint16_t ReadSPIEncoder_Raw(void)
 {
 	uint16_t encoder_raw;
-	switch(SPI_Encoder_Type)
+	switch(SPI_Encoder_t.enc_type)
 	{
 		case TLE5012B:
 			encoder_raw=ReadTLE5012B_Raw(READ_ANGLE_VALUE);

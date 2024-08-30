@@ -33,12 +33,11 @@ typedef struct
 	float speed_max;
 	float accup_max;
 	float accdown_max;
-	
 }InterfaceParam_TypeDef;
 
 #include "common_inc.h"
 
-void All_InterfaceParam_Save(void);
+void Param_Return_Default(void);
 void FOC_Param_Init(void);
 void FOC_StructBind(FOC_TypeDef *FOC_t);
 void FOC_StructUnbind(void);

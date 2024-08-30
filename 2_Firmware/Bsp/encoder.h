@@ -8,21 +8,17 @@
 #include "foc_utils.h"
 #include "foc_run.h"
 
-#define enc_spi	 hspi2
-#define ABZ_TIM	 TIM3
-
-#define READ_STATUS      0x8001 //8000
-#define READ_ANGLE_VALUE 0x8021 //8020
-#define READ_SPEED_VALUE 0x8031 //8030
-
-#define ENC_CS_ENABLE  ENC_CS_GPIO_Port->BSRR=(uint32_t)ENC_CS_Pin<<16U/*片选脚电平拉低*/
-#define ENC_CS_DISABLE ENC_CS_GPIO_Port->BSRR=ENC_CS_Pin        		/*片选脚电平拉高*/
-
-#define USE_SPI_ENCODER
-//#define USE_ABZ_ENCODER
+/*编码器型号*/
+typedef enum 
+{	
+	TLE5012B,
+	MT6816
+}Encoder_Type;
 
 typedef struct
 {
+	/*编码器型号*/
+	uint8_t enc_type;
 	/*编码器分辨位数*/
 	uint8_t resolution;
 	/*编码器CPR 转一圈的输出范围*/
@@ -46,6 +42,21 @@ typedef struct
 	/*偏心补偿的标志位*/
 	uint8_t compensate_flag;
 }Encoder_TypeDef;
+
+
+
+#define enc_spi	 hspi2
+#define ABZ_TIM	 TIM3
+
+#define READ_STATUS      0x8001 //8000
+#define READ_ANGLE_VALUE 0x8021 //8020
+#define READ_SPEED_VALUE 0x8031 //8030
+
+#define ENC_CS_ENABLE  ENC_CS_GPIO_Port->BSRR=(uint32_t)ENC_CS_Pin<<16U/*片选脚电平拉低*/
+#define ENC_CS_DISABLE ENC_CS_GPIO_Port->BSRR=ENC_CS_Pin        		/*片选脚电平拉高*/
+
+#define USE_SPI_ENCODER
+//#define USE_ABZ_ENCODER
 
 
 uint16_t ReadTLE5012B_Raw(uint16_t Reg);

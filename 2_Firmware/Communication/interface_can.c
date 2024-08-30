@@ -91,7 +91,6 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		case CAN_SET_NODE_ID:
 			if(data>=0 && data<=7)
 			{
-				ReceiveMsg_t.NodeID=(uint8_t)data;
 				InterfaceParam_t.node_id=data;
 				flashsave_flag=1;
 			}
@@ -100,10 +99,34 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		case CAN_SET_POLEPARIS:
 			if(data>=2 && data<=40)
 			{
-				Motor_t.Pole_Pairs=(uint8_t)data;
 				InterfaceParam_t.pole_pairs=data;
 				flashsave_flag=1;
 			}
+		break;
+		
+		case CAN_SET_ENCODER_TYPE:
+			if(data==0)
+			{
+				InterfaceParam_t.enc_type=(float)TLE5012B;
+				flashsave_flag=1;
+			}
+			else if(data==1.0f)
+			{
+				InterfaceParam_t.enc_type=(float)MT6816;
+				flashsave_flag=1;
+			}
+		break;
+		
+		case CAN_SET_MAX_CURRENT:
+			if(data>=0 && data<=50)
+			{
+				InterfaceParam_t.current_max=data;
+				flashsave_flag=1;
+			}
+		break;
+		
+		case CAN_SET_MAX_MRPM:
+			
 		break;
 		
 		case CAN_CALIB:

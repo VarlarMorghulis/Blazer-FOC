@@ -28,7 +28,7 @@ Last update:2024.8
 
 > CAN通信控制
 
-> 支持绝对式SPI编码器 TLE5012B MT6816
+> 支持绝对式SPI编码器 TLE5012B、MT6816
 
 > 过压、欠压保护
 
@@ -97,20 +97,18 @@ MOSFET：**NTMFSC0D9N04CL**
 ### 2.整体布局
 
 #### 2.1大功率叠层版本
-
-
+<center class="half">
+    <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Driver Top.png" width="200"/>
+    <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Driver Bottom.png" width="200"/>
+</center>
 
 #### 2.2中功率单层版本
+<center class="half">
+    <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Top.png" width="200"/>
+    <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Bottom.png" width="200"/>
+</center>
 
-<img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Top.png" alt="Mini Top" style="zoom:25%;" />
-
-<center>顶面预览</center>
-
-<img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Bottom.png" alt="Mini Bottom" style="zoom:25%;" />
-
-<center>底面预览</center>
-
-
+<img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini 3D.png" alt="Mini 3D" width="250;" />
 
 
 
@@ -146,17 +144,17 @@ MOSFET：**NTMFSC0D9N04CL**
 
 **key2长按**：退回上一级界面
 
-<img src="E:\Robocon\图片\图片1.png" alt="图片1" style="zoom: 25%;" />
+<img src="E:\Robocon\图片\图片1.png" alt="图片1" width="200;" />
 
 ### 2.界面介绍
 
 ​		使用多级菜单的结构对不同功能进行访问，上电后的初始界面显示了当前的CAN ID和母线电压。
 
-<img src="E:\Robocon\图片\图片2.png" alt="图片2" style="zoom: 25%;" />
+<img src="E:\Robocon\图片\图片2.png" alt="图片2" width="200;" />
 
 ​		<u>长按key1</u>后，进入二级界面。
 
-<img src="E:\Robocon\图片\IMG_20240828_162212_edit_761457763416101.jpg" alt="IMG_20240828_162212_edit_761457763416101" style="zoom: 25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_162212_edit_761457763416101.jpg" alt="IMG_20240828_162212_edit_761457763416101" width="200;" />
 
 ​		<u>短按key1</u>向右切换，<u>短按key2</u>向左切换，<u>长按key1</u>进入下一级界面，<u>长按key2</u>退回到上一级界面。
 
@@ -166,19 +164,19 @@ MOSFET：**NTMFSC0D9N04CL**
 
 ​		编码器校准和极对数辨识功能需进入**Calib**界面，<u>长按key1</u>进入，界面如下。
 
-<img src="E:\Robocon\图片\IMG_20240828_162424_edit_761437429915583.jpg" alt="IMG_20240828_162424_edit_761437429915583" style="zoom:25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_162424_edit_761437429915583.jpg" alt="IMG_20240828_162424_edit_761437429915583" width="200;"  />
 
 ​		校准前必须确保电机处于==空载状态==，例如用于驱动舵轮时应把车架空校准，带载或堵转校准会显示成功，但实际大概率失败，后续的闭环将无法正常运行，电机有概率暴走。<u>短按key1</u>，开始校准，此时的现象是电机开始缓慢正转，一段时间后开始缓慢反转，绿色指示灯不断闪烁，界面如下。
 
-<img src="E:\Robocon\图片\IMG_20240828_162521_edit_761423210531210.jpg" alt="IMG_20240828_162521_edit_761423210531210" style="zoom:25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_162521_edit_761423210531210.jpg" alt="IMG_20240828_162521_edit_761423210531210" width="200;" />
 
 ​		校准完成后，正常的现象是屏幕显示**Succeed！**，此时校准的参数已经保存至flash，断电后重新启动即可正常使用。
 
-<img src="E:\Robocon\图片\IMG_20240828_163157_edit_761539184863484.jpg" alt="IMG_20240828_163157_edit_761539184863484" style="zoom:25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_163157_edit_761539184863484.jpg" alt="IMG_20240828_163157_edit_761539184863484" width="200;" />
 
 ​		若刚开始校准就显示**Failed!**，说明电流采样出现问题，请检查驱动板的三个**INA240A1PWR焊接是否良好**。若校准结束后显示**Failed!**，说明编码器读取异常，请检查（1）**编码器型号是否匹配**（2）**编码器线序是否正常**（3）**编码器接触是否良好**
 
-<img src="E:\Robocon\图片\IMG_20240828_163332_edit_761621981833263.jpg" alt="IMG_20240828_163332_edit_761621981833263" style="zoom:25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_163332_edit_761621981833263.jpg" alt="IMG_20240828_163332_edit_761621981833263" width="200;" />
 
 ​		此校准将极对数一同进行辨识，但实际测试显示，对于超过20对极的电机，可能会出现误判的情况，因此多对极的电机建议用CAN手动配置极对数。
 
@@ -186,17 +184,16 @@ MOSFET：**NTMFSC0D9N04CL**
 
 ​		CAN ID修改功能需进入**setting**界面，<u>长按key1</u>进入，界面如下。
 
-<img src="E:\Robocon\图片\IMG_20240828_163551_edit_761753781345222.jpg" alt="IMG_20240828_163551_edit_761753781345222" style="zoom:25%;" />
+<img src="E:\Robocon\图片\IMG_20240828_163551_edit_761753781345222.jpg" alt="IMG_20240828_163551_edit_761753781345222" width="200;" />
 
 ​		再次<u>长按key1</u>，进入到下一级配置界面。屏幕显示当前的ID为0x02，此时若需要将其更改为0x04，先<u>长按key1</u>，此时数字两端出现箭头，表示可以进行更改，<u>短按key1</u> ID增大，<u>短按key2</u> ID减小，ID范围为0x00~0x07。<u>短按key1</u>两下后当前为0x04，此时再<u>长按key1</u>，箭头消失,此时参数已保存到flash，断电后重新启动即可。
 
-<img src="E:\Robocon\图片\IMG_20240828_163645_edit_761896600206659.jpg" alt="IMG_20240828_163645_edit_761896600206659" style="zoom:25%;" />
-
-<img src="E:\Robocon\图片\IMG_20240828_163702_edit_761879471389995.jpg" alt="IMG_20240828_163702_edit_761879471389995" style="zoom:25%;" />
-
-<img src="E:\Robocon\图片\IMG_20240828_163719_edit_761863490621768.jpg" alt="IMG_20240828_163719_edit_761863490621768" style="zoom:25%;" />
-
-<img src="E:\Robocon\图片\IMG_20240828_163732_edit_761849112220728.jpg" alt="IMG_20240828_163732_edit_761849112220728" style="zoom:25%;" />
+<center class="half">
+    <img src="E:\Robocon\图片\IMG_20240828_163645_edit_761896600206659.jpg" width="120"/>
+    <img src="E:\Robocon\图片\IMG_20240828_163702_edit_761879471389995.jpg" width="120"/>
+    <img src="E:\Robocon\图片\IMG_20240828_163719_edit_761863490621768.jpg" width="120"/>
+    <img src="E:\Robocon\图片\IMG_20240828_163732_edit_761849112220728.jpg" width="120"/>
+</center>
 
 
 

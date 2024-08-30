@@ -77,7 +77,8 @@ float IntBitToFloat(uint32_t x)
 /**
    * @brief  设定启动模式
 			 转速为机械转速
-   * @param  node_id 驱动节点ID mode 模式 0 电流模式 1 速度模式 2 位置模式
+   * @param  node_id 驱动节点ID 
+             mode 模式 0:电流模式 1:速度模式 2:位置模式
    * @retval 无
    */
 void set_blazer_start(uint32_t node_id,float mode)
@@ -98,7 +99,8 @@ void set_blazer_start(uint32_t node_id,float mode)
 /**
    * @brief  设定电机转速
 			 转速为机械转速
-   * @param  node_id 驱动节点ID speed 设定速度 单位r/min
+   * @param  node_id 驱动节点ID 
+             speed 设定速度(r/min)
    * @retval 无
    */
 void set_blazer_speed(uint32_t node_id,float speed)

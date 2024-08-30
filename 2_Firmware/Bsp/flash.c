@@ -12,7 +12,7 @@ void Param_FlashSave(void)
 	FLASH_EraseInitTypeDef FLASH_EraseInitstruct;
 	uint32_t PageError=0;
 	uint32_t flash_addr;
-	volatile static uint8_t i=0;
+	volatile uint8_t i=0;
 	uint8_t param_num=sizeof(InterfaceParam_TypeDef)/sizeof(float);
 	
 	for(i=0;i<param_num;i++)
@@ -42,11 +42,10 @@ void Param_FlashSave(void)
 	HAL_FLASH_Lock();
 }
 
-
 void Param_FlashRead(void)
 {
 	uint32_t flash_addr;
-	volatile static uint8_t i=0;
+	volatile uint8_t i=0;
 	uint8_t param_num=sizeof(InterfaceParam_TypeDef)/sizeof(float);
 	
 	flash_addr=ADDR_FLASH_SECTOR_8;

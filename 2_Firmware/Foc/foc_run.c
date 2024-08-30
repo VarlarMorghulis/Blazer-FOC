@@ -133,16 +133,14 @@ PID_TypeDef PID_Speed=
 {
 	.ref_value=0.0f,
 	.Kp=0.2f,
-	.Ki=0.2f,
-	.output_max=10.0f
+	.Ki=0.2f
 };
 
 PID_TypeDef PID_Position=
 {
 	.ref_value=0.0f,
 	.Kp=0.2f,
-	.Ki=0.05f,
-	.output_max=62.8f
+	.Ki=0.05f
 };
 
 uint8_t sensored_mode=Speed_Mode;

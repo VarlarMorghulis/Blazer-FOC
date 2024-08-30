@@ -20,7 +20,6 @@ typedef enum
 	CAN_SET_ENCODER_TYPE,
 	CAN_SET_MAX_CURRENT,
 	CAN_SET_MAX_MRPM,
-	CAN_SET_MAX_ACC,
 	CAN_CALIB,
 }CAN_PARAM_ID;
 
@@ -41,6 +40,9 @@ void CAN_Filter_Init(void);
 void CAN_SendMessage(uint32_t ID);
 void set_blazer_node_id(uint32_t node_id,float node_id_set);
 void set_blazer_pole_pairs(uint32_t node_id,float pole_pairs);
+void set_blazer_encoder_type(uint32_t node_id,float enc_type);
+void set_blazer_max_current(uint32_t node_id,float max_current);
+void set_blazer_max_speed(uint32_t node_id,float max_speed);
 void set_blazer_calib(uint32_t node_id,float mode);
 
 #endif

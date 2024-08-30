@@ -107,7 +107,9 @@ int main(void)
   /*将节点ID为0x02的驱动ID改为0x06*/
   //set_blazer_node_id(0x02,6.0f);
   /*设置极对数为7*/
-  set_blazer_pole_pairs(0x02,15.0f);
+  //set_blazer_pole_pairs(0x02,15.0f);
+  /*设置最大电流为5A*/
+  set_blazer_max_current(0x02,5.0f);
   /*启动校准*/
   //set_blazer_calib(0x02,0.0f);
 
