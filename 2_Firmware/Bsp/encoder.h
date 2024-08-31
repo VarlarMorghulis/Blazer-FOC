@@ -18,7 +18,7 @@ typedef enum
 typedef struct
 {
 	/*编码器型号*/
-	uint8_t enc_type;
+	Encoder_Type enc_type;
 	/*编码器分辨位数*/
 	uint8_t resolution;
 	/*编码器CPR 转一圈的输出范围*/

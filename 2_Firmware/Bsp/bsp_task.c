@@ -43,7 +43,7 @@ void BSP1kHzIRQHandler(void)
 		/*CAN_Rx_timeout每次在CANRxIRQHandler()中清零*/
 		if(++CAN_Rx_timeout>=500)
 		{
-			//CAN_LostConnect_Handle();
+			CAN_LostConnect_Handle();
 		}
 	}
 }

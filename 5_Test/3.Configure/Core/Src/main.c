@@ -46,8 +46,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-extern uint8_t can_tx_flag;
-float motor_speed[4]={60.0f,120.0f,180.0f,240.0f};
 
 /* USER CODE END PV */
 
@@ -105,11 +103,13 @@ int main(void)
 	一驱动的不同参数更改最好间隔一段时间发送*/
 	
   /*将节点ID为0x02的驱动ID改为0x06*/
-  //set_blazer_node_id(0x02,6.0f);
+  set_blazer_node_id(0x02,6.0f);
   /*设置极对数为7*/
-  //set_blazer_pole_pairs(0x02,15.0f);
-  /*设置最大电流为5A*/
-  set_blazer_max_current(0x02,5.0f);
+  //set_blazer_pole_pairs(0x02,7.0f);
+  /*设置编码器型号*/
+  //set_blazer_encoder_type(0x02,TLE5012B);
+  /*设置最大电流为20A*/
+  //set_blazer_max_current(0x02,20.0f);
   /*启动校准*/
   //set_blazer_calib(0x02,0.0f);
 
@@ -120,7 +120,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	/*1kHz发送,标志位在stm32f4xx_it.c中改变*/
 
     /* USER CODE BEGIN 3 */
   }

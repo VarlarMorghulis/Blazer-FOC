@@ -29,7 +29,7 @@ void Param_Return_Default(void)
 void FOC_Param_Init(void)
 {
 	ReceiveMsg_t.NodeID=(uint8_t)InterfaceParam_t.node_id;
-	SPI_Encoder_t.enc_type=(uint8_t)InterfaceParam_t.enc_type;
+	SPI_Encoder_t.enc_type=(Encoder_Type)InterfaceParam_t.enc_type;
 	SPI_Encoder_t.sensor_dir=(int8_t)InterfaceParam_t.sensor_dir;
 	SPI_Encoder_t.zero_enc_offset=(uint16_t)InterfaceParam_t.zero_enc_offset;
 	CurrentOffset_t.A_Offset=(uint16_t)InterfaceParam_t.currentoffset_a;

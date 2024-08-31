@@ -21,7 +21,6 @@ extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
 extern uint8_t sensored_mode;
-extern ReceiveMsg_TypeDef ReceiveMsg_t;
 extern InterfaceParam_TypeDef InterfaceParam_t;
 extern uint8_t flashsave_flag;
 
@@ -89,7 +88,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_NODE_ID:
-			if(data>=0 && data<=7)
+			if(data>=0 && data<=7.0f)
 			{
 				InterfaceParam_t.node_id=data;
 				flashsave_flag=1;
@@ -97,7 +96,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_POLEPARIS:
-			if(data>=2 && data<=40)
+			if(data>=2.0f && data<=40.0f)
 			{
 				InterfaceParam_t.pole_pairs=data;
 				flashsave_flag=1;
@@ -118,7 +117,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_MAX_CURRENT:
-			if(data>=0 && data<=50)
+			if(data>=0 && data<=50.0f)
 			{
 				InterfaceParam_t.current_max=data;
 				flashsave_flag=1;
@@ -126,7 +125,11 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_MAX_MRPM:
-			
+			if(data>=0 && data<=8000.0f)
+			{
+				InterfaceParam_t.speed_max= data / 60.0f * _2PI;
+				flashsave_flag=1;
+			}
 		break;
 		
 		case CAN_CALIB:
@@ -151,7 +154,7 @@ void CANRxIRQHandler(void)
 	uint8_t node_id;
 	uint8_t param_id=0x08;
 	uint8_t rx_data[4];
-	uint32_t u32_data=0;
+	uint32_t u32_data;
 	
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	

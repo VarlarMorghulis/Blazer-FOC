@@ -8,13 +8,11 @@ CAN_Data_TypeDef CAN_Data_t[Motor_Num]=
 	{WRITE_ONLY , 0x01 , (uint8_t*)(&blazer_content_transform[1].u8_data)},
 	{WRITE_ONLY , 0x02 , (uint8_t*)(&blazer_content_transform[2].u8_data)},
 	{WRITE_ONLY , 0x03 , (uint8_t*)(&blazer_content_transform[3].u8_data)},
+	{WRITE_ONLY , 0x04 , (uint8_t*)(&blazer_content_transform[4].u8_data)},
+	{WRITE_ONLY , 0x05 , (uint8_t*)(&blazer_content_transform[5].u8_data)},
+	{WRITE_ONLY , 0x06 , (uint8_t*)(&blazer_content_transform[6].u8_data)},
+	{WRITE_ONLY , 0x07 , (uint8_t*)(&blazer_content_transform[7].u8_data)},
 };
-
-enum 
-{	
-	TLE5012B,
-	MT6816
-}Encoder_Type;
 
 /*MT6816的范围为0-16383*/
 /*TLE5012B的范围为0-32767*/
@@ -86,12 +84,12 @@ float IntBitToFloat(uint32_t x)
 /**
    * @brief  修改驱动节点ID
    * @param  node_id 驱动原节点ID 
-             node_id_set 驱动新节点ID
+             node_id_set 驱动新节点ID 有效范围0x00-0x07
    * @retval 无
    */
 void set_blazer_node_id(uint32_t node_id,float node_id_set)
 {
-	uint32_t blazer_node_id_id = node_id << 8 | CAN_SET_NODE_ID;
+	uint32_t blazer_nodeid_id = node_id << 8 | CAN_SET_NODE_ID;
 	uint32_t id_u32;
 	
 	id_u32=FloatToIntBit(node_id_set);
@@ -101,13 +99,13 @@ void set_blazer_node_id(uint32_t node_id,float node_id_set)
 	blazer_content_transform[node_id].u8_data[2] = id_u32 >> 8;
 	blazer_content_transform[node_id].u8_data[3] = id_u32;
 	
-	CAN_SendMessage(blazer_node_id_id);
+	CAN_SendMessage(blazer_nodeid_id);
 }
 
 /**
    * @brief  设置电机极对数
    * @param  node_id 驱动节点ID 
-             node_id_set 驱动新节点ID
+             pole_pairs 极对数 范围2-40
    * @retval 无
    */
 void set_blazer_pole_pairs(uint32_t node_id,float pole_pairs)
@@ -149,7 +147,7 @@ void set_blazer_encoder_type(uint32_t node_id,float enc_type)
 /**
    * @brief  设置驱动最大电流
    * @param  node_ id 驱动节点ID 
-             max_current 最大电流(A) 实际为Q轴电流最大设定值 默认设定为40A
+             max_current 最大电流(A) 实际为Q轴电流最大设定值 范围0-50A 默认设定为30A
    * @retval 无
    */
 void set_blazer_max_current(uint32_t node_id,float max_current)

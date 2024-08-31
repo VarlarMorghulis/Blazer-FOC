@@ -4,7 +4,7 @@
 #include "main.h"
 #include "can.h"
 
-#define Motor_Num	4
+#define Motor_Num	8
 
 #define READ_ONLY	0
 #define WRITE_ONLY 	1
@@ -35,6 +35,12 @@ typedef struct
 	uint8_t  node_id;
 	uint8_t* data_ptr;
 }CAN_Data_TypeDef;
+
+typedef enum 
+{	
+	TLE5012B,
+	MT6816
+}Encoder_Type;
 
 void CAN_Filter_Init(void);
 void CAN_SendMessage(uint32_t ID);
