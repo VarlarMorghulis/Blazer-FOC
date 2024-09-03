@@ -315,6 +315,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>SPI_Encoder_Type</ItemText>
         </Ww>
+        <Ww>
+          <count>31</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PID_ZeroSpeed</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

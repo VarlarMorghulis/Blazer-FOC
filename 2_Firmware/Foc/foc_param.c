@@ -10,6 +10,7 @@ extern CurrentOffset_TypeDef CurrentOffset_t;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_ZeroSpeed;
 extern PID_TypeDef PID_Position;
 
 void Param_Return_Default(void)
@@ -37,7 +38,8 @@ void FOC_Param_Init(void)
 	CurrentOffset_t.C_Offset=(uint16_t)InterfaceParam_t.currentoffset_c;
 	Motor_t.Pole_Pairs=(uint8_t)InterfaceParam_t.pole_pairs;
 	PID_Speed.output_max=InterfaceParam_t.current_max;
-	PID_Position.output_max=InterfaceParam_t.speed_max;
+	PID_ZeroSpeed.output_max=InterfaceParam_t.current_max;
+	//PID_Position.output_max=InterfaceParam_t.speed_max;
 }
 
 FOC_TypeDef *FOC_Param_t;

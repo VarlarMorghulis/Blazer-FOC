@@ -138,7 +138,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(TEMP_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = C_CURRENT_Pin|B_CURRENT_Pin|A_CURRENT_Pin|VBUS_Pin;
+    GPIO_InitStruct.Pin = IC_Pin|IB_Pin|IA_Pin|VBUS_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -172,7 +172,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     */
     HAL_GPIO_DeInit(TEMP_GPIO_Port, TEMP_Pin);
 
-    HAL_GPIO_DeInit(GPIOA, C_CURRENT_Pin|B_CURRENT_Pin|A_CURRENT_Pin|VBUS_Pin);
+    HAL_GPIO_DeInit(GPIOA, IC_Pin|IB_Pin|IA_Pin|VBUS_Pin);
 
     /* ADC1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(ADC_IRQn);

@@ -71,6 +71,7 @@ float Position_P_Ctrl(PID_TypeDef *PID)
 void Clear_PID_Param(PID_TypeDef *PID)
 {
 	PID->ref_value=0.0f;
+	PID->error=0.0f;
 	PID->output=0.0f;
 	PID->error_sum=0.0f;
 }

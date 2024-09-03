@@ -136,11 +136,18 @@ PID_TypeDef PID_Speed=
 	.Ki=0.2f
 };
 
+PID_TypeDef PID_ZeroSpeed=
+{
+	.ref_value=0.0f,
+	.Kp=0.2f,
+	.Ki=0.2f,
+};
+
 PID_TypeDef PID_Position=
 {
 	.ref_value=0.0f,
 	.Kp=0.2f,
-	.Ki=0.05f
+	.output_max=62.8f
 };
 
 uint8_t sensored_mode=Speed_Mode;
@@ -318,30 +325,59 @@ void Sensored_Currentloop(void)
    */
 void Sensored_Speedloop(void)
 {
-	Encoder_TypeDef *Encoder_t;
+	static uint8_t sensored_state=Speed_Mode,sensored_laststate=Speed_Mode;
+	static uint8_t position_cnt;
+	static uint8_t speed_to_pos;
 	
-#ifdef USE_ABZ_ENCODER
-	Encoder_t=&ABZ_Enc_t;
-#endif
+	/*启用位置模式,零速转矩保持*/
+	if(PID_Speed.ref_value==0.0f)
+	{	
+		if(fast_abs(SPI_Encoder_t.velocity)<= _2PI / 10.0f)
+		{
+			sensored_state=Position_Mode;
+			
+			Clear_PID_Param(&PID_Speed);
+			if(sensored_laststate==Speed_Mode)
+			{
+				PID_Position.ref_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
+				speed_to_pos=1;
+			}
+		}
+		
+		if(speed_to_pos==1)
+		{
+			if(++position_cnt>=2)
+			{	
+				PID_Position.samp_value = SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
+				PID_ZeroSpeed.ref_value=Position_P_Ctrl(&PID_Position);
+				position_cnt=0;
+			}
+			PID_ZeroSpeed.samp_value=SPI_Encoder_t.velocity;
+			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_ZeroSpeed);
+		}
+		else if(speed_to_pos==0)
+		{
+			PID_Speed.samp_value=SPI_Encoder_t.velocity;
+			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+		}
+	}
+	else
+	{
+		sensored_state=Speed_Mode;
+		speed_to_pos=0;
+		
+		Clear_PID_Param(&PID_ZeroSpeed);
+		
+		PID_Speed.samp_value=SPI_Encoder_t.velocity;
+		PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+	}
 	
-#ifdef USE_SPI_ENCODER
-	Encoder_t=&SPI_Encoder_t;
-#endif
-
-	PID_Speed.samp_value=Encoder_t->velocity;
-	PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
-	
+	sensored_laststate=sensored_state;
 }
 
 void Sensored_Positionloop(void)
 {
-#ifdef USE_ABZ_ENCODER
-	//PID_Position.samp_value=ABZ_GetCalAngle(&ABZ_Enc_t);
-#endif
-
-#ifdef USE_SPI_ENCODER
 	PID_Position.samp_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
-#endif
 	PID_Speed.ref_value=Position_P_Ctrl(&PID_Position);
 }
 
@@ -361,6 +397,7 @@ void FOC_Task_Sensored(void)
 		break;
 		
 		case Speed_Mode:
+			
 			/*电流环执行频率为20kHz*/
 			if(++TE_Currentloop_t.Cnt_20kHz>=1)
 			{
@@ -374,6 +411,7 @@ void FOC_Task_Sensored(void)
 				Sensored_Speedloop();
 				TE_Speedloop_t.Cnt_20kHz=0;
 			}
+			
 		break;
 		
 		case Position_Mode:
