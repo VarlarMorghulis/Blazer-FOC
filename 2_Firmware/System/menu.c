@@ -10,8 +10,14 @@ extern uint8_t menu_key;
 
 extern AnalogParam_TypeDef AnalogParam_t;
 extern FOC_TypeDef FOC_Sensored_t;
-extern Encoder_TypeDef TLE5012B_t;
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
+extern InterfaceParam_TypeDef InterfaceParam_t;
+extern Encoder_TypeDef SPI_Encoder_t;
+extern Encoder_TypeDef ABZ_Enc_t;
+extern PID_TypeDef PID_Iq;
+extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_ZeroSpeed;
+extern uint8_t flashsave_flag;
 
 extern FOC_State FOC_State_t;
 
@@ -29,7 +35,10 @@ void Menu_Init(void)
         nowMenu = Creat_ChildMenu("calib",Draw_Calib_font,Calib);
 		nowMenu = Creat_BrotherMenu("setting",Draw_Setting_font,Setting);
 			nowMenu = Creat_ChildMenu("can id",Draw_CAN_ID_font,CAN_ID);
-			nowMenu = Creat_BrotherMenu("current",Draw_Current_font,Current);
+			nowMenu = Creat_BrotherMenu("i max",Draw_Current_font,Current);
+			nowMenu = Creat_BrotherMenu("speed max",Draw_Speed_font,Speed);
+			nowMenu = Creat_BrotherMenu("encoder",Draw_Encoder_font,Encoder);
+			nowMenu = Creat_BrotherMenu("default",Draw_Default_font,Default);
 			nowMenu = Circle_Menu();
 		nowMenu = Creat_BrotherMenu("run",Draw_Run_font,Run);
 		nowMenu = Creat_BrotherMenu("info",Draw_Info_font,Info);
@@ -293,7 +302,7 @@ void Menu_Show(uint8_t key)
     nowMenu = now;
 }
 
-extern Encoder_TypeDef ABZ_Enc_t;
+
 void Draw_Main_font(int8_t x, int8_t y)
 {
 	char ID_str[10],Vbus_str[10];
@@ -326,7 +335,21 @@ void Draw_Main_font(int8_t x, int8_t y)
 #endif
 
 #ifdef USE_SPI_ENCODER
-	u8g2_DrawStr(&u8g2,80,55,"SPI");
+	switch(SPI_Encoder_t.enc_type)
+	{
+		case TLE5012B:
+			u8g2_DrawStr(&u8g2,80,55,"TLE5012B");
+		break;
+		
+		case MT6816:
+			u8g2_DrawStr(&u8g2,80,55,"MT6816");
+		break;
+		
+		default:
+			u8g2_DrawStr(&u8g2,80,55,"Unknown");
+		break;
+	}
+	
 #endif
 
 #ifdef Motor_Tmotor_U10
@@ -355,12 +378,30 @@ void Draw_Setting_font(int8_t x, int8_t y)
 void Draw_CAN_ID_font(int8_t x, int8_t y)
 {
 	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_can_id);
-	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
+	u8g2_DrawStr(&u8g2,46+x,70,nowMenu->Name);
 }
 
 void Draw_Current_font(int8_t x, int8_t y)
 {
 	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_current);
+	u8g2_DrawStr(&u8g2,48+x,70,nowMenu->Name);
+}
+
+void Draw_Speed_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_speed);
+	u8g2_DrawStr(&u8g2,38+x,70,nowMenu->Name);
+}
+
+void Draw_Encoder_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_encoder);
+	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
+}
+
+void Draw_Default_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_default);
 	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
 }
 
@@ -439,9 +480,7 @@ void Setting(void)
 	u8g2_DrawStr(&u8g2,20,35,"To be developed");
 }
 
-extern ReceiveMsg_TypeDef ReceiveMsg_t;
-extern InterfaceParam_TypeDef InterfaceParam_t;
-extern uint8_t flashsave_flag;
+
 void CAN_ID(void)
 {
 	static uint8_t step=0;
@@ -483,7 +522,7 @@ void CAN_ID(void)
 		}
 	}
 
-	/*只有在ID配置时有小箭头标识*/
+	/*只有在配置时有小箭头标识*/
 	if(step==1)
 	{
 		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
@@ -500,11 +539,194 @@ void CAN_ID(void)
 
 void Current(void)
 {
+	static uint8_t step=0;
+	char current_str[10];
+
+	if(step==0)
+	{
+		u8g2_ClearBuffer(&u8g2);
+		/*长按进入ID配置*/
+		if(key1_event==KE_LongPress)
+		{
+			key1_event=KE_Dummy;
+			step=1;
+		}
+	}
+	if(step==1)
+	{
+		/*设定电流增加*/
+		if(key1_event==KE_ShortPress)
+		{
+			PID_Speed.output_max+=1.0f;
+			if(PID_Speed.output_max>70.0f)
+				PID_Speed.output_max=5.0f;
+		}
+		/*设定电流减小*/
+		if(key2_event==KE_ShortPress)
+		{
+			PID_Speed.output_max-=1.0f;
+			if(PID_Speed.output_max<5.0f)
+				PID_Speed.output_max=70.0f;
+		}
+		
+		/*长按保存配置*/
+		if(key1_event==KE_LongPress)
+		{
+			PID_ZeroSpeed.output_max=PID_Speed.output_max;
+			InterfaceParam_t.current_max=PID_Speed.output_max;
+			flashsave_flag=1;
+			step=0;
+		}
+	}
+
+	/*只有在配置时有小箭头标识*/
+	if(step==1)
+	{
+		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
+		u8g2_DrawTriangle(&u8g2,25,40,31,32,31,48);
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
+	
+	sprintf(current_str,"%dA",(int)PID_Speed.output_max);
+	u8g2_DrawStr(&u8g2,44,46,current_str);
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+}
+
+void Speed(void)
+{
 	u8g2_DrawStr(&u8g2,20,35,"To be developed");
 }
 
-extern PID_TypeDef PID_Iq;
-extern PID_TypeDef PID_Speed;
+void Encoder(void)
+{
+	static uint8_t step=0;
+	char default_str[10];
+    
+	if(step==0)
+	{
+		u8g2_ClearBuffer(&u8g2);
+		/*长按进入ID配置*/
+		if(key1_event==KE_LongPress)
+		{
+			key1_event=KE_Dummy;
+			step=1;
+		}
+	}
+	if(step==1)
+	{
+		if(key1_event==KE_ShortPress)
+		{
+			SPI_Encoder_t.enc_type++;
+			if(SPI_Encoder_t.enc_type>1)
+				SPI_Encoder_t.enc_type=TLE5012B;
+		}
+		if(key2_event==KE_ShortPress)
+		{
+			SPI_Encoder_t.enc_type--;
+			if((int8_t)SPI_Encoder_t.enc_type<0)
+				SPI_Encoder_t.enc_type=MT6816;
+		}
+		
+		/*保存配置*/
+		if(key1_event==KE_LongPress)
+		{
+			InterfaceParam_t.enc_type=(float)SPI_Encoder_t.enc_type;
+			flashsave_flag=1;
+			step=0;
+		}
+	}
+
+	/*只有在配置时有小箭头标识*/
+	if(step==1)
+	{
+		u8g2_DrawTriangle(&u8g2,106,40,101,32,101,48);
+		u8g2_DrawTriangle(&u8g2,15,40,21,32,21,48);
+	}
+	
+	//u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
+	
+	switch(SPI_Encoder_t.enc_type)
+	{
+		case TLE5012B:
+			sprintf(default_str,"TLE5012B");
+			u8g2_DrawStr(&u8g2,38,46,default_str);
+		break;
+		
+		case MT6816:
+			sprintf(default_str,"MT6816");
+			u8g2_DrawStr(&u8g2,45,46,default_str);
+		break;
+		
+		default:break;
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+}
+
+void Default(void)
+{
+	static uint8_t step=0;
+	static uint8_t if_return_default;
+	char default_str[10];
+    
+	if(step==0)
+	{
+		u8g2_ClearBuffer(&u8g2);
+		/*长按进入ID配置*/
+		if(key1_event==KE_LongPress)
+		{
+			key1_event=KE_Dummy;
+			step=1;
+		}
+	}
+	if(step==1)
+	{
+		if(key1_event==KE_ShortPress)
+		{
+			if_return_default++;
+			if(if_return_default>1)
+				if_return_default=0;
+		}
+		if(key2_event==KE_ShortPress)
+		{
+			if_return_default--;
+			if((int8_t)if_return_default<0)
+				if_return_default=1;
+		}
+		
+		/*保存配置*/
+		if(key1_event==KE_LongPress && if_return_default==1)
+		{
+			Param_Return_Default();
+			flashsave_flag=1;
+			step=0;
+		}
+	}
+
+	/*只有在配置时有小箭头标识*/
+	if(step==1)
+	{
+		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
+		u8g2_DrawTriangle(&u8g2,25,40,31,32,31,48);
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
+	
+	if(if_return_default==0)
+	{
+		sprintf(default_str,"No");
+	}
+	else if(if_return_default==1)
+	{
+		sprintf(default_str,"Yes");
+	}
+	
+	u8g2_DrawStr(&u8g2,44,46,default_str);
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+}
 
 void Run(void)
 {

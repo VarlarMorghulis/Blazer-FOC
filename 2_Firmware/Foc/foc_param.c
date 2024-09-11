@@ -19,11 +19,11 @@ void Param_Return_Default(void)
 	InterfaceParam_t.enc_type=(float)TLE5012B;
 	//InterfaceParam_t.sensor_dir=(float)1;
 	//InterfaceParam_t.zero_enc_offset=(float)SPI_Encoder_t.zero_enc_offset;
-	//InterfaceParam_t.currentoffset_a=(float)CurrentOffset_t.A_Offset;
-	//InterfaceParam_t.currentoffset_b=(float)CurrentOffset_t.B_Offset;
-	//InterfaceParam_t.currentoffset_c=(float)CurrentOffset_t.C_Offset;
+	InterfaceParam_t.currentoffset_a=2048.0f;
+	InterfaceParam_t.currentoffset_b=2048.0f;
+	InterfaceParam_t.currentoffset_c=2048.0f;
 	InterfaceParam_t.pole_pairs=7.0f;
-	InterfaceParam_t.current_max=40.0f;
+	InterfaceParam_t.current_max=30.0f;
 	InterfaceParam_t.speed_max=8000.0f / 60.0f * _2PI;
 }
 

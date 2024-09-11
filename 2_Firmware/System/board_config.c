@@ -6,8 +6,8 @@ void Board_Init(void)
 	Param_FlashRead();
 	
 	/*参数初始化*/
+	//Param_Return_Default();
 	FOC_Param_Init();
-	//All_InterfaceParam_Save();
 	
 	/*延时函数初始化*/
 	delay_init(168);
@@ -46,7 +46,7 @@ void Board_Init(void)
 	Menu_Init();
 	
 	/*CAN1过滤器*/
-	CAN_Filter_Init();
+	CAN1_Filter_Init();
 	
 
 }

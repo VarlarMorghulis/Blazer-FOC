@@ -26,7 +26,7 @@ typedef struct
 	float data;
 }ReceiveMsg_TypeDef;
 
-void CAN_Filter_Init(void);
+void CAN1_Filter_Init(void);
 void CAN_DataTransform(void);
 void CANRxIRQHandler(void);
 void CAN_SendMessage(void);

@@ -28,6 +28,8 @@ Last update:2024.8
 
 * CAN通信控制
 
+* CAN心跳
+
 * 支持绝对式SPI编码器 TLE5012B、MT6816
 
 * 过压、欠压保护
@@ -78,7 +80,7 @@ Last update:2024.8
 
 * 电流感应放大器 : **INA240A1PWR**
 
-* 采样方案：三电阻相线采样
+* 采样方案：**三电阻相线采样**
 
 * 屏幕 :  **0.78寸OLED SH1107**
 
@@ -98,43 +100,96 @@ Last update:2024.8
 
 #### 2.1大功率叠层版本
 <center class="half">
+    <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Controller Top.png" width="200"/>
+    <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Controller Bottom.png" width="200"/>
+</center>
+
+<center class="half">
     <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Driver Top.png" width="200"/>
     <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Driver Bottom.png" width="200"/>
 </center>
+<img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Blazer-FOC.png" alt="Blazer-FOC" width="250;" />
 
 #### 2.2中功率单层版本
 <center class="half">
     <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Top.png" width="200"/>
     <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Bottom.png" width="200"/>
 </center>
-
 <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini 3D.png" alt="Mini 3D" width="250;" />
-
-
 
 ## 二、软件设置
 
+### 1.参数定义
+
+|   名称   |   解释   |    范围     | 参数ID |
+| :------: | :------: | :---------: | :----: |
+| start_en | 上电使能 | [0,2] (int) |  0x00  |
+|  i_set   | 设定电流 |   [-50,50]   |  0x01  |
+| spd_set  | 设定速度 |  [-8000,8000]  |  0x02  |
+| pos_set  | 设定位置 |     [-$\infty$,+$\infty$]     | 0x03 |
+| **id** | 修改节点ID | [0,7] (int) | 0x04 |
+| **pol** | 极对数 | [2,40] (int) | 0x05 |
+| **enc_type** | 编码器型号 | [0,1] (int) | 0x06 |
+| **i_max** | 最大电流 | [0,50] | 0x07 |
+| **spd_max** | 最大速度 | [0,8000] | 0x08 |
+| **cal** | 校准 | [0,1] (int) | 0x09 |
+
+注释：
+
+1.电流的单位是A，速度的单位是r/min（转/分钟），位置的单位是r（转）。
+
+2.0x00-0x03为运行参数，在电机闭环运行中不断发送，0x04-0x09为配置参数，在运行前需要提前配置完毕，电机才能正常运行。
+
+参数解释：
+
+* start_en：在进入主循环前的初始化对驱动进行使能，指定闭环模式，请确保驱动正常接收，否则无法进入后续的闭环控制。0：电流控制模式 1：速度控制模式 2：位置控制模式。
+
+* i_set：设定电流，在电流控制模式下使用。
+
+* spd_set：设定速度——**机械转速**，在速度控制模式下使用。
+
+* pos_set：设定位置，在位置控制模式下使用。
+
+  ------
 
 
-### 2.参数定义
+* id：修改当前节点ID
 
+* pol：设置极对数，请参阅电机的参数，或通过数转子上贴装的磁钢片$\div$2的方式确认极对数，请务必确保极对数的正确，否则将无法正常闭环，严重时会烧毁电机。默认极对数为7。
 
+* enc_type：指定编码器型号，目前支持的有 0 TLE5012B  1 MT6816，编码器型号实际与设定不符将会报错。默认型号为TLE5012B。
+* i_max：最大电流限制。默认为30A。
+* spd_max：最大转速限制。默认为8000r/min。
+* cal：校准标志位。0：校准ADC和编码器零偏，**更换编码器型号**、**编码器重新安装**、**磁铁重新安装**、**电机线序改变**均需重新校准，否则电机将无法正常运行，可能会发生跑飞的情况，校准前务必确保电机处于==空载==状态。
 
-|      |      |      |
-| ---- | ---- | ---- |
-|      |      |      |
-|      |      |      |
-|      |      |      |
-
-
-
-### 3.CAN协议
+### 2.CAN协议
 
 ​		Blazer FOC使用**扩展帧**进行CAN通信，帧ID由节点ID和参数ID组成，格式为
 
 ​                                                   **==ID段：节点ID<<8 | 参数ID  数据段：32位float==**
 
+​		例如，设置节点ID为0x02的驱动极对数为20，则ID段为 **0x205**，数据段为**20** (float)。
 
+​		在实际发送数据段时，是将32位的float转变为一个uint32_t，再通过移位寄存的方式，赋给4个uint8_t，DLC长度为4个字节。注意，将float转换为uint32_t请勿使用强制类型转换，这会舍去符号和小数部分，丢失精度，以下示例是错误的：
+
+> ```
+> float current = 10.0f;
+> uint32_t current_u32;
+> current_u32 = (uint32_t)current;
+> ```
+
+​		请使用以下函数：
+
+> ```
+> uint32_t FloatToIntBit(float x)
+> {
+> 	uint32_t *pInt;
+> 	pInt = (uint32_t*)(&x);
+> 	return *pInt;
+> }
+> 
+> current_u32= FloatToIntBit(current);
+> ```
 
 ## 三、离线操作
 
@@ -174,7 +229,7 @@ Last update:2024.8
 
 <img src="E:\Robocon\图片\IMG_20240828_162424_edit_761437429915583.jpg" alt="IMG_20240828_162424_edit_761437429915583" width="200;"  />
 
-​		校准前必须确保电机处于==空载状态==，例如用于驱动舵轮时应把车架空校准，带载或堵转校准会显示成功，但实际大概率失败，后续的闭环将无法正常运行，电机有概率**暴走**。<u>短按key1</u>，开始校准，此时的现象是电机开始缓慢正转，一段时间后开始缓慢反转，绿色指示灯不断闪烁，界面如下。
+​		校准前必须确保电机处于==空载==状态，例如用于驱动舵轮时应把车架空校准，带载或堵转校准会显示成功，但实际大概率失败，后续的闭环将无法正常运行，电机有概率**暴走**。<u>短按key1</u>，开始校准，此时的现象是电机开始缓慢正转，一段时间后开始缓慢反转，绿色指示灯不断闪烁，界面如下。
 
 <img src="E:\Robocon\图片\IMG_20240828_162521_edit_761423210531210.jpg" alt="IMG_20240828_162521_edit_761423210531210" width="200;" />
 
@@ -186,7 +241,7 @@ Last update:2024.8
 
 <img src="E:\Robocon\图片\IMG_20240828_163332_edit_761621981833263.jpg" alt="IMG_20240828_163332_edit_761621981833263" width="200;" />
 
-​		此校准将极对数一同进行辨识，但实际测试显示，对于超过20对极的电机，可能会出现误判的情况，因此多对极的电机建议用CAN手动配置极对数。
+​		此校准将极对数一同进行辨识，但实际测试显示，对于**超过20对极**的电机，可能会出现误判的情况，因此多对极的电机建议用CAN手动配置极对数。
 
 #### 3.2CAN ID修改
 

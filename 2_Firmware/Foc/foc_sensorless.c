@@ -123,9 +123,9 @@ extern PID_TypeDef PID_Iq;
 extern CurrentOffset_TypeDef CurrentOffset_t;
 extern AnalogParam_TypeDef AnalogParam_t;
 
-float Rs=0.0355f;
-float Ls=0.000034f;
-float Flux=0.00281f;
+float Rs=0.134f;
+float Ls=0.00005987f;
+float Flux=0.0030293f;
 
 /**
    * @brief  高频电压生成函数

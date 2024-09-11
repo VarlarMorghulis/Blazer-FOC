@@ -108,6 +108,22 @@ PID_TypeDef PID_Iq=
 	.Ki=0.35f,
 	.output_max=0.57735f
 };
+
+//PID_TypeDef PID_Id=
+//{
+//	.ref_value=0.0f,
+//	.Kp=0.0005987f,
+//	.Ki=1.34f,
+//	.output_max=0.57735f
+//};
+
+//PID_TypeDef PID_Iq=
+//{
+//	.ref_value=0.0f,
+//	.Kp=0.0005987f,
+//	.Ki=1.34f,
+//	.output_max=0.57735f
+//};
 #endif
 
 /*Tmotor_U10*/
@@ -466,7 +482,7 @@ void Sensorless_Currentloop(void)
 	/*电流采样及处理*/
 	Current_Ers=Current_Cal(&FOC_Sensorless_t,&CurrentOffset_t);
 	/*磁链观测器获取角度*/
-	//Fluxobserver_Process();
+	Fluxobserver_Process();
 	
 	/*电流采样正常*/
 	if(Current_Ers==FOC_OK)
@@ -525,7 +541,7 @@ void FOC_Task_Sensorless(void)
 			FOC_Sensorless_t.theta_e=_normalizeAngle(Fluxobserver_t.theta_e);
 			Sensorless_Currentloop();
 //		}
-		Fluxobserver_Process();
+		//Fluxobserver_Process();
 		
 		TE_Currentloop_t.Cnt_20kHz=0;
 	}

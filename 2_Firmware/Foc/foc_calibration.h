@@ -11,6 +11,15 @@ typedef struct
 	uint16_t C_Offset;
 }CurrentOffset_TypeDef;
 
+typedef enum 
+{	
+	Calib_ADC=0,
+	Calib_Encoder=1,
+	Linearize_Encoder=2,
+	Calib_Anticogging=3,
+    Calib_Done=4
+}Calib_State;
+
 #include "common_inc.h"
 
 void FOC_Task_ADC_Calibration(void);

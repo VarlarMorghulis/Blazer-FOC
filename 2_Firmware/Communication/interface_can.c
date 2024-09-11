@@ -29,7 +29,7 @@ extern uint8_t flashsave_flag;
    * @param  нч
    * @retval нч
    */
-void CAN_Filter_Init(void)
+void CAN1_Filter_Init(void)
 {
 	CAN_FilterTypeDef CAN_FilterStruct;
 	

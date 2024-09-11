@@ -35,6 +35,9 @@ void Draw_Calib_font(int8_t x, int8_t y);
 void Draw_Setting_font(int8_t x, int8_t y);
 void Draw_CAN_ID_font(int8_t x, int8_t y);
 void Draw_Current_font(int8_t x, int8_t y);
+void Draw_Speed_font(int8_t x, int8_t y);
+void Draw_Encoder_font(int8_t x, int8_t y);
+void Draw_Default_font(int8_t x, int8_t y);
 void Draw_Run_font(int8_t x, int8_t y);
 void Draw_Info_font(int8_t x, int8_t y);
 
@@ -43,6 +46,9 @@ void Calib(void);
 void Setting(void);
 void CAN_ID(void);
 void Current(void);
+void Speed(void);
+void Encoder(void);
+void Default(void);
 void Run(void);
 void Info(void);
 

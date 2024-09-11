@@ -27,6 +27,7 @@ extern uint16_t lut_enc[257];
 
 void Encoder_ParamInit(void)
 {
+	//SPI_Encoder_t.enc_type=MT6816;
 	/*编码器SPI模式初始化*/
 	switch(SPI_Encoder_t.enc_type)
 	{

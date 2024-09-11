@@ -44,15 +44,8 @@ CurrentOffset_TypeDef CurrentOffset_t=
 	.C_Offset=2048,
 };
 
-enum 
-{	
-	Calib_ADC,
-	Calib_Encoder,
-	Linearize_Encoder,
-	Calib_Anticogging,
-    Calib_Done
-};
-uint8_t Calib_State=Calib_ADC;
+
+Calib_State calib_state=Calib_ADC;
 
 uint8_t Z_use_flag;
 uint8_t Z_detect_flag;
@@ -104,7 +97,7 @@ void FOC_Task_ADC_Calibration(void)
 		else
 		{
 			/*×´Ì¬Ìø×ª*/
-			Calib_State=Calib_Encoder;
+			calib_state=Calib_Encoder;
 		}
 	}
 }
@@ -258,7 +251,7 @@ void FOC_Task_Encoder_Calibration(void)
 				Flash_Save();
 					
 				/*×´Ì¬Ìø×ª*/
-				Calib_State=Calib_Done;
+				calib_state=Calib_Done;
 			}
 		}
 		
@@ -390,8 +383,8 @@ void FOC_Task_Encoder_Calibration(void)
 				i=0;
 				TE_Encoder_Calibration_t.Step=0;	
 				/*×´Ì¬Ìø×ª*/
-				//Calib_State=Linearize_Encoder;
-				Calib_State=Calib_Done;
+				//calib_state=Linearize_Encoder;
+				calib_state=Calib_Done;
 			}
 		}
 		
@@ -487,7 +480,7 @@ void FOC_Task_Encoder_Linearization(void)
 		j=0;
 		index=0;
 		step=0;
-		Calib_State=Calib_Done;	
+		calib_state=Calib_Done;	
 	}
 }
 
@@ -503,7 +496,7 @@ void FOC_Task_Param_Save(void)
 	
 	flashsave_flag=1;
 	
-	Calib_State=Calib_ADC;
+	calib_state=Calib_ADC;
 	FOC_State_t=FOC_Wait;
 }
 
@@ -514,7 +507,7 @@ void FOC_Task_Param_Save(void)
    */
 void FOC_Task_Calibration(void)
 {
-	switch(Calib_State)
+	switch(calib_state)
 	{
 		case Calib_ADC:
 			FOC_Task_ADC_Calibration();
