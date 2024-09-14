@@ -55,20 +55,22 @@ void CAN1_Filter_Init(void)
    */
 void CAN_Param_Handle(uint8_t param_id,float data)
 {
+	int data_int=(int)data;
+	
 	switch(param_id)
 	{
 		case CAN_SET_START_ENABLE:
-			if(data==0)
+			if(data_int==0)
 			{
 				start_en=1;
 				sensored_mode=Current_Mode;
 			}
-			else if(data==1.0f)
+			else if(data_int==1)
 			{
 				start_en=1;
 				sensored_mode=Speed_Mode;
 			}
-			else if(data==2.0f)
+			else if(data_int==2)
 			{
 				start_en=1;
 				sensored_mode=Position_Mode;
@@ -88,7 +90,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_NODE_ID:
-			if(data>=0 && data<=7.0f)
+			if(data_int>=0 && data_int<=7)
 			{
 				InterfaceParam_t.node_id=data;
 				flashsave_flag=1;
@@ -96,7 +98,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_POLEPARIS:
-			if(data>=2.0f && data<=40.0f)
+			if(data_int>=2 && data<40)
 			{
 				InterfaceParam_t.pole_pairs=data;
 				flashsave_flag=1;
@@ -104,12 +106,12 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_ENCODER_TYPE:
-			if(data==0)
+			if(data_int==0)
 			{
 				InterfaceParam_t.enc_type=(float)TLE5012B;
 				flashsave_flag=1;
 			}
-			else if(data==1.0f)
+			else if(data_int==1)
 			{
 				InterfaceParam_t.enc_type=(float)MT6816;
 				flashsave_flag=1;
@@ -117,7 +119,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_MAX_CURRENT:
-			if(data>=0 && data<=50.0f)
+			if(data>=0 && data<=70.0f)
 			{
 				InterfaceParam_t.current_max=data;
 				flashsave_flag=1;
@@ -154,7 +156,8 @@ void CANRxIRQHandler(void)
 	uint8_t node_id;
 	uint8_t param_id=0x08;
 	uint8_t rx_data[4];
-	uint32_t u32_data;
+	/*u32_data需要赋初值,否则后续接收到的数据可能错乱*/
+	uint32_t u32_data=0;
 	
 	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&CAN_RxHeaderStruct,rx_data);
 	

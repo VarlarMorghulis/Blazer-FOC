@@ -11,6 +11,8 @@
 
 #define _SQRT_3	1.732050807f
 
+#define ONE_BY_SQRT_3 0.577350269f
+
 typedef struct
 {
 	float state_n,state_n_1,state_n_2;
@@ -24,6 +26,7 @@ float _normalizeAngle(float angle);
 uint32_t FloatToIntBit(float x);
 float IntBitToFloat(uint32_t x);
 float fast_abs(float x);
+float fast_sq(float x);
 float fast_atan2(float y, float x);
 float LowPassFilter(float Ka,float *Sample,float *Sample_last);
 float IIR_Butterworth(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t);

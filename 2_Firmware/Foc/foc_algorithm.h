@@ -42,6 +42,7 @@ typedef struct
 void Park_Transform(FOC_TypeDef *FOC_x);
 void I_Park_Transform(FOC_TypeDef *FOC_x);
 void Clarke_Transform(FOC_TypeDef *FOC_x);
+void Circle_Limitation(float *Ud,float *Uq);
 void SVPWM_Cal(FOC_TypeDef *FOC_x);
 void SetPWM(FOC_TypeDef *FOC_x);
 ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t);

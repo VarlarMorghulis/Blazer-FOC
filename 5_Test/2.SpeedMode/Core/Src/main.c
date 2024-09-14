@@ -47,7 +47,7 @@
 
 /* USER CODE BEGIN PV */
 extern uint8_t can_tx_flag;
-float motor_speed[4]={60.0f,120.0f,180.0f,240.0f};
+float motor_speed[4]={0.0f,120.0f,180.0f,240.0f};
 
 /* USER CODE END PV */
 
@@ -99,10 +99,10 @@ int main(void)
   /*CAN1过滤器初始化*/
   CAN_Filter_Init();
   /*设置启动模式*/
+  //set_blazer_start(0x00,1.0f);
   set_blazer_start(0x00,1.0f);
-  set_blazer_start(0x01,1.0f);
-  set_blazer_start(0x02,1.0f);
-  set_blazer_start(0x03,1.0f);
+  //set_blazer_start(0x02,1.0f);
+  //set_blazer_start(0x03,1.0f);
   /* USER CODE END 2 */
 
   /* Infinite loop */

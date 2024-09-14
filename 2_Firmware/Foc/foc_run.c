@@ -96,16 +96,16 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.00035f,
-	.Ki=0.35f,
+	.Kp=0.0001f,
+	.Ki=0.1f,
 	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.00035f,
-	.Ki=0.35f,
+	.Kp=0.0001f,
+	.Ki=0.1f,
 	.output_max=0.57735f
 };
 
@@ -124,6 +124,24 @@ PID_TypeDef PID_Iq=
 //	.Ki=1.34f,
 //	.output_max=0.57735f
 //};
+
+/*
+PID_TypeDef PID_Id=
+{
+	.ref_value=0.0f,
+	.Kp=0.00003f,
+	.Ki=1.4f,
+	.output_max=0.57735f
+};
+
+PID_TypeDef PID_Iq=
+{
+	.ref_value=0.0f,
+	.Kp=0.00003f,
+	.Ki=1.4f,
+	.output_max=0.57735f
+};
+*/
 #endif
 
 /*Tmotor_U10*/
@@ -321,6 +339,9 @@ void Sensored_Currentloop(void)
 		PID_Iq.samp_value=FOC_Sensored_t.Iq;
 		FOC_Sensored_t.Ud=Current_PI_Ctrl(&PID_Id);
 		FOC_Sensored_t.Uq=Current_PI_Ctrl(&PID_Iq);
+		
+		/*电压圆限幅*/
+		Circle_Limitation(&FOC_Sensored_t.Ud,&FOC_Sensored_t.Uq);
 		
 		/*反Park变换*/
 		I_Park_Transform(&FOC_Sensored_t);

@@ -8,6 +8,10 @@ CAN_Data_TypeDef CAN_Data_t[Motor_Num]=
 	{WRITE_ONLY , 0x01 , (uint8_t*)(&blazer_content_transform[1].u8_data)},
 	{WRITE_ONLY , 0x02 , (uint8_t*)(&blazer_content_transform[2].u8_data)},
 	{WRITE_ONLY , 0x03 , (uint8_t*)(&blazer_content_transform[3].u8_data)},
+	{WRITE_ONLY , 0x04 , (uint8_t*)(&blazer_content_transform[4].u8_data)},
+	{WRITE_ONLY , 0x05 , (uint8_t*)(&blazer_content_transform[5].u8_data)},
+	{WRITE_ONLY , 0x06 , (uint8_t*)(&blazer_content_transform[6].u8_data)},
+	{WRITE_ONLY , 0x07 , (uint8_t*)(&blazer_content_transform[7].u8_data)},
 };
 
 /**
@@ -106,7 +110,7 @@ void set_blazer_start(uint32_t node_id,float mode)
 void set_blazer_speed(uint32_t node_id,float speed)
 {
 	uint32_t blazer_speed_id = node_id << 8 | CAN_SET_MRPM;
-	uint32_t speed_u32;
+	static uint32_t speed_u32;
 	
 	speed_u32=FloatToIntBit(speed);
 	

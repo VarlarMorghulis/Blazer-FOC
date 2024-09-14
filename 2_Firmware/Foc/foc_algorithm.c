@@ -35,6 +35,23 @@ void Clarke_Transform(FOC_TypeDef *FOC_t)
 }
 
 /**
+   * @brief  电压圆限幅函数
+             Ud^2+Uq^2<=Udc/3
+   * @param  *Ud *Uq 
+   * @retval 无
+   */
+void Circle_Limitation(float *Ud,float *Uq)
+{
+	float Um=sqrtf( fast_sq(*Ud) + fast_sq(*Uq) );
+	
+	if(Um>ONE_BY_SQRT_3)
+	{
+		*Ud *= ONE_BY_SQRT_3/Um;
+		*Uq *= ONE_BY_SQRT_3/Um;
+	}
+}
+
+/**
    * @brief  SVPWM计算模块
    * @param  FOC结构体指针
    * @retval 无

@@ -122,6 +122,7 @@ int main(void)
 		Choose_Menu();
 		Menu_Cnt=0;
 	}
+	
 	if(flashsave_flag==1)
 	{
 		/*关闭全局中断*/

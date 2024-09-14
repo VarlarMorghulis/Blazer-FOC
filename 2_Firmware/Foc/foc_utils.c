@@ -79,6 +79,12 @@ float fast_abs(float x)
 {
 	return x >=0 ? x : -x;
 }
+
+float fast_sq(float x)
+{
+	return x*x;
+}
+
 /**
    * @brief  快速反正切函数
    * @param  y x

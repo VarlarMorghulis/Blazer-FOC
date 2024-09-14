@@ -22,7 +22,7 @@ float Current_PI_Ctrl(PID_TypeDef *PID)
 	
 	PID->output= _constrain(PID->output,-1.0f,1.0f);
 	
-	return PID->output * PID->output_max;
+	return PID->output;
 }
 
 /**

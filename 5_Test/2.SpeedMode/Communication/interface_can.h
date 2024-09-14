@@ -4,7 +4,7 @@
 #include "main.h"
 #include "can.h"
 
-#define Motor_Num	4
+#define Motor_Num	8
 
 #define READ_ONLY	0
 #define WRITE_ONLY 	1

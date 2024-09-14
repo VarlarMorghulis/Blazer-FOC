@@ -2,8 +2,8 @@
 
 void LED_Normal(void)
 {
-//	LED_G(0);
-//	LED_R(0);
+	LED_G(0);
+	LED_R(0);
 }
 
 void LED_Error(void)
