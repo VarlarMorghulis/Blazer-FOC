@@ -58,9 +58,12 @@ void CAN_SendMessage(uint32_t ID)
 	
 	while(HAL_CAN_AddTxMessage(&hcan1,&CAN_TxHeaderStruct,CAN_Data_t[ID>>8].data_ptr,&pTxMailbox)!=HAL_OK)
 	{
+		delay_us(25);
 		/*·¢ËÍ×èÖÍ*/
-		if(++send_num==10)
+		if(++send_num==10){
+			
 			break;
+		}
 	}
 }
 

@@ -25,6 +25,7 @@ void Open_Currentloop(FOC_TypeDef *FOC_t,uint8_t Pole_Pairs,float runtime);
 void FOC_Task_Openloop(void);
 
 void Sensored_Currentloop(void);
+void Speedloop_StateReset(void);
 void Sensored_Speedloop(void);
 void Sensored_Positionloop(void);
 void FOC_Task_Sensored(void);

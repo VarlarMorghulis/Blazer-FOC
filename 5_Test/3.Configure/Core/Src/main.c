@@ -103,7 +103,7 @@ int main(void)
 	一驱动的不同参数更改最好间隔一段时间发送*/
 	
   /*将节点ID为0x02的驱动ID改为0x06*/
-  set_blazer_node_id(0x02,6.0f);
+  //set_blazer_node_id(0x02,6.0f);
   /*设置极对数为7*/
   //set_blazer_pole_pairs(0x02,7.0f);
   /*设置编码器型号*/
@@ -111,8 +111,10 @@ int main(void)
   /*设置最大电流为20A*/
   //set_blazer_max_current(0x02,20.0f);
   /*启动校准*/
+  //set_blazer_calib(0x00,0.0f);
+  //set_blazer_calib(0x01,0.0f);
   //set_blazer_calib(0x02,0.0f);
-
+  set_blazer_calib(0x03,0.0f);
   /* USER CODE END 2 */
 
   /* Infinite loop */

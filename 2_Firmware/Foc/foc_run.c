@@ -93,6 +93,7 @@ PID_TypeDef PID_Iq=
 
 /*Tmotor_U7*/
 #ifdef Motor_Tmotor_U7
+/*
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
@@ -108,6 +109,7 @@ PID_TypeDef PID_Iq=
 	.Ki=0.1f,
 	.output_max=0.57735f
 };
+*/
 
 //PID_TypeDef PID_Id=
 //{
@@ -125,7 +127,7 @@ PID_TypeDef PID_Iq=
 //	.output_max=0.57735f
 //};
 
-/*
+
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
@@ -141,7 +143,7 @@ PID_TypeDef PID_Iq=
 	.Ki=1.4f,
 	.output_max=0.57735f
 };
-*/
+
 #endif
 
 /*Tmotor_U10*/
@@ -280,6 +282,9 @@ void IF_Start(FOC_TypeDef *FOC_t,float runtime,float threshold)
 		FOC_t->Ud=Current_PI_Ctrl(&PID_Id);
 		FOC_t->Uq=Current_PI_Ctrl(&PID_Iq);
 	
+		/*电压圆限制*/
+		Circle_Limitation(&FOC_t->Ud,&FOC_t->Uq);
+		
 		/*反Park变换*/
 		I_Park_Transform(FOC_t);
 	}
@@ -355,6 +360,17 @@ void Sensored_Currentloop(void)
 	}
 }
 
+uint8_t speed_to_pos;
+uint8_t spdloop_state=Speed_Mode;
+uint8_t spdloop_laststate=Speed_Mode;
+
+void Speedloop_StateReset(void)
+{
+	speed_to_pos=0;
+	spdloop_state=Speed_Mode;
+	spdloop_laststate=Speed_Mode;
+}
+
 /**
    * @brief  有感模式速度环函数 10kHz频率
    * @param  无
@@ -362,19 +378,17 @@ void Sensored_Currentloop(void)
    */
 void Sensored_Speedloop(void)
 {
-	static uint8_t sensored_state=Speed_Mode,sensored_laststate=Speed_Mode;
 	static uint8_t position_cnt;
-	static uint8_t speed_to_pos;
 	
 	/*启用位置模式,零速转矩保持*/
-	if(PID_Speed.ref_value==0.0f)
+	if(PID_Speed.ref_value==0)
 	{	
 		if(fast_abs(SPI_Encoder_t.velocity)<= _2PI / 10.0f)
 		{
-			sensored_state=Position_Mode;
+			spdloop_state=Position_Mode;
 			
 			Clear_PID_Param(&PID_Speed);
-			if(sensored_laststate==Speed_Mode)
+			if(spdloop_laststate==Speed_Mode)
 			{
 				PID_Position.ref_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
 				speed_to_pos=1;
@@ -400,7 +414,7 @@ void Sensored_Speedloop(void)
 	}
 	else
 	{
-		sensored_state=Speed_Mode;
+		spdloop_state=Speed_Mode;
 		speed_to_pos=0;
 		
 		Clear_PID_Param(&PID_ZeroSpeed);
@@ -409,7 +423,7 @@ void Sensored_Speedloop(void)
 		PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
 	}
 	
-	sensored_laststate=sensored_state;
+	spdloop_laststate=spdloop_state;
 }
 
 void Sensored_Positionloop(void)
@@ -434,7 +448,6 @@ void FOC_Task_Sensored(void)
 		break;
 		
 		case Speed_Mode:
-			
 			/*电流环执行频率为20kHz*/
 			if(++TE_Currentloop_t.Cnt_20kHz>=1)
 			{
@@ -448,7 +461,6 @@ void FOC_Task_Sensored(void)
 				Sensored_Speedloop();
 				TE_Speedloop_t.Cnt_20kHz=0;
 			}
-			
 		break;
 		
 		case Position_Mode:
@@ -519,6 +531,9 @@ void Sensorless_Currentloop(void)
 		PID_Iq.samp_value=FOC_Sensorless_t.Iq;
 		FOC_Sensorless_t.Ud=Current_PI_Ctrl(&PID_Id);
 		FOC_Sensorless_t.Uq=Current_PI_Ctrl(&PID_Iq);
+		
+		/*电压圆限制*/
+		Circle_Limitation(&FOC_Sensorless_t.Ud,&FOC_Sensorless_t.Uq);
 		
 		/*反Park变换*/
 		I_Park_Transform(&FOC_Sensorless_t);

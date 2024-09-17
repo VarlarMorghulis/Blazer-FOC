@@ -13,6 +13,7 @@ extern FOC_State FOC_State_t;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
+extern PID_TypeDef PID_ZeroSpeed;
 extern PID_TypeDef PID_Position;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
@@ -21,6 +22,7 @@ extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
 extern uint8_t Z_confirm_flag;
 extern uint8_t sensored_mode;
+extern uint8_t speed_to_pos;
 extern InterfaceParam_TypeDef InterfaceParam_t;
 extern uint8_t flashsave_flag;
 
@@ -200,7 +202,10 @@ void CAN_LostConnect_Handle(void)
 	Clear_PID_Param(&PID_Id);
 	Clear_PID_Param(&PID_Iq);
 	Clear_PID_Param(&PID_Speed);
+	//Clear_PID_Param(&PID_ZeroSpeed);
 	Clear_PID_Param(&PID_Position);
+	
+	Speedloop_StateReset();
 	
 	LED_G(0);
 	/*将CAN接收标志位置0*/
