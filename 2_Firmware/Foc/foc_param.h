@@ -9,6 +9,7 @@
 #define PWM_TIM_TPWM		(PWM_TIM_CLOCK/PWM_TIM_FREQ/2)
 
 #define FOC_FREQ			PWM_TIM_FREQ
+#define FOC_PERIOD			1.0f/(float)FOC_FREQ
 
 //#define Motor_8318
 //#define Motor_5065

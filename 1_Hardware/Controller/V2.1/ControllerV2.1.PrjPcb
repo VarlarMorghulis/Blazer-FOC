@@ -131,10 +131,6 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=OMLFNWGI
 
-[GeneratedDocument1]
-DocumentPath=Project Outputs for ControllerV2.1\Design Rule Check - ControllerV2.html
-DItemRevisionGUID=
-
 [Configuration1]
 Name=Sources
 ParameterCount=0
