@@ -113,7 +113,7 @@ FOC_TypeDef FOC_Sensorless_t=
 
 Fluxobserver_TypeDef Fluxobserver_t=
 {
-	.gamma=1003000000.0f,
+	.gamma=1000000000.0f,
 	.Ts=0.00005f
 };
 
@@ -127,9 +127,13 @@ extern AnalogParam_TypeDef AnalogParam_t;
 //float Ls=0.00005987f;
 //float Flux=0.0030293f;
 
-float Rs=0.014f;
-float Ls=0.0000003f;
-float Flux=0.001424f;
+//float Rs=0.014f;
+//float Ls=0.0000003f;
+//float Flux=0.001424f;
+
+float Rs=0.0355f;
+float Ls=0.0000345f;
+float Flux=0.0028129f;
 
 /**
    * @brief  高频电压生成函数

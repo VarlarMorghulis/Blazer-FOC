@@ -16,11 +16,11 @@ float Current_PI_Ctrl(PID_TypeDef *PID)
 	
 	PID->error_sum += PID->error * PID->Ki * Current_Ts;
 	
-	PID->error_sum = _constrain(PID->error_sum,-1.0f,1.0f);
+	//PID->error_sum = _constrain(PID->error_sum,-1.0f,1.0f);
 	
 	PID->output = PID->Kp * PID->error + PID->error_sum;
 	
-	PID->output= _constrain(PID->output,-1.0f,1.0f);
+	//PID->output= _constrain(PID->output,-1.0f,1.0f);
 	
 	return PID->output;
 }

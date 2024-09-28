@@ -250,6 +250,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>Fluxobserver_t</ItemText>
         </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sensored_mode</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>

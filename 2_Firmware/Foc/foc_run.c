@@ -93,23 +93,23 @@ PID_TypeDef PID_Iq=
 
 /*Tmotor_U7*/
 #ifdef Motor_Tmotor_U7
-/*
+
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.0001f,
-	.Ki=0.1f,
+	.Kp=0.000345f,
+	.Ki=0.355f,
 	.output_max=0.57735f
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.0001f,
-	.Ki=0.1f,
+	.Kp=0.000345f,
+	.Ki=0.355f,
 	.output_max=0.57735f
 };
-*/
+
 
 //PID_TypeDef PID_Id=
 //{
@@ -127,7 +127,8 @@ PID_TypeDef PID_Iq=
 //	.output_max=0.57735f
 //};
 
-
+/*º­µÀ*/
+/*
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
@@ -143,6 +144,7 @@ PID_TypeDef PID_Iq=
 	.Ki=1.4f,
 	.output_max=0.57735f
 };
+*/
 
 #endif
 
@@ -186,7 +188,7 @@ PID_TypeDef PID_Position=
 	.output_max=62.8f
 };
 
-uint8_t sensored_mode=Speed_Mode;
+uint8_t sensored_mode=Current_Mode;
 
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
