@@ -35,13 +35,22 @@ void CAN1_Filter_Init(void)
 {
 	CAN_FilterTypeDef CAN_FilterStruct;
 	
+	uint32_t ID=0,Mask=0;
+	
+	ID   = (uint32_t)((ReceiveMsg_t.NodeID<<(8+3))|0x4);
+	Mask = (uint32_t)((0x1FFFFF00U<<3)|0x4|0x2);
+	
 	CAN_FilterStruct.FilterActivation=ENABLE;
 	CAN_FilterStruct.FilterMode=CAN_FILTERMODE_IDMASK;
 	CAN_FilterStruct.FilterScale=CAN_FILTERSCALE_32BIT;
-	CAN_FilterStruct.FilterIdHigh=0X0000;
-	CAN_FilterStruct.FilterIdLow=0X0000;
-	CAN_FilterStruct.FilterMaskIdHigh=0x0000;
-	CAN_FilterStruct.FilterMaskIdLow=0x0000;
+//	CAN_FilterStruct.FilterIdHigh=0X0000;
+//	CAN_FilterStruct.FilterIdLow=0X0000;
+//	CAN_FilterStruct.FilterMaskIdHigh=0x0000;
+//	CAN_FilterStruct.FilterMaskIdLow=0x0000;
+	CAN_FilterStruct.FilterIdHigh=ID>>16;
+	CAN_FilterStruct.FilterIdLow=ID;
+	CAN_FilterStruct.FilterMaskIdHigh=Mask>>16;
+	CAN_FilterStruct.FilterMaskIdLow=Mask;
 	CAN_FilterStruct.FilterBank=0;
 	CAN_FilterStruct.FilterFIFOAssignment=CAN_RX_FIFO0;
 	

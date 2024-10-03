@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include "can.h"
+#include "delay.h"
 
 #define Motor_Num	8
 

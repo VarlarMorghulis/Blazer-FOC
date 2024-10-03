@@ -100,7 +100,7 @@ int main(void)
   CAN_Filter_Init();
   /*设置启动模式*/
   set_blazer_start(0x00,1.0f);
-  set_blazer_start(0x00,1.0f);
+  set_blazer_start(0x01,1.0f);
   set_blazer_start(0x02,1.0f);
   set_blazer_start(0x03,1.0f);
   /* USER CODE END 2 */
@@ -112,22 +112,15 @@ int main(void)
     /* USER CODE END WHILE */
 	/*1kHz发送,标志位在stm32f4xx_it.c中改变*/
 
-//	if(can_tx_flag==1)
-//	{
-//		
-//		set_blazer_speed(0x00,motor_speed[0]);
-//		set_blazer_speed(0x01,motor_speed[1]);
-//		set_blazer_speed(0x02,motor_speed[2]);
-//		set_blazer_speed(0x03,motor_speed[3]);
-//		can_tx_flag=0;
-//	}
-
+	if(can_tx_flag==1)
+	{
 		set_blazer_speed(0x00,motor_speed[0]);
 		set_blazer_speed(0x01,motor_speed[1]);
 		set_blazer_speed(0x02,motor_speed[2]);
 		set_blazer_speed(0x03,motor_speed[3]);
-		delay_ms(1);
-		//delay_ms(1);
+		can_tx_flag=0;
+	}
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
