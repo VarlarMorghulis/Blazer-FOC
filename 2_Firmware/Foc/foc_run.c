@@ -167,6 +167,23 @@ PID_TypeDef PID_Iq=
 };
 #endif
 
+#ifdef Motor_Tmotor_U8lite
+PID_TypeDef PID_Id=
+{
+	.ref_value=0.0f,
+	.Kp=0.00077f,
+	.Ki=3.172f,
+};
+
+PID_TypeDef PID_Iq=
+{
+	.ref_value=0.0f,
+	.Kp=0.00077f,
+	.Ki=3.172f,
+};
+
+#endif
+
 PID_TypeDef PID_Speed=
 {
 	.ref_value=0.0f,
@@ -519,6 +536,8 @@ void Sensorless_Currentloop(void)
 	/*磁链观测器获取角度*/
 	Fluxobserver_Process();
 	
+	/*将角度归一化至0-2pi*/
+	FOC_Sensorless_t.theta_e=_normalizeAngle(Fluxobserver_t.theta_e);
 	/*电流采样正常*/
 	if(Current_Ers==FOC_OK)
 	{
@@ -567,20 +586,7 @@ void FOC_Task_Sensorless(void)
 	/*电流环执行频率为20kHz*/
 	if(++TE_Currentloop_t.Cnt_20kHz>=1)
 	{
-		//Sensorless_Currentloop();
-//		if(FOC_Sensorless_t.Speed_now<900.0f)
-//		{
-			//IF_Start(&FOC_Sensorless_t,0.5f,1000.0f);
-		//}
-//		else if(FOC_Sensorless_t.Speed_now>900.0f)
-//		{
-			//PID_Iq.ref_value=3.0f;
-			/*将角度归一化至0-2pi*/
-			FOC_Sensorless_t.theta_e=_normalizeAngle(Fluxobserver_t.theta_e);
-			Sensorless_Currentloop();
-//		}
-		//Fluxobserver_Process();
-		
+		Sensorless_Currentloop();
 		TE_Currentloop_t.Cnt_20kHz=0;
 	}
 	

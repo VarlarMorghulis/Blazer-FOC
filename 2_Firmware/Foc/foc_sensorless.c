@@ -131,9 +131,14 @@ extern AnalogParam_TypeDef AnalogParam_t;
 //float Ls=0.0000003f;
 //float Flux=0.001424f;
 
-float Rs=0.0355f;
-float Ls=0.0000345f;
-float Flux=0.0028129f;
+//float Rs=0.0355f;
+//float Ls=0.0000345f;
+//float Flux=0.0028129f;
+
+/*Tmotor U8lite*/
+float Rs=0.0317f;
+float Ls=0.00000765f;
+float Flux=0.002695f;
 
 /**
    * @brief  高频电压生成函数

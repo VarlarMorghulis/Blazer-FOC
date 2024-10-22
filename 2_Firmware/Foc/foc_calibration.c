@@ -3,7 +3,7 @@
 FOC_TypeDef FOC_Encoder_Calibration_t=
 {
 	.Udc=1.0f,
-	.Ud=0.08f,
+	.Ud=0.12f,
 	.Uq=0.0f,
 	.Tpwm=PWM_TIM_PERIOD,
 };

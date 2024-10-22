@@ -17,7 +17,7 @@ void Param_Return_Default(void)
 {
 	InterfaceParam_t.node_id=(float)0x00;
 	InterfaceParam_t.enc_type=(float)TLE5012B;
-	//InterfaceParam_t.sensor_dir=(float)1;
+	InterfaceParam_t.sensor_dir=1.0f;
 	//InterfaceParam_t.zero_enc_offset=(float)SPI_Encoder_t.zero_enc_offset;
 	InterfaceParam_t.currentoffset_a=2048.0f;
 	InterfaceParam_t.currentoffset_b=2048.0f;

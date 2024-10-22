@@ -107,7 +107,7 @@ int main(void)
   MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
   Board_Init();
-
+  
   /* USER CODE END 2 */
 
   /* Infinite loop */

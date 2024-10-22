@@ -14,6 +14,7 @@ extern ReceiveMsg_TypeDef ReceiveMsg_t;
 extern InterfaceParam_TypeDef InterfaceParam_t;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
+extern Motor_TypeDef Motor_t;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
 extern PID_TypeDef PID_ZeroSpeed;
@@ -38,6 +39,7 @@ void Menu_Init(void)
 			nowMenu = Creat_BrotherMenu("i max",Draw_Current_font,Current);
 			nowMenu = Creat_BrotherMenu("speed max",Draw_Speed_font,Speed);
 			nowMenu = Creat_BrotherMenu("encoder",Draw_Encoder_font,Encoder);
+			nowMenu = Creat_BrotherMenu("pole pairs",Draw_Pole_Pairs_font,Pole_Pairs);
 			nowMenu = Creat_BrotherMenu("default",Draw_Default_font,Default);
 			nowMenu = Circle_Menu();
 		nowMenu = Creat_BrotherMenu("run",Draw_Run_font,Run);
@@ -339,10 +341,12 @@ void Draw_Main_font(int8_t x, int8_t y)
 	{
 		case TLE5012B:
 			u8g2_DrawStr(&u8g2,80,55,"TLE5012B");
+			u8g2_DrawStr(&u8g2,80,70,"32768");
 		break;
 		
 		case MT6816:
 			u8g2_DrawStr(&u8g2,80,55,"MT6816");
+			u8g2_DrawStr(&u8g2,80,70,"16384");
 		break;
 		
 		default:
@@ -397,6 +401,12 @@ void Draw_Encoder_font(int8_t x, int8_t y)
 {
 	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_encoder);
 	u8g2_DrawStr(&u8g2,44+x,70,nowMenu->Name);
+}
+
+void Draw_Pole_Pairs_font(int8_t x, int8_t y)
+{
+	u8g2_DrawXBMP(&u8g2,44+x,16,40,40,gImage_pole_paris);
+	u8g2_DrawStr(&u8g2,35+x,70,nowMenu->Name);
 }
 
 void Draw_Default_font(int8_t x, int8_t y)
@@ -545,7 +555,7 @@ void Current(void)
 	if(step==0)
 	{
 		u8g2_ClearBuffer(&u8g2);
-		/*长按进入ID配置*/
+		/*长按进入最大电流配置*/
 		if(key1_event==KE_LongPress)
 		{
 			key1_event=KE_Dummy;
@@ -602,12 +612,12 @@ void Speed(void)
 void Encoder(void)
 {
 	static uint8_t step=0;
-	char default_str[10];
+	char encoder_str[10];
     
 	if(step==0)
 	{
 		u8g2_ClearBuffer(&u8g2);
-		/*长按进入ID配置*/
+		/*长按进入编码器型号配置*/
 		if(key1_event==KE_LongPress)
 		{
 			key1_event=KE_Dummy;
@@ -645,22 +655,74 @@ void Encoder(void)
 		u8g2_DrawTriangle(&u8g2,15,40,21,32,21,48);
 	}
 	
-	//u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
-	
 	switch(SPI_Encoder_t.enc_type)
 	{
 		case TLE5012B:
-			sprintf(default_str,"TLE5012B");
-			u8g2_DrawStr(&u8g2,38,46,default_str);
+			sprintf(encoder_str,"TLE5012B");
+			u8g2_DrawStr(&u8g2,38,46,encoder_str);
 		break;
 		
 		case MT6816:
-			sprintf(default_str,"MT6816");
-			u8g2_DrawStr(&u8g2,45,46,default_str);
+			sprintf(encoder_str,"MT6816");
+			u8g2_DrawStr(&u8g2,45,46,encoder_str);
 		break;
 		
 		default:break;
 	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
+}
+
+void Pole_Pairs(void)
+{
+	static uint8_t step=0;
+	char pp_str[10];
+    
+	if(step==0)
+	{
+		u8g2_ClearBuffer(&u8g2);
+		/*长按进入极对数配置*/
+		if(key1_event==KE_LongPress)
+		{
+			key1_event=KE_Dummy;
+			step=1;
+		}
+	}
+	if(step==1)
+	{
+		if(key1_event==KE_ShortPress)
+		{
+			Motor_t.Pole_Pairs++;
+			if(Motor_t.Pole_Pairs>40)
+				Motor_t.Pole_Pairs=2;
+		}
+		if(key2_event==KE_ShortPress)
+		{
+			Motor_t.Pole_Pairs--;
+			if(Motor_t.Pole_Pairs<2)
+				Motor_t.Pole_Pairs=40;
+		}
+		
+		/*保存配置*/
+		if(key1_event==KE_LongPress)
+		{
+			InterfaceParam_t.enc_type=(float)Motor_t.Pole_Pairs;
+			flashsave_flag=1;
+			step=0;
+		}
+	}
+
+	/*只有在配置时有小箭头标识*/
+	if(step==1)
+	{
+		u8g2_DrawTriangle(&u8g2,96,40,91,32,91,48);
+		u8g2_DrawTriangle(&u8g2,25,40,31,32,31,48);
+	}
+	
+	u8g2_SetFont(&u8g2,u8g2_font_ncenB14_tf);
+	
+	sprintf(pp_str,"%d",(int)Motor_t.Pole_Pairs);
+	u8g2_DrawStr(&u8g2,52,46,pp_str);
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
 }
