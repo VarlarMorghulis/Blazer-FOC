@@ -6,6 +6,7 @@ Frame_TypeDef Frame_t=
 };
 
 extern FOC_TypeDef *FOC_Param_t;
+extern MotorControl_TypeDef MotorControl;
 extern Motor_TypeDef Motor_t;
 extern Encoder_TypeDef SPI_Encoder_t;
 extern Encoder_TypeDef ABZ_Enc_t;
@@ -21,8 +22,8 @@ void Vofa_Upload(void)
 	Frame_t.fdata[0]=(float)ADC1->JDR1;
 	Frame_t.fdata[1]=(float)ADC1->JDR2;
 	Frame_t.fdata[2]=(float)ADC1->JDR3;
-	Frame_t.fdata[3]=FOC_Param_t->Uq;
-	Frame_t.fdata[4]=FOC_Param_t->Iq;
+	Frame_t.fdata[3]=MotorControl.speedRef;
+	Frame_t.fdata[4]=PID_Speed.ref_value;
 //	Frame_t.fdata[5]=FOC_Param_t->theta_e;
 //	Frame_t.fdata[6]=PID_Speed.ref_value;
 //	Frame_t.fdata[7]=SPI_Encoder_t.velocity;

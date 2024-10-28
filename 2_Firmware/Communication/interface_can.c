@@ -10,6 +10,7 @@ uint8_t CAN_Rxflag=0;
 uint8_t start_en=0;
 
 extern FOC_State FOC_State_t;
+extern MotorControl_TypeDef MotorControl;
 extern PID_TypeDef PID_Id;
 extern PID_TypeDef PID_Iq;
 extern PID_TypeDef PID_Speed;
@@ -20,8 +21,6 @@ extern Encoder_TypeDef ABZ_Enc_t;
 extern Motor_TypeDef Motor_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern uint32_t CAN_Rx_timeout;
-extern uint8_t Z_confirm_flag;
-extern uint8_t sensored_mode;
 extern uint8_t speed_to_pos;
 extern InterfaceParam_TypeDef InterfaceParam_t;
 extern uint8_t flashsave_flag;
@@ -71,17 +70,17 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 			if(data_int==0)
 			{
 				start_en=1;
-				sensored_mode=Current_Mode;
+				MotorControl.Control_Mode=Current_Mode;
 			}
 			else if(data_int==1)
 			{
 				start_en=1;
-				sensored_mode=Speed_Mode;
+				MotorControl.Control_Mode=SpeedCurrent_Mode;
 			}
 			else if(data_int==2)
 			{
 				start_en=1;
-				sensored_mode=Position_Mode;
+				MotorControl.Control_Mode=PositionSpeedCurrent_Mode;
 			}
 		break;
 		
@@ -90,7 +89,7 @@ void CAN_Param_Handle(uint8_t param_id,float data)
 		break;
 		
 		case CAN_SET_MRPM:
-			PID_Speed.ref_value = data / 60.0f * _2PI;
+			MotorControl.speedRef = data / 60.0f * _2PI;
 		break;
 		
 		case CAN_SET_POS:
@@ -205,6 +204,9 @@ void CANRxIRQHandler(void)
 void CAN_LostConnect_Handle(void)
 {
 	/*超时则清空电机之前的运行数据,防止重新连接后过冲*/
+	MotorControl.speedRef=0.0f;
+	MotorControl.speedShadow=0.0f;
+	
 	Clear_PID_Param(&PID_Id);
 	Clear_PID_Param(&PID_Iq);
 	Clear_PID_Param(&PID_Speed);

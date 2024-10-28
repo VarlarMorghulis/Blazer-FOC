@@ -7,6 +7,7 @@
 #include <arm_math.h> 
 #include <arm_const_structs.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 

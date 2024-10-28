@@ -2,13 +2,14 @@
 #define __FOC_RUN_H__
 
 #include "main.h"
+#include <stdbool.h>
 
 typedef enum
 {
 	Current_Mode=0,
-	Speed_Mode,
-	Position_Mode,
-}Sensored_Mode; 
+	SpeedCurrent_Mode,
+	PositionSpeedCurrent_Mode,
+}Control_Mode_TypeDef; 
 
 typedef struct
 {
@@ -17,6 +18,18 @@ typedef struct
 	float Ls;
 	float Flux;
 }Motor_TypeDef;
+
+typedef struct
+{
+	Control_Mode_TypeDef Control_Mode;
+	
+	bool isUseSpeedRamp;
+	bool isUseZeroSpeedTorqueMaintain;
+	float speedRef;
+	float speedShadow;
+	float speedAcc;
+	float speedDec;
+}MotorControl_TypeDef;
 
 #include "common_inc.h"
 

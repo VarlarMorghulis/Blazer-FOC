@@ -8,6 +8,7 @@ FOC_State FOC_LastState_t;
 extern u8g2_t u8g2;
 extern uint8_t menu_key;
 
+extern MotorControl_TypeDef MotorControl;
 extern AnalogParam_TypeDef AnalogParam_t;
 extern FOC_TypeDef FOC_Sensored_t;
 extern ReceiveMsg_TypeDef ReceiveMsg_t;
@@ -810,12 +811,12 @@ void Run(void)
 	if(key1_event==KE_ShortPress)
 	{
 		//PID_Iq.ref_value+=1.0f;
-		PID_Speed.ref_value+=_2PI;
+		MotorControl.speedRef+=_2PI;
 	}
 	else if(key2_event==KE_ShortPress)
 	{
 		//PID_Iq.ref_value-=1.0f;
-		PID_Speed.ref_value-=_2PI;
+		MotorControl.speedRef-=_2PI;
 	}
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);

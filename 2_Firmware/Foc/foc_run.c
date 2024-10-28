@@ -187,15 +187,15 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Speed=
 {
 	.ref_value=0.0f,
-	.Kp=0.5f,
-	.Ki=0.2f
+	.Kp=1.0f,
+	.Ki=0.1f
 };
 
 PID_TypeDef PID_ZeroSpeed=
 {
 	.ref_value=0.0f,
-	.Kp=0.5f,
-	.Ki=0.2f,
+	.Kp=1.0f,
+	.Ki=0.1f,
 };
 
 PID_TypeDef PID_Position=
@@ -205,7 +205,15 @@ PID_TypeDef PID_Position=
 	.output_max=100.0f
 };
 
-uint8_t sensored_mode=Current_Mode;
+MotorControl_TypeDef MotorControl=
+{
+	.Control_Mode=SpeedCurrent_Mode,
+	
+	.isUseSpeedRamp=1,
+	.isUseZeroSpeedTorqueMaintain=0,
+	.speedAcc=10.0f,
+	.speedDec=10.0f
+};
 
 extern FOC_State FOC_State_t;
 extern CurrentOffset_TypeDef CurrentOffset_t;
@@ -380,14 +388,14 @@ void Sensored_Currentloop(void)
 }
 
 uint8_t speed_to_pos;
-uint8_t spdloop_state=Speed_Mode;
-uint8_t spdloop_laststate=Speed_Mode;
+uint8_t spdloop_state=SpeedCurrent_Mode;
+uint8_t spdloop_laststate=SpeedCurrent_Mode;
 
 void Speedloop_StateReset(void)
 {
 	speed_to_pos=0;
-	spdloop_state=Speed_Mode;
-	spdloop_laststate=Speed_Mode;
+	spdloop_state=SpeedCurrent_Mode;
+	spdloop_laststate=SpeedCurrent_Mode;
 }
 
 /**
@@ -397,52 +405,76 @@ void Speedloop_StateReset(void)
    */
 void Sensored_Speedloop(void)
 {
-	static uint8_t position_cnt;
-	
-	/*启用位置模式,零速转矩保持*/
-	if(PID_Speed.ref_value==0)
-	{	
-		if(fast_abs(SPI_Encoder_t.velocity)<= _2PI / 10.0f)
+//	static uint8_t position_cnt;
+//	
+//	/*启用位置模式,零速转矩保持*/
+//	if(PID_Speed.ref_value==0)
+//	{	
+//		if(fast_abs(SPI_Encoder_t.velocity)<= _2PI / 10.0f)
+//		{
+//			spdloop_state=Position_Mode;
+//			
+//			Clear_PID_Param(&PID_Speed);
+//			if(spdloop_laststate==Speed_Mode)
+//			{
+//				PID_Position.ref_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
+//				speed_to_pos=1;
+//			}
+//		}
+//		
+//		if(speed_to_pos==1)
+//		{
+//			if(++position_cnt>=2)
+//			{	
+//				PID_Position.samp_value = SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
+//				PID_ZeroSpeed.ref_value=Position_P_Ctrl(&PID_Position);
+//				position_cnt=0;
+//			}
+//			PID_ZeroSpeed.samp_value=SPI_Encoder_t.velocity;
+//			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_ZeroSpeed);
+//		}
+//		else if(speed_to_pos==0)
+//		{
+//			PID_Speed.samp_value=SPI_Encoder_t.velocity;
+//			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+//		}
+//	}
+//	else
+//	{
+//		spdloop_state=Speed_Mode;
+//		speed_to_pos=0;
+//		
+//		Clear_PID_Param(&PID_ZeroSpeed);
+//		
+//		PID_Speed.samp_value=SPI_Encoder_t.velocity;
+//		PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+//	}
+//	
+//	spdloop_laststate=spdloop_state;
+	/*启用速度爬升*/
+	if(MotorControl.isUseSpeedRamp==1)
+	{
+		if(MotorControl.speedRef > MotorControl.speedShadow)
 		{
-			spdloop_state=Position_Mode;
-			
-			Clear_PID_Param(&PID_Speed);
-			if(spdloop_laststate==Speed_Mode)
-			{
-				PID_Position.ref_value=SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
-				speed_to_pos=1;
-			}
+			MotorControl.speedShadow += MotorControl.speedAcc * _2PI * Speed_Ts;
+			if(MotorControl.speedShadow > MotorControl.speedRef)
+				MotorControl.speedShadow = MotorControl.speedRef;
 		}
-		
-		if(speed_to_pos==1)
+		else if(MotorControl.speedRef < MotorControl.speedShadow)
 		{
-			if(++position_cnt>=2)
-			{	
-				PID_Position.samp_value = SPI_Encoder_t.sensor_dir * SPI_Encoder_GetCalAngle(&SPI_Encoder_t);
-				PID_ZeroSpeed.ref_value=Position_P_Ctrl(&PID_Position);
-				position_cnt=0;
-			}
-			PID_ZeroSpeed.samp_value=SPI_Encoder_t.velocity;
-			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_ZeroSpeed);
-		}
-		else if(speed_to_pos==0)
-		{
-			PID_Speed.samp_value=SPI_Encoder_t.velocity;
-			PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+			MotorControl.speedShadow -= MotorControl.speedDec * _2PI * Speed_Ts;
+			if(MotorControl.speedShadow < MotorControl.speedRef)
+				MotorControl.speedShadow = MotorControl.speedRef;			
 		}
 	}
 	else
 	{
-		spdloop_state=Speed_Mode;
-		speed_to_pos=0;
-		
-		Clear_PID_Param(&PID_ZeroSpeed);
-		
-		PID_Speed.samp_value=SPI_Encoder_t.velocity;
-		PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
+		MotorControl.speedShadow = MotorControl.speedRef;
 	}
 	
-	spdloop_laststate=spdloop_state;
+	PID_Speed.samp_value=SPI_Encoder_t.velocity;
+	PID_Speed.ref_value=MotorControl.speedShadow;
+	PID_Iq.ref_value=Speed_PI_Ctrl(&PID_Speed);
 }
 
 void Sensored_Positionloop(void)
@@ -455,7 +487,7 @@ void FOC_Task_Sensored(void)
 {
 	FOC_StructBind(&FOC_Sensored_t);
 	
-	switch(sensored_mode)
+	switch(MotorControl.Control_Mode)
 	{
 		case Current_Mode:
 			/*电流环执行频率为20kHz*/
@@ -466,7 +498,7 @@ void FOC_Task_Sensored(void)
 			}
 		break;
 		
-		case Speed_Mode:
+		case SpeedCurrent_Mode:
 			/*电流环执行频率为20kHz*/
 			if(++TE_Currentloop_t.Cnt_20kHz>=1)
 			{
@@ -482,7 +514,7 @@ void FOC_Task_Sensored(void)
 			}
 		break;
 		
-		case Position_Mode:
+		case PositionSpeedCurrent_Mode:
 			/*电流环执行频率为20kHz*/
 			if(++TE_Currentloop_t.Cnt_20kHz>=1)
 			{

@@ -18,6 +18,8 @@ Last update:2024.8
 
 * 基础有感FOC算法 电流 速度 位置 可控
 
+* 速度环梯形加减速
+
 * 编码器零偏校准
 
 * 电机极对数辨识
@@ -74,7 +76,7 @@ Last update:2024.8
 
 * 栅极驱动 : **FD6288Q**
 
-* MOSFET : **HYG006N04LS1TA** 40V 600A 或 **HYG011N04LS1TA** 40V 320A
+* MOSFET : **HYG011N04LS1TA** 40V 320A
 
 * 采样电阻 : **1mΩ** **3920**
 
@@ -98,7 +100,6 @@ Last update:2024.8
 
 ### 2.整体布局
 
-#### 2.1大功率叠层版本
 <center class="half">
     <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Controller Top.png" width="200"/>
     <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Controller Bottom.png" width="200"/>
@@ -110,12 +111,7 @@ Last update:2024.8
 </center>
 <img src="E:\Robocon\Project\Blazer-FOC\3_Model\image\Blazer-FOC.png" alt="Blazer-FOC" width="250;" />
 
-#### 2.2中功率单层版本
-<center class="half">
-    <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Top.png" width="200"/>
-    <img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini Bottom.png" width="200"/>
-</center>
-<img src="E:\Robocon\Project\BlazerFOC_Mini\3_Model\image\Mini 3D.png" alt="Mini 3D" width="250;" />
+
 
 ## 二、软件设置
 
@@ -123,26 +119,31 @@ Last update:2024.8
 
 |   名称   |   解释   |    范围     | 参数ID |
 | :------: | :------: | :---------: | :----: |
-| start_en | 上电使能 | [0,2] (int) |  0x00  |
-|  i_set   | 设定电流 |   [-50,50]   |  0x01  |
-| spd_set  | 设定速度 |  [-8000,8000]  |  0x02  |
-| pos_set  | 设定位置 |     [-$\infty$,+$\infty$]     | 0x03 |
-| **id** | 修改节点ID | [0,7] (int) | 0x04 |
-| **pol** | 极对数 | [2,40] (int) | 0x05 |
-| **enc_type** | 编码器型号 | [0,1] (int) | 0x06 |
-| **i_max** | 最大电流 | [0,50] | 0x07 |
-| **spd_max** | 最大速度 | [0,8000] | 0x08 |
-| **cal** | 校准 | [0,1] (int) | 0x09 |
+| start_en | 上电使能 | [0,3] (int) |  0x00  |
+|  i_set   | 设定电流 |   [-60,60]   |  0x02  |
+| spd_set  | 设定速度 |  [-100,100]  |  0x04  |
+| pos_set  | 设定位置 |     [-$\infty$,+$\infty$]     | 0x06 |
+| **id** | 修改节点ID | [0,7] (int) | 0x08 |
+| **pol** | 极对数 | [2,40] (int) | 0x0A |
+| **enc_type** | 编码器型号 | [0,1] (int) | 0x0C |
+| **i_max** | 最大电流 | [0,60] | 0x0E |
+| **spd_max** | 最大速度 | [0,200] | 0x10 |
+| **acc** | 加速度 | [0,500] | 0x12 |
+| **dec** | 减速度 | [0,500] | 0x14 |
+| **can_hb** | CAN心跳 | [500,2000] | 0x16 |
+| **cal** | 校准 | [0,1] (int) | 0x18 |
 
 注释：
 
-1.电流的单位是A，速度的单位是r/min（转/分钟），位置的单位是r（转）。
+1.电流的单位是A，速度的单位是r/s（转/秒），位置的单位是r（转），加速度、减速度的单位是r/s$^2$(转/秒$^2$)，CAN心跳的单位是ms。
 
-2.0x00-0x03为运行参数，在电机闭环运行中不断发送，0x04-0x09为配置参数，在运行前需要提前配置完毕，电机才能正常运行。
+2.0x00-0x06为运行参数，在电机闭环运行中不断发送，0x08-0x18为配置参数，在运行前需要提前配置完毕，电机才能正常运行。
+
+3.参数ID为偶数时为写操作，参数ID为奇数时为对应的读操作。例如，读取当前设置的极对数，参数ID为0x0B。
 
 参数解释：
 
-* start_en：在进入主循环前的初始化对驱动进行使能，指定闭环模式，请确保驱动正常接收，否则无法进入后续的闭环控制。0：电流控制模式 1：速度控制模式 2：位置控制模式。
+* start_en：在进入主循环前的初始化对驱动进行使能，指定闭环模式，请确保驱动正常接收，否则无法进入后续的闭环控制。0：闲置状态-电机释放 1：电流控制模式 2：速度控制模式 3：位置控制模式。
 
 * i_set：设定电流，在电流控制模式下使用。
 
@@ -159,7 +160,9 @@ Last update:2024.8
 
 * enc_type：指定编码器型号，目前支持的有 0 TLE5012B  1 MT6816，编码器型号实际与设定不符将会报错。默认型号为TLE5012B。
 * i_max：最大电流限制。默认为30A。
-* spd_max：最大转速限制。默认为8000r/min。
+* spd_max：最大转速限制。默认为100r/s。
+* acc：加速度，用于速度控制模式。默认为10r/s$^2$。
+* dec：减速度，用于速度控制模式。默认为10r/s$^2$ 。acc和dec同时设为0时，禁用速度爬升。
 * cal：校准标志位。0：校准ADC和编码器零偏，**更换编码器型号**、**编码器重新安装**、**磁铁重新安装**、**电机线序改变**均需重新校准，否则电机将无法正常运行，可能会发生跑飞的情况，校准前务必确保电机处于==空载==状态。
 
 ### 2.CAN协议
@@ -193,7 +196,7 @@ Last update:2024.8
 
 ## 三、离线操作
 
-​		Blazer FOC大功率版本板载了一块0.78寸的OLED屏幕，可用于进行一些离线配置，目前已支持的功能有编码器零偏校准、极对数辨识和CAN ID更改。
+​		Blazer FOC大功率版本板载了一块0.78寸的OLED屏幕，可用于参数的手动修改。
 
 ### 1.按键逻辑
 

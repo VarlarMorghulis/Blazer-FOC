@@ -265,6 +265,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>Iq_Array</ItemText>
         </Ww>
+        <Ww>
+          <count>21</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>MotorControl,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
