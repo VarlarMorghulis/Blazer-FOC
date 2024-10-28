@@ -393,10 +393,8 @@ void FOC_Task_Encoder_Calibration(void)
 }
 #endif
 
-extern float angle_ref;
 
-uint16_t enc_temp[256];
-uint16_t lut_enc[256];
+
 
 /**
    * @brief  编码器位置角度线性化任务
@@ -404,85 +402,86 @@ uint16_t lut_enc[256];
    * @param  无
    * @retval 无
    */
-void FOC_Task_Encoder_Linearization(void)
-{
-	const int n=256;
-	const int n2=100*Motor_t.Pole_Pairs;
-	float delta=_2PI*Motor_t.Pole_Pairs/(n*n2);
-	static float theta_ref;
-	
-	static int i=0;
-	static int j=0;
-	static int index=0;
-	
-	static uint8_t step=0;
-	
-	FOC_StructBind(&FOC_Encoder_Linearization_t);
-	
-	/*强拖一圈*/
-	if(step==0)
-	{
-		/*一圈内等间距地采集256个点的编码器值*/
-		if(i<n)
-		{
-			if(j<n2)
-			{
-				theta_ref+=SPI_Encoder_t.sensor_dir*delta;
 
-				FOC_Encoder_Linearization_t.theta_e=_normalizeAngle(theta_ref);
-				I_Park_Transform(&FOC_Encoder_Linearization_t);
-				SVPWM_Cal(&FOC_Encoder_Linearization_t);
-				SetPWM(&FOC_Encoder_Linearization_t);
-				
-				j++;
-			}
-			else
-			{
-				enc_temp[i]=ReadSPIEncoder_Raw();
-				j=0;
-				i++;
-			}
-		}
-		else
-		{
-			i=0;
-			j=0;
-			step=1;
-		}
-	}	
-	
-	/*数据处理*/
-	else if(step==1)
-	{
-		/*找到编码器过零点时刻的采样点*/
-		while(enc_temp[i]<enc_temp[i+1] && i<n-1)
-		{
-			i++;
-		}
-		
-		index=i;
-		
-		/*以零点为分界,编码器值从小到大排序*/
-		for(i=0;i<index+1;i++)
-		{
-			lut_enc[i-index+n]=enc_temp[i];
-		}
-		for(i=index+1;i<n;i++)
-		{
-			lut_enc[i-index-1]=enc_temp[i];
-		}
-		
-		/*在最后补一位,后续查表时判断逻辑更加简介*/
-		//lut_enc[256]=lut_enc[0]+32767;
-		
-		/*重置变量*/
-		i=0;
-		j=0;
-		index=0;
-		step=0;
-		calib_state=Calib_Done;	
-	}
-}
+//void FOC_Task_Encoder_Linearization(void)
+//{
+//	const int n=256;
+//	const int n2=100*Motor_t.Pole_Pairs;
+//	float delta=_2PI*Motor_t.Pole_Pairs/(n*n2);
+//	static float theta_ref;
+//	
+//	static int i=0;
+//	static int j=0;
+//	static int index=0;
+//	
+//	static uint8_t step=0;
+//	
+//	FOC_StructBind(&FOC_Encoder_Linearization_t);
+//	
+//	/*强拖一圈*/
+//	if(step==0)
+//	{
+//		/*一圈内等间距地采集256个点的编码器值*/
+//		if(i<n)
+//		{
+//			if(j<n2)
+//			{
+//				theta_ref+=SPI_Encoder_t.sensor_dir*delta;
+
+//				FOC_Encoder_Linearization_t.theta_e=_normalizeAngle(theta_ref);
+//				I_Park_Transform(&FOC_Encoder_Linearization_t);
+//				SVPWM_Cal(&FOC_Encoder_Linearization_t);
+//				SetPWM(&FOC_Encoder_Linearization_t);
+//				
+//				j++;
+//			}
+//			else
+//			{
+//				enc_temp[i]=ReadSPIEncoder_Raw();
+//				j=0;
+//				i++;
+//			}
+//		}
+//		else
+//		{
+//			i=0;
+//			j=0;
+//			step=1;
+//		}
+//	}	
+//	
+//	/*数据处理*/
+//	else if(step==1)
+//	{
+//		/*找到编码器过零点时刻的采样点*/
+//		while(enc_temp[i]<enc_temp[i+1] && i<n-1)
+//		{
+//			i++;
+//		}
+//		
+//		index=i;
+//		
+//		/*以零点为分界,编码器值从小到大排序*/
+//		for(i=0;i<index+1;i++)
+//		{
+//			lut_enc[i-index+n]=enc_temp[i];
+//		}
+//		for(i=index+1;i<n;i++)
+//		{
+//			lut_enc[i-index-1]=enc_temp[i];
+//		}
+//		
+//		/*在最后补一位,后续查表时判断逻辑更加简介*/
+//		//lut_enc[256]=lut_enc[0]+32767;
+//		
+//		/*重置变量*/
+//		i=0;
+//		j=0;
+//		index=0;
+//		step=0;
+//		calib_state=Calib_Done;	
+//	}
+//}
 
 
 void FOC_Task_Param_Save(void)
@@ -518,7 +517,7 @@ void FOC_Task_Calibration(void)
 		break;
 		
 		case Linearize_Encoder:
-			FOC_Task_Encoder_Linearization();
+			//FOC_Task_Encoder_Linearization();
 		break;
 		
 		case Calib_Done:

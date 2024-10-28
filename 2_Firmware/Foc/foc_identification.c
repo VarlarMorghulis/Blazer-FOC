@@ -97,125 +97,15 @@ void FOC_Task_Rs_Identification(void)
 }
 
 
-//float sin_func[20]=
-//{0.0f, 0.309017f, 0.587785f, 0.809017f, 0.951057f, 1.0f, 0.951057f, 0.809017f, 0.587785f, 0.309017f,
-// 0.0f,-0.309017f,-0.587785f,-0.809017f,-0.951057f,-1.0f,-0.951057f,-0.809017f,-0.587785f,-0.309017f};
-// 
-//float Iq_Array[128]={0};
-//float FFTInput_Array[256]={0};
-//float FFTOutput_Array[64]={0};
-//float Iq_Amplitude[2]={0};
+float sin_func[20]=
+{0.0f, 0.309017f, 0.587785f, 0.809017f, 0.951057f, 1.0f, 0.951057f, 0.809017f, 0.587785f, 0.309017f,
+ 0.0f,-0.309017f,-0.587785f,-0.809017f,-0.951057f,-1.0f,-0.951057f,-0.809017f,-0.587785f,-0.309017f};
+ 
+float Iq_Array[128]={0};
+float FFTInput_Array[256]={0};
+float FFTOutput_Array[64]={0};
+float Iq_Amplitude[2]={0};
 
-///**
-//   * @brief  相电感辨识任务
-//   * @param  无
-//   * @retval 无
-//   */
-//void FOC_Task_Ls_Identification(void)
-//{
-//	ErrorState Current_Ers=FOC_OK,Encoder_Ers=FOC_OK;
-//	static uint16_t i,j,k,l,m;
-//	
-//	float Upeak,Ipeak;
-//	
-//	FOC_StructBind(&FOC_Ls_Identification_t);
-//	
-//	Upeak=0.1f*AnalogParam_t.vbus;
-//	/*注入1kHz的Uq正弦波*/
-//	FOC_Ls_Identification_t.Uq=0.1f * sin_func[i];
-//	i++;
-//	if(i>=20)
-//		i=0;
-//	
-//	/*电流采样及处理*/
-//	Current_Ers=Current_Cal(&FOC_Ls_Identification_t,&CurrentOffset_t);
-//	/*Clarke变换*/
-//	Clarke_Transform(&FOC_Ls_Identification_t);
-//	/*Park变换*/
-//	Park_Transform(&FOC_Ls_Identification_t);
-//	
-//	/*获取编码器角度*/
-//	Encoder_Ers=Encoder_Cal(&FOC_Ls_Identification_t,&SPI_Encoder_t,Motor_t.Pole_Pairs);
-//	/*电压圆限制*/
-//	Circle_Limitation(&FOC_Ls_Identification_t.Ud,&FOC_Ls_Identification_t.Uq);
-//	/*反Park变换*/
-//	I_Park_Transform(&FOC_Ls_Identification_t);
-//	/*SVPWM计算*/
-//	SVPWM_Cal(&FOC_Ls_Identification_t);
-//	/*占空比设置*/
-//	SetPWM(&FOC_Ls_Identification_t);
-//	
-//	/*等待一段时间,直到电压和电流都达到稳态*/
-//	if(TE_Ls_Identification_t.Step==0)
-//	{
-//		if(++TE_Ls_Identification_t.Cnt_20kHz>=40000)
-//		{
-//			TE_Ls_Identification_t.Step=1;
-//			TE_Ls_Identification_t.Cnt_20kHz=0;
-//		}	
-//	}
-//	/*Iq电流采样*/
-//	else if(TE_Ls_Identification_t.Step==1)
-//	{
-//		Iq_Array[j]=FOC_Ls_Identification_t.Iq;
-//		
-//		if(++j>=128)
-//		{
-//			TE_Ls_Identification_t.Step=2;
-//			j=0;
-//		}
-
-//	}
-//	/*数据处理*/
-//	else if(TE_Ls_Identification_t.Step==2)
-//	{
-//		for(k=0;k<128;k++)
-//		{
-//			/*实部赋值*/
-//			FFTInput_Array[2*k]=Iq_Array[k];
-//			/*虚部赋值*/
-//			FFTInput_Array[2*k+1]=0.0f;
-//		}
-//		/*快速傅里叶变换*/
-//		arm_cfft_f32(&arm_cfft_sR_f32_len128,FFTInput_Array,0,1);
-//		/*从0-20000Hz等间距提取128个点的幅值*/
-//		arm_cmplx_mag_f32(FFTInput_Array,FFTOutput_Array,128);
-//		for(l=0;l<64;l++)
-//			FFTOutput_Array[l]/=64.0f;
-//		/*筛选出最大的幅值*/
-//		for(l=0;l<10;l++)
-//		{
-//			Iq_Amplitude[0]=FFTOutput_Array[1+l];
-//			if(Iq_Amplitude[1]<Iq_Amplitude[0])
-//				Iq_Amplitude[1]=Iq_Amplitude[0];
-//		}
-//		Ipeak=Iq_Amplitude[1];
-//		Motor_Ls=Upeak/Ipeak/(_2PI*1000.0f);
-//		TE_Ls_Identification_t.Step=3;
-//	}
-//	
-//	else if(TE_Ls_Identification_t.Step==3)
-//	{
-//		/*重置变量*/
-//		TE_Ls_Identification_t.Step=0;
-//		i=0;
-//		j=0;
-//		k=0;
-//		l=0;
-//		m=0;
-//		/*状态跳转*/
-//		FOC_State_t=FOC_Wait;
-//	}
-//	
-//	if(Current_Ers==FOC_FAULT||Encoder_Ers==FOC_FAULT)
-//	{
-//		FOC_State_t=FOC_Error;
-//	}	
-//}
-
-float Ia[2];
-float U_bus;
-float di_by_dt;
 /**
    * @brief  相电感辨识任务
    * @param  无
@@ -223,62 +113,178 @@ float di_by_dt;
    */
 void FOC_Task_Ls_Identification(void)
 {
-	float calib_voltage=0.1f;
-	static float Ud[2];
-	static float U_gain=3.3f/4095.0f*11.0f;
-	uint32_t num_L_cycles = FOC_FREQ;
+	ErrorState Current_Ers=FOC_OK,Encoder_Ers=FOC_OK;
+	static uint16_t i,j,k,l,m;
 	
-	float L;
-	
-	int i=0;
-	
-	Ud[0]=-calib_voltage;
-	Ud[1]=+calib_voltage;
+	float Upeak,Ipeak;
 	
 	FOC_StructBind(&FOC_Ls_Identification_t);
 	
-	/*快速变电压*/
+	Upeak=0.2f*AnalogParam_t.vbus;
+	/*注入1kHz的Uq正弦波*/
+	//FOC_Ls_Identification_t.Ud=0.2f * arm_sin_f32(_2PI/20.0f*(float)i);
+	if(i%2==0)
+		FOC_Ls_Identification_t.Uq=0.2f;
+	else if(i%2==1)
+		FOC_Ls_Identification_t.Uq=-0.2f;
+	
+
+	FOC_Ls_Identification_t.theta_e=0.0f;
+	i++;
+	if(i>=20)
+		i=0;
+	
+	/*电流采样及处理*/
+	Current_Ers=Current_Cal(&FOC_Ls_Identification_t,&CurrentOffset_t);
+	/*Clarke变换*/
+	//Clarke_Transform(&FOC_Ls_Identification_t);
+	/*Park变换*/
+	//Park_Transform(&FOC_Ls_Identification_t);
+	
+	/*获取编码器角度*/
+	//Encoder_Ers=Encoder_Cal(&FOC_Ls_Identification_t,&SPI_Encoder_t,Motor_t.Pole_Pairs);
+
+	/*反Park变换*/
+	I_Park_Transform(&FOC_Ls_Identification_t);
+	/*SVPWM计算*/
+	SVPWM_Cal(&FOC_Ls_Identification_t);
+	/*占空比设置*/
+	SetPWM(&FOC_Ls_Identification_t);
+	
+	/*等待一段时间,直到电压和电流都达到稳态*/
 	if(TE_Ls_Identification_t.Step==0)
 	{
-		i=TE_Ls_Identification_t.Cnt_20kHz & 1;
-		
-		Ia[i] += FOC_Ls_Identification_t.Ia;
-		U_bus += (float)(ADC1->JDR4)*U_gain;
-		
-		FOC_Ls_Identification_t.theta_e=0.0f;
-		FOC_Ls_Identification_t.Ud=Ud[i];
-		
-		I_Park_Transform(&FOC_Ls_Identification_t);
-		
-		SVPWM_Cal(&FOC_Ls_Identification_t);
-		
-		SetPWM(&FOC_Ls_Identification_t);
-		
-		Current_Cal(&FOC_Ls_Identification_t,&CurrentOffset_t);
-		
-		if(++TE_Ls_Identification_t.Cnt_20kHz>=(num_L_cycles<<1))
+		if(++TE_Ls_Identification_t.Cnt_20kHz>=60000)
 		{
 			TE_Ls_Identification_t.Step=1;
 			TE_Ls_Identification_t.Cnt_20kHz=0;
-		}
+		}	
 	}
-	/*计算相电感*/
+	/*Iq电流采样*/
 	else if(TE_Ls_Identification_t.Step==1)
 	{
-		U_bus /= (float)(num_L_cycles*2);
-		di_by_dt = (Ia[1]-Ia[0])/(float)(FOC_PERIOD * num_L_cycles);
-		L = U_bus * calib_voltage / di_by_dt;
-		Motor_Ls = L *2.0f / 3.0f;
+		Iq_Array[j]=FOC_Ls_Identification_t.Iq;
 		
-//		U_bus=0.0f;
-//		Ia[0]=0.0f;
-//		Ia[1]=0.0f;
-//		di_by_dt=0.0f;
-		
+		if(++j>=128)
+		{
+			TE_Ls_Identification_t.Step=2;
+			j=0;
+		}
+
+	}
+	/*数据处理*/
+	else if(TE_Ls_Identification_t.Step==2)
+	{
+		for(k=0;k<128;k++)
+		{
+			/*实部赋值*/
+			FFTInput_Array[2*k]=Iq_Array[k];
+			/*虚部赋值*/
+			FFTInput_Array[2*k+1]=0.0f;
+		}
+		/*快速傅里叶变换*/
+		arm_cfft_f32(&arm_cfft_sR_f32_len128,FFTInput_Array,0,1);
+		/*从0-20000Hz等间距提取128个点的幅值*/
+		arm_cmplx_mag_f32(FFTInput_Array,FFTOutput_Array,128);
+		for(l=0;l<64;l++)
+			FFTOutput_Array[l]/=64.0f;
+		/*筛选出最大的幅值*/
+		for(l=0;l<10;l++)
+		{
+			Iq_Amplitude[0]=FFTOutput_Array[1+l];
+			if(Iq_Amplitude[1]<Iq_Amplitude[0])
+				Iq_Amplitude[1]=Iq_Amplitude[0];
+		}
+		Ipeak=Iq_Amplitude[1];
+		Motor_Ls=Upeak/Ipeak/(_2PI*1000.0f);
+		TE_Ls_Identification_t.Step=3;
+	}
+	
+	else if(TE_Ls_Identification_t.Step==3)
+	{
+		/*重置变量*/
 		TE_Ls_Identification_t.Step=0;
+		i=0;
+		j=0;
+		k=0;
+		l=0;
+		m=0;
+		/*状态跳转*/
 		FOC_State_t=FOC_Wait;
 	}
+	
+	if(Current_Ers==FOC_FAULT||Encoder_Ers==FOC_FAULT)
+	{
+		FOC_State_t=FOC_Error;
+	}	
 }
+
+//float Ia[2];
+//float U_bus;
+//float di_by_dt;
+///**
+//   * @brief  相电感辨识任务
+//   * @param  无
+//   * @retval 无
+//   */
+//void FOC_Task_Ls_Identification(void)
+//{
+//	float calib_voltage=0.1f;
+//	static float Ud[2];
+//	static float U_gain=3.3f/4095.0f*11.0f;
+//	uint32_t num_L_cycles = FOC_FREQ;
+//	
+//	float L;
+//	
+//	int i=0;
+//	
+//	Ud[0]=-calib_voltage;
+//	Ud[1]=+calib_voltage;
+//	
+//	FOC_StructBind(&FOC_Ls_Identification_t);
+//	
+//	/*快速变电压*/
+//	if(TE_Ls_Identification_t.Step==0)
+//	{
+//		i=TE_Ls_Identification_t.Cnt_20kHz & 1;
+//		
+//		Ia[i] += FOC_Ls_Identification_t.Ia;
+//		U_bus += (float)(ADC1->JDR4)*U_gain;
+//		
+//		FOC_Ls_Identification_t.theta_e=0.0f;
+//		FOC_Ls_Identification_t.Ud=Ud[i];
+//		
+//		I_Park_Transform(&FOC_Ls_Identification_t);
+//		
+//		SVPWM_Cal(&FOC_Ls_Identification_t);
+//		
+//		SetPWM(&FOC_Ls_Identification_t);
+//		
+//		Current_Cal(&FOC_Ls_Identification_t,&CurrentOffset_t);
+//		
+//		if(++TE_Ls_Identification_t.Cnt_20kHz>=(num_L_cycles<<1))
+//		{
+//			TE_Ls_Identification_t.Step=1;
+//			TE_Ls_Identification_t.Cnt_20kHz=0;
+//		}
+//	}
+//	/*计算相电感*/
+//	else if(TE_Ls_Identification_t.Step==1)
+//	{
+//		U_bus /= (float)(num_L_cycles*2);
+//		di_by_dt = (Ia[1]-Ia[0])/(float)(FOC_PERIOD * num_L_cycles);
+//		L = U_bus * calib_voltage / di_by_dt;
+//		Motor_Ls = L *2.0f / 3.0f;
+//		
+////		U_bus=0.0f;
+////		Ia[0]=0.0f;
+////		Ia[1]=0.0f;
+////		di_by_dt=0.0f;
+//		
+//		TE_Ls_Identification_t.Step=0;
+//		FOC_State_t=FOC_Wait;
+//	}
+//}
 
 
 /**

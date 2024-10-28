@@ -47,7 +47,7 @@
 
 /* USER CODE BEGIN PV */
 extern uint8_t can_tx_flag;
-float motor_speed[4]={30.0f,30.0f,30.0f,30.0f};
+float motor_speed[4]={30.0f,30.0f,600.0f,30.0f};
 
 /* USER CODE END PV */
 

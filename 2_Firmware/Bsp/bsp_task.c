@@ -13,7 +13,6 @@ extern FOC_State FOC_State_t;
 
 void BSP1kHzIRQHandler(void)
 {
-	Vofa_Upload();
 	
 	if(++Led_Cnt>=500)
 	{

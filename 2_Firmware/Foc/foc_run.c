@@ -171,15 +171,15 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Id=
 {
 	.ref_value=0.0f,
-	.Kp=0.00077f,
-	.Ki=3.172f,
+	.Kp=0.00000765f,
+	.Ki=0.03172f,
 };
 
 PID_TypeDef PID_Iq=
 {
 	.ref_value=0.0f,
-	.Kp=0.00077f,
-	.Ki=3.172f,
+	.Kp=0.00000765f,
+	.Ki=0.03172f,
 };
 
 #endif
@@ -187,22 +187,22 @@ PID_TypeDef PID_Iq=
 PID_TypeDef PID_Speed=
 {
 	.ref_value=0.0f,
-	.Kp=0.2f,
+	.Kp=0.5f,
 	.Ki=0.2f
 };
 
 PID_TypeDef PID_ZeroSpeed=
 {
 	.ref_value=0.0f,
-	.Kp=0.2f,
+	.Kp=0.5f,
 	.Ki=0.2f,
 };
 
 PID_TypeDef PID_Position=
 {
 	.ref_value=0.0f,
-	.Kp=0.2f,
-	.output_max=62.8f
+	.Kp=0.1f,
+	.output_max=100.0f
 };
 
 uint8_t sensored_mode=Current_Mode;

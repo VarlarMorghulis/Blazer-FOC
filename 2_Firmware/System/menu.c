@@ -667,7 +667,10 @@ void Encoder(void)
 			u8g2_DrawStr(&u8g2,45,46,encoder_str);
 		break;
 		
-		default:break;
+		default:
+			sprintf(encoder_str,"Unknown");
+			u8g2_DrawStr(&u8g2,45,46,encoder_str);	
+		break;
 	}
 	
 	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
@@ -706,7 +709,7 @@ void Pole_Pairs(void)
 		/*±£¥Ê≈‰÷√*/
 		if(key1_event==KE_LongPress)
 		{
-			InterfaceParam_t.enc_type=(float)Motor_t.Pole_Pairs;
+			InterfaceParam_t.pole_pairs=(float)Motor_t.Pole_Pairs;
 			flashsave_flag=1;
 			step=0;
 		}

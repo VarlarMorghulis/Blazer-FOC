@@ -21,13 +21,13 @@ void Vofa_Upload(void)
 	Frame_t.fdata[0]=(float)ADC1->JDR1;
 	Frame_t.fdata[1]=(float)ADC1->JDR2;
 	Frame_t.fdata[2]=(float)ADC1->JDR3;
-	Frame_t.fdata[3]=FOC_Param_t->Id;
+	Frame_t.fdata[3]=FOC_Param_t->Uq;
 	Frame_t.fdata[4]=FOC_Param_t->Iq;
-	Frame_t.fdata[5]=FOC_Param_t->theta_e;
-	Frame_t.fdata[6]=PID_Speed.ref_value;
-	Frame_t.fdata[7]=SPI_Encoder_t.velocity;
-	Frame_t.fdata[8]=PID_Position.ref_value;
-	Frame_t.fdata[9]=PID_Position.samp_value;
+//	Frame_t.fdata[5]=FOC_Param_t->theta_e;
+//	Frame_t.fdata[6]=PID_Speed.ref_value;
+//	Frame_t.fdata[7]=SPI_Encoder_t.velocity;
+//	Frame_t.fdata[8]=PID_Position.ref_value;
+//	Frame_t.fdata[9]=PID_Position.samp_value;
 	
 	/*由于float和uint32_t都为4个字节,因此无需再做结构体数据对齐*/
 	HAL_UART_Transmit_DMA(&huart1,(uint8_t *)&Frame_t,sizeof(Frame_TypeDef));

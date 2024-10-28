@@ -24,7 +24,6 @@ typedef enum
 
 void FOC_Task_ADC_Calibration(void);
 void FOC_Task_Encoder_Calibration(void);
-void FOC_Task_Encoder_Linearization(void);
 void FOC_Task_Param_Save(void);
 void FOC_Task_Calibration(void);
 

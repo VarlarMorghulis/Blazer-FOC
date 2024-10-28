@@ -9,6 +9,7 @@ FOC_State FOC_State_t=FOC_Wait;
    */
 void FOC20kHzIRQHandler(void)
 {
+	Vofa_Upload();
 	switch(FOC_State_t)
 	{
 		/*上电蜂鸣提示*/
