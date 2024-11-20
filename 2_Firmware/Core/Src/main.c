@@ -62,7 +62,8 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 extern u8g2_t u8g2;
 extern uint16_t Menu_Cnt;
-extern uint8_t flashsave_flag;
+extern CANMsg_TypeDef CANMsg;
+extern MotorControl_TypeDef MotorControl;
 /* USER CODE END 0 */
 
 /**
@@ -79,6 +80,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -117,13 +119,19 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	if(Menu_Cnt>=50)
+	if(Menu_Cnt >= 50)
 	{
 		Choose_Menu();
-		Menu_Cnt=0;
+		Menu_Cnt = 0;
 	}
 	
-	if(flashsave_flag==1)
+	if(CANMsg.can_tx_en == true)
+	{
+		CAN_SendMessage();
+		CANMsg.can_tx_en = false;
+	}
+	
+	if(MotorControl.ModeNow == Save_Param)
 	{
 		/*关闭全局中断*/
 		__disable_irq();
@@ -131,7 +139,7 @@ int main(void)
 		Param_FlashSave();
 		/*打开全局中断*/
 		__enable_irq();
-		flashsave_flag=0;
+		MotorControl.ModeNow = Motor_Disable;
 	}
 	
   }

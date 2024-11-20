@@ -2,15 +2,8 @@
 #define __FOC_PID_H__
 
 #include "foc_utils.h"
-
-/*电流环周期(s)*/
-#define Current_Ts	0.00005f
-
-/*速度环周期(s)*/
-#define Speed_Ts	0.0001f
-
-/*位置环周期(s)*/
-#define Position_Ts 0.0002f
+#include "foc_run.h"
+#include "hw_conf.h"
 
 typedef struct
 {

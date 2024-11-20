@@ -2,50 +2,45 @@
 #define __FOC_ALGORITHM_H__
 
 #include "main.h"
+#include <arm_math.h> 
+#include "foc_utils.h"
+#include "hw_conf.h"
+#include "data_type.h"
 
 typedef struct
 {
-	/*母线电压*/
-	float Udc;
+	float Vbus,Vbus_filt;
+	float Ibus,Ibus_filt;
+	float Power_filt;
 	/*abc三相电压*/
-	float Ua,Ub,Uc;
+	float Va,Vb,Vc;
 	/*alpha beta轴电压*/
-	float Ualpha,Ubeta;
+	float Valpha,Vbeta;
 	/*dq轴电压*/
-	float Ud,Uq;
+	float Vd,Vq;
 	/*abc三相电流*/
 	float Ia,Ib,Ic;
 	/*alpha beta轴电流*/
 	float Ialpha,Ibeta;
 	/*dq轴电流*/
-	float Id,Iq;
+	float Id,Iq,Id_filt,Iq_filt;
+	float Vd_int,Vq_int;
+	float mod_d,mod_q;
+	float mod_alpha,mod_beta;
 	/*dq轴电流的低频成分*/
-	float Id_l,Iq_l;
-	/*dq轴电流的高频成分*/
-	float Id_h,Iq_h;
-	float Speed;
-	float Speed_now;
-	float Position;
-	/*电角度过渡变量*/
-	float theta_temp;
-	/*电角度*/
-	float theta_e;
-	float Tcmp1,Tcmp2,Tcmp3,Tpwm;
+	float dtc_a,dtc_b,dtc_c;
 	/*扇区*/
-	uint8_t sector;
+	int32_t sector;
+	
 }FOC_TypeDef;
 
-#include <arm_math.h> 
-#include "foc_calibration.h"
-#include "foc_param.h"
+void Park_Transform(float Ialpha, float Ibeta, float theta, float *Id, float *Iq);
+void Inverse_Park_Transform(float mod_d, float mod_q, float theta, float *mod_alpha, float *mod_beta);
+void Clarke_Transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta);
+void FOC_SVM(float alpha, float beta, float *tA, float *tB, float *tC ,int32_t *sector);
+void FOC_Voltage(float Vd_set, float Vq_set, float phase);
+void FOC_Current(float Id_set, float Iq_set, float phase, float phase_vel);
 
-void Park_Transform(FOC_TypeDef *FOC_x);
-void I_Park_Transform(FOC_TypeDef *FOC_x);
-void Clarke_Transform(FOC_TypeDef *FOC_x);
-void Circle_Limitation(float *Ud,float *Uq);
-void SVPWM_Cal(FOC_TypeDef *FOC_x);
-void SetPWM(FOC_TypeDef *FOC_x);
-ErrorState Current_Cal(FOC_TypeDef *FOC_t,CurrentOffset_TypeDef *CurrentOffset_t);
-void Motor_Release(void);
-void Motor_Brake(void);
+void PWM_TurnOnHighSides(void);
+void PWM_TurnOnLowSides(void);
 #endif

@@ -1,47 +1,46 @@
 #ifndef __FOC_PARAM_H__
 #define __FOC_PARAM_H__
 
-#include "main.h"
-
-#define PWM_TIM_CLOCK		168000000
-#define PWM_TIM_FREQ		20000 /*Hz*/
-#define PWM_TIM_PERIOD		(PWM_TIM_CLOCK/PWM_TIM_FREQ/2)	
-#define PWM_TIM_TPWM		(PWM_TIM_CLOCK/PWM_TIM_FREQ/2)
-
-#define FOC_FREQ			PWM_TIM_FREQ
-#define FOC_PERIOD			1.0f/(float)FOC_FREQ
-
-//#define Motor_8318
-//#define Motor_5065
-//#define Motor_Tmotor_U7
-//#define Motor_Tmotor_U10
-#define Motor_Tmotor_U8lite
-//#define Motor_LD2808
-typedef enum
-{
-	FOC_OK,
-	FOC_FAULT
-}ErrorState;
+#include "common_inc.h"
 
 typedef struct
 {
 	float node_id;
-	float enc_type;
-	float sensor_dir;
-	float zero_enc_offset;
+	
 	float currentoffset_a,currentoffset_b,currentoffset_c;
-	float pole_pairs;
-	float current_max;
-	float speed_max;
-	float accup_max;
-	float accdown_max;
+	
+	float motor_pole_pairs;
+	float motor_phase_resistance;
+	float motor_phase_inductance;
+	float motor_flux;
+	
+	float encoder_type;
+	float encoder_dir;
+	float encoder_offset;
+	float offset_lut[128];
+	
+	float id_kp;
+	float id_ki;
+	float iq_kp;
+	float iq_ki;
+	
+	float speed_kp;
+	float speed_ki;
+	
+	float pos_kp;
+	float pos_ki;
+	
+	float calib_current;
+	float current_limit;
+	float speed_limit;
+	float speedAcc;
+	float speedDec;
+	
+	float can_hb;
 }InterfaceParam_TypeDef;
 
-#include "common_inc.h"
-
 void Param_Return_Default(void);
-void FOC_Param_Init(void);
-void FOC_StructBind(FOC_TypeDef *FOC_t);
-void FOC_StructUnbind(void);
+void Param_Upload(void);
+void Param_Download(void);
 
 #endif

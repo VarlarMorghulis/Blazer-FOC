@@ -32,6 +32,8 @@ void Menu_Show(uint8_t key);
 
 void Draw_Main_font(int8_t x, int8_t y);
 void Draw_Calib_font(int8_t x, int8_t y);
+void Draw_R_L_Flux_font(int8_t x, int8_t y);
+void Draw_Encoder_Offset_font(int8_t x, int8_t y);
 void Draw_Setting_font(int8_t x, int8_t y);
 void Draw_CAN_ID_font(int8_t x, int8_t y);
 void Draw_Current_font(int8_t x, int8_t y);
@@ -42,13 +44,15 @@ void Draw_Default_font(int8_t x, int8_t y);
 void Draw_Run_font(int8_t x, int8_t y);
 void Draw_Info_font(int8_t x, int8_t y);
 
-void NoFun(void);
+void Main(void);
 void Calib(void);
+void R_L_Flux(void);
+void Encoder_Offset(void);
 void Setting(void);
 void CAN_ID(void);
 void Current(void);
 void Speed(void);
-void Encoder(void);
+void EncoderType(void);
 void Pole_Pairs(void);
 void Default(void);
 void Run(void);

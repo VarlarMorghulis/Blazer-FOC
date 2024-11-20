@@ -364,7 +364,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart==&huart1)
 	{		
-		//UARTRxIRQHandler();
+
 	}
 }
 
@@ -377,7 +377,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin==ENC_Z_Pin)
 	{
-		ENC_Z_EXTIIRQHandler();
+
 	}
 }
 

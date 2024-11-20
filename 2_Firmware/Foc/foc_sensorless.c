@@ -88,13 +88,7 @@ IIR_Butterworth_TypeDef ERR_IIR_LPF_t=
 	.gain1=1.0f
 };
 
-FOC_TypeDef FOC_HFI_t=
-{
-	.Udc=1.0f,
-	.Ud=0.0f,
-	.Uq=0.0f,
-	.Tpwm=PWM_TIM_PERIOD
-};
+FOC_TypeDef FOC_HFI_t;
 
 PLL_TypeDef PLL_t=
 {
@@ -103,42 +97,16 @@ PLL_TypeDef PLL_t=
 	.error_sum_max=6.28f
 };
 
-FOC_TypeDef FOC_Sensorless_t=
-{
-	.Udc=1.0f,
-	.Ud=0.0f,
-	.Uq=0.0f,
-	.Tpwm=PWM_TIM_PERIOD
-};
-
 Fluxobserver_TypeDef Fluxobserver_t=
 {
 	.gamma=1000000000.0f,
 	.Ts=0.00005f
 };
 
-extern FOC_TypeDef FOC_Sensored_t;
-extern PID_TypeDef PID_Id;
-extern PID_TypeDef PID_Iq;
-extern CurrentOffset_TypeDef CurrentOffset_t;
-extern AnalogParam_TypeDef AnalogParam_t;
+extern MotorControl_TypeDef MotorControl;
+extern CurrentOffset_TypeDef CurrentOffset;
 
-//float Rs=0.134f;
-//float Ls=0.00005987f;
-//float Flux=0.0030293f;
 
-//float Rs=0.014f;
-//float Ls=0.0000003f;
-//float Flux=0.001424f;
-
-//float Rs=0.0355f;
-//float Ls=0.0000345f;
-//float Flux=0.0028129f;
-
-/*Tmotor U8lite*/
-float Rs=0.0317f;
-float Ls=0.00000765f;
-float Flux=0.002695f;
 
 /**
    * @brief  高频电压生成函数
@@ -174,50 +142,51 @@ void PLL_Handle(PLL_TypeDef * PLL_t)
 	PLL_t->output_sum=_normalizeAngle(PLL_t->output_sum);
 }
 
-void HFI_Process(void)
-{
-	/*生成高频正弦电压*/
-	Generate_HighFrequency_Volt(&HFI_t);
-	
-	/*计算三相电流*/
-	Current_Cal(&FOC_HFI_t,&CurrentOffset_t);
-	
-	/*Clarke变换*/
-	Clarke_Transform(&FOC_HFI_t);
-	
-	/*Park变换*/
-	Park_Transform(&FOC_HFI_t);
-	
-	/*d轴q轴响应电流低通滤波,提取基波电流*/
-	FOC_HFI_t.Id_l=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_LPF_t);
-	FOC_HFI_t.Iq_l=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_LPF_t);
-	
-	/*d轴q轴响应电流带通滤波,提取高频电流*/
-	FOC_HFI_t.Id_h=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_BPF_t);
-	FOC_HFI_t.Iq_h=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_BPF_t);
-	
-	/*锁相环提取转子角速度和角度*/
-	PLL_t.error=IIR_Butterworth(FOC_HFI_t.Iq_h * HFI_t.sin_val,&ERR_IIR_LPF_t);
-	PLL_Handle(&PLL_t);
-	HFI_t.w_e=PLL_t.output;
-	HFI_t.theta_e=PLL_t.output_sum;
-	FOC_HFI_t.theta_e=HFI_t.theta_e;
-	
-	/*电流环PID计算输出*/
-	PID_Id.samp_value=FOC_HFI_t.Id_l;
-	PID_Iq.samp_value=FOC_HFI_t.Iq_l;
-	FOC_HFI_t.Ud=Current_PI_Ctrl(&PID_Id);
-	FOC_HFI_t.Uq=Current_PI_Ctrl(&PID_Iq);
-	
-	/*注入到d轴*/
-	FOC_HFI_t.Ud+=HFI_t.inj_volt;
-	
-	/*反Park变换*/
-	I_Park_Transform(&FOC_HFI_t);
-	
-	SVPWM_Cal(&FOC_HFI_t);
-	SetPWM(&FOC_HFI_t);
-}
+//void HFI_Process(void)
+//{
+//	/*生成高频正弦电压*/
+//	Generate_HighFrequency_Volt(&HFI_t);
+//	
+//	FOC_HFI_t.Ia = MotorControl.ia;
+//	FOC_HFI_t.Ib = MotorControl.ib;
+//	FOC_HFI_t.Ic = MotorControl.ic;
+//	
+//	/*Clarke变换*/
+//	//Clarke_Transform(&FOC_HFI_t);
+//	
+//	/*Park变换*/
+//	//Park_Transform(&FOC_HFI_t);
+//	
+//	/*d轴q轴响应电流低通滤波,提取基波电流*/
+//	FOC_HFI_t.Id_l=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_LPF_t);
+//	FOC_HFI_t.Iq_l=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_LPF_t);
+//	
+//	/*d轴q轴响应电流带通滤波,提取高频电流*/
+//	FOC_HFI_t.Id_h=IIR_Butterworth(FOC_HFI_t.Id,&D_IIR_BPF_t);
+//	FOC_HFI_t.Iq_h=IIR_Butterworth(FOC_HFI_t.Iq,&Q_IIR_BPF_t);
+//	
+//	/*锁相环提取转子角速度和角度*/
+//	PLL_t.error=IIR_Butterworth(FOC_HFI_t.Iq_h * HFI_t.sin_val,&ERR_IIR_LPF_t);
+//	PLL_Handle(&PLL_t);
+//	HFI_t.w_e=PLL_t.output;
+//	HFI_t.theta_e=PLL_t.output_sum;
+//	FOC_HFI_t.theta_e=HFI_t.theta_e;
+//	
+//	/*电流环PID计算输出*/
+//	PID_Id.samp_value=FOC_HFI_t.Id_l;
+//	PID_Iq.samp_value=FOC_HFI_t.Iq_l;
+//	FOC_HFI_t.Ud=Current_PI_Ctrl(&PID_Id);
+//	FOC_HFI_t.Uq=Current_PI_Ctrl(&PID_Iq);
+//	
+//	/*注入到d轴*/
+//	FOC_HFI_t.Ud+=HFI_t.inj_volt;
+//	
+//	/*反Park变换*/
+//	//I_Park_Transform(&FOC_HFI_t);
+//	
+//	SVPWM_Cal(&FOC_HFI_t);
+//	SetPWM(&FOC_HFI_t);
+//}
 
 
 
@@ -226,44 +195,33 @@ void HFI_Process(void)
    * @param  无
    * @retval 无
    */
-void Fluxobserver_Process(void)
-{
-	/*观测器输入变量更新*/
-	Fluxobserver_t.Ialpha = FOC_Sensorless_t.Ialpha;
-	Fluxobserver_t.Ibeta  = FOC_Sensorless_t.Ibeta;
-	Fluxobserver_t.Ualpha = AnalogParam_t.vbus * FOC_Sensorless_t.Ualpha;
-	Fluxobserver_t.Ubeta  = AnalogParam_t.vbus * FOC_Sensorless_t.Ubeta;
-	
-	/*观测器部分*/
-	Fluxobserver_t.y1_last=-Rs * Fluxobserver_t.Ialpha + Fluxobserver_t.Ualpha;
-	Fluxobserver_t.y2_last=-Rs * Fluxobserver_t.Ibeta  + Fluxobserver_t.Ubeta;
-	
-	Fluxobserver_t.etax1 = Fluxobserver_t.x1_last - Ls * Fluxobserver_t.Ialpha;
-	Fluxobserver_t.etax2 = Fluxobserver_t.x2_last - Ls * Fluxobserver_t.Ibeta;
-	
-	Fluxobserver_t.phi_err = Flux*Flux-(Fluxobserver_t.etax1 * Fluxobserver_t.etax1 + Fluxobserver_t.etax2 * Fluxobserver_t.etax2);
-	
-	Fluxobserver_t.x1 = Fluxobserver_t.Ts * (Fluxobserver_t.y1_last + Fluxobserver_t.gamma * Fluxobserver_t.etax1 * Fluxobserver_t.phi_err) + Fluxobserver_t.x1_last;
-	Fluxobserver_t.x2 = Fluxobserver_t.Ts * (Fluxobserver_t.y2_last + Fluxobserver_t.gamma * Fluxobserver_t.etax2 * Fluxobserver_t.phi_err) + Fluxobserver_t.x2_last;
-	
-	/*迭代*/
-	Fluxobserver_t.x1_last=Fluxobserver_t.x1;
-	Fluxobserver_t.x2_last=Fluxobserver_t.x2;
-	
-	Fluxobserver_t.cos = (Fluxobserver_t.x1 - Ls * Fluxobserver_t.Ialpha) / Flux;
-	Fluxobserver_t.sin = (Fluxobserver_t.x2 - Ls * Fluxobserver_t.Ibeta ) / Flux;
-	
-	/*反正切提取角度*/
-	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos)+_PI;
-	
-//	if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp >4.5f)
-//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp - _2PI)*20000.0f;
-//	else if(Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp <-4.5f)
-//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp + _2PI)*20000.0f;
-//	else
-//		Fluxobserver_t.omega_e = (Fluxobserver_t.theta_e - Fluxobserver_t.theta_temp)*20000.0f;
+//void Fluxobserver_Process(void)
+//{
+//	/*观测器输入变量更新*/
+//	Fluxobserver_t.Ialpha = FOC_Sensorless_t.Ialpha;
+//	Fluxobserver_t.Ibeta  = FOC_Sensorless_t.Ibeta;
+//	Fluxobserver_t.Ualpha = AnalogParam_t.vbus * FOC_Sensorless_t.Ualpha;
+//	Fluxobserver_t.Ubeta  = AnalogParam_t.vbus * FOC_Sensorless_t.Ubeta;
 //	
-//	Fluxobserver_t.theta_temp = Fluxobserver_t.theta_e;
-	
-
-}
+//	/*观测器部分*/
+//	Fluxobserver_t.y1_last=-Rs * Fluxobserver_t.Ialpha + Fluxobserver_t.Ualpha;
+//	Fluxobserver_t.y2_last=-Rs * Fluxobserver_t.Ibeta  + Fluxobserver_t.Ubeta;
+//	
+//	Fluxobserver_t.etax1 = Fluxobserver_t.x1_last - Ls * Fluxobserver_t.Ialpha;
+//	Fluxobserver_t.etax2 = Fluxobserver_t.x2_last - Ls * Fluxobserver_t.Ibeta;
+//	
+//	Fluxobserver_t.phi_err = Flux*Flux-(Fluxobserver_t.etax1 * Fluxobserver_t.etax1 + Fluxobserver_t.etax2 * Fluxobserver_t.etax2);
+//	
+//	Fluxobserver_t.x1 = Fluxobserver_t.Ts * (Fluxobserver_t.y1_last + Fluxobserver_t.gamma * Fluxobserver_t.etax1 * Fluxobserver_t.phi_err) + Fluxobserver_t.x1_last;
+//	Fluxobserver_t.x2 = Fluxobserver_t.Ts * (Fluxobserver_t.y2_last + Fluxobserver_t.gamma * Fluxobserver_t.etax2 * Fluxobserver_t.phi_err) + Fluxobserver_t.x2_last;
+//	
+//	/*迭代*/
+//	Fluxobserver_t.x1_last=Fluxobserver_t.x1;
+//	Fluxobserver_t.x2_last=Fluxobserver_t.x2;
+//	
+//	Fluxobserver_t.cos = (Fluxobserver_t.x1 - Ls * Fluxobserver_t.Ialpha) / Flux;
+//	Fluxobserver_t.sin = (Fluxobserver_t.x2 - Ls * Fluxobserver_t.Ibeta ) / Flux;
+//	
+//	/*反正切提取角度*/
+//	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos)+_PI;
+//}

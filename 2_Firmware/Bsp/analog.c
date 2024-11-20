@@ -1,8 +1,81 @@
 #include "analog.h"
 
 AnalogParam_TypeDef AnalogParam_t;
-extern FOC_TypeDef FOC_Sensored_t;
-extern FOC_State FOC_State_t;
+CurrentOffset_TypeDef CurrentOffset;
+extern MotorControl_TypeDef MotorControl;
+extern FOC_TypeDef FOC;
+
+/**
+   * @brief  电流采样计算函数
+   * @param  FOC结构体指针
+   * @retval 无
+   */
+void Current_Cal(void)
+{
+	/*电流采样偏置在一个合理范围内(2048+-100),否则报错*/
+	if(CurrentOffset.A_Offset<1948||CurrentOffset.A_Offset>2148 ||
+	   CurrentOffset.B_Offset<1948||CurrentOffset.B_Offset>2148 ||
+	   CurrentOffset.C_Offset<1948||CurrentOffset.C_Offset>2148	)
+	{
+		Set_ErrorNow(CurrentOffset_Error);
+	}
+	
+	else
+	{	
+		MotorControl.ia = ((float)((int16_t)ADC1->JDR1 - CurrentOffset.A_Offset)) * SAMPLE_CURR_FACTOR;
+		MotorControl.ib = ((float)((int16_t)ADC1->JDR2 - CurrentOffset.B_Offset)) * SAMPLE_CURR_FACTOR;
+		MotorControl.ic = ((float)((int16_t)ADC1->JDR3 - CurrentOffset.C_Offset)) * SAMPLE_CURR_FACTOR;
+	}
+	
+//	float i_limit = MotorControl.current_limit + 10.0f;
+//	
+//	if(fast_abs(MotorControl.ia) > i_limit || fast_abs(MotorControl.ib) > i_limit || fast_abs(MotorControl.ic) > i_limit)
+//	{
+//		Set_ErrorNow(Over_Current);
+//	}
+}
+
+float Get_Phase_Ia(void)
+{
+	return MotorControl.ia;
+}
+
+float Get_Phase_Ib(void)
+{
+	return MotorControl.ib;
+}
+
+float Get_Phase_Ic(void)
+{
+	return MotorControl.ic;
+}
+
+float Get_Vbus(void)
+{
+	return (float)ADC1->JDR4 / 4095.0f * 3.3f * (VBUS_R1 + VBUS_R2) / VBUS_R2;
+}
+
+void Vbus_Update(void)
+{
+	FOC.Vbus = Get_Vbus();
+	
+	UTILS_LP_FAST(FOC.Vbus_filt, FOC.Vbus, 0.05f);
+	
+	MotorControl.vbus = FOC.Vbus_filt;
+	
+//	if(MotorControl.ModeNow == Current_Mode || 
+//	   MotorControl.ModeNow == Speed_Mode ||
+//	   MotorControl.ModeNow == Position_Mode ||
+//	   MotorControl.ModeNow == Calib_Motor_R_L_Flux ||
+//	   MotorControl.ModeNow == Calib_EncoderOffset)
+//	{
+//		if(MotorControl.vbus > 30.0f)
+//			Set_ErrorNow(Over_Voltage);
+//		else if(MotorControl.vbus < 8.0f)
+//			Set_ErrorNow(Under_Voltage);
+//	}
+}
+
 /*NTC热敏电阻 温度与电阻值对应表*/
 /*1-100摄氏度 电阻(kohm)*/
 const float NTC_Res[100]=
@@ -44,36 +117,4 @@ void Temperature_Update(void)
 		i++;
 	}
 	AnalogParam_t.temperature=i-1;
-}
-
-void Vbus_Update(void)
-{
-	static uint32_t adc_sum;
-	static uint8_t i=0;
-	
-	if(i<10)
-	{
-		adc_sum+=ADC1->JDR4;
-		i++;
-	}
-	else
-	{
-		adc_sum/=10;
-		AnalogParam_t.vbus=(float)adc_sum/4095.0f*3.3f*11.0f;
-		adc_sum=0;
-		i=0;
-	}
-	
-	/*欠压过压保护*/
-	if(AnalogParam_t.vbus<=10.0f||AnalogParam_t.vbus>=27.0f||FOC_State_t!=FOC_Reminder)
-	{
-		//FOC_State_t=FOC_Wait;
-	}
-}
-
-void Ibus_Update(void)
-{
-	AnalogParam_t.ibus=2.0f/3.0f*(FOC_Sensored_t.Ud * FOC_Sensored_t.Id +
-								  FOC_Sensored_t.Uq * FOC_Sensored_t.Iq )/
-								  AnalogParam_t.vbus;
 }

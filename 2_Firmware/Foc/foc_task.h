@@ -15,17 +15,7 @@ typedef enum
 	FOC_Wait
 }FOC_State;
 
-typedef struct
-{
-	/*运行状态标志位*/
-	uint8_t Step;
-	/*中断计数变量*/
-	uint32_t Cnt_20kHz;
-	/*运行状态*/
-	ErrorState Errstate;
-}TaskElement_TypeDef;
-
+void MotorControl_Init(void);
 void FOC20kHzIRQHandler(void);
-void FOC_ErrorHandle(void);
 
 #endif

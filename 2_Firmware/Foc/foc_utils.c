@@ -85,6 +85,15 @@ float fast_sq(float x)
 	return x*x;
 }
 
+float fast_max(float x,float y)
+{
+	return (((x) > (y)) ? (x) : (y));
+}
+
+float fast_min(float x,float y)
+{
+	return (((x) < (y)) ? (x) : (y));
+}
 /**
    * @brief  快速反正切函数
    * @param  y x
@@ -112,23 +121,6 @@ float fast_atan2(float y, float x)
     }
 }
 
-/**
-   * @brief  一阶互补滤波函数
-   * @param  ka(0-1)滤波系数,ka越小,滤波效果越强,相位迟滞越大
-			 *sample 当前滤波数据指针 *sample_last 上一次滤波数据指针 
-   * @retval 滤波后的数据
-   */
-float LowPassFilter(float ka,float *sample,float *sample_last)
-{
-	float output;
-	
-	*sample = ka * (*sample) + (1-ka) * (*sample_last);
-	*sample_last = *sample;
-	
-	output = *sample;
-	
-	return output;
-}
 
 
 

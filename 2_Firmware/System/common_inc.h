@@ -34,7 +34,6 @@
 #include "foc_algorithm.h"
 #include "foc_calibration.h"
 #include "foc_sensorless.h"
-#include "foc_identification.h"
 #include "foc_param.h"
 #include "foc_pid.h"
 #include "foc_reminder.h"
@@ -47,7 +46,10 @@
 #include "interface_uart.h"
 
 /*System*/
-#include "menu.h"
 #include "board_config.h"
+#include "menu.h"
+#include "data_type.h"
+#include "heap.h"
+#include "hw_conf.h"
 
 #endif

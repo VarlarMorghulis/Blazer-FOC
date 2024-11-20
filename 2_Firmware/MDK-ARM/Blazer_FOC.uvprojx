@@ -1067,6 +1067,11 @@
               <FileType>1</FileType>
               <FilePath>..\Bsp\bsp_task.c</FilePath>
             </File>
+            <File>
+              <FileName>hw_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Bsp\hw_conf.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1086,11 +1091,6 @@
               <FileName>foc_sensorless.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Foc\foc_sensorless.c</FilePath>
-            </File>
-            <File>
-              <FileName>foc_identification.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Foc\foc_identification.c</FilePath>
             </File>
             <File>
               <FileName>foc_param.c</FileName>
@@ -1116,6 +1116,11 @@
               <FileName>foc_run.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Foc\foc_run.c</FilePath>
+            </File>
+            <File>
+              <FileName>foc_errhandle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Foc\foc_errhandle.c</FilePath>
             </File>
             <File>
               <FileName>foc_task.c</FileName>
@@ -1148,14 +1153,24 @@
               <FilePath>..\System\board_config.c</FilePath>
             </File>
             <File>
-              <FileName>common_inc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\System\common_inc.h</FilePath>
-            </File>
-            <File>
               <FileName>menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\System\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\System\heap.c</FilePath>
+            </File>
+            <File>
+              <FileName>data_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\System\data_type.h</FilePath>
+            </File>
+            <File>
+              <FileName>common_inc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\System\common_inc.h</FilePath>
             </File>
           </Files>
         </Group>

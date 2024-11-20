@@ -1,9 +1,7 @@
 #ifndef __ANALOG_H__
 #define __ANALOG_H__
 
-#include "main.h"
-#include "adc.h"
-#include "foc_run.h"
+#include "common_inc.h"
 
 typedef struct
 {
@@ -12,8 +10,11 @@ typedef struct
 	float ibus;
 }AnalogParam_TypeDef;
 
+void Current_Cal(void);
+float Get_Phase_Ia(void);
+float Get_Phase_Ib(void);
+float Get_Phase_Ic(void);
 void Temperature_Update(void);
 void Vbus_Update(void);
-void Ibus_Update(void);
 
 #endif

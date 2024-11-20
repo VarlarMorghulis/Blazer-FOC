@@ -2,12 +2,10 @@
 
 void Board_Init(void)
 {
-	/*从Flash读取存储的电机和编码器数据*/
+	/*从Flash读取存储的参数*/
 	Param_FlashRead();
 	
-	/*参数初始化*/
-	//Param_Return_Default();
-	FOC_Param_Init();
+	MotorControl_Init();
 	
 	/*延时函数初始化*/
 	delay_init(168);
@@ -15,7 +13,6 @@ void Board_Init(void)
 	/*ABZ编码器定时器开启*/
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_1);/*A*/
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_2);/*B*/
-	ABZ_Resolution_Init();
 	
 	Encoder_ParamInit();
 	
