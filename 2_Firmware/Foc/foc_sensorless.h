@@ -66,5 +66,7 @@ typedef struct
 void Generate_HighFrequency_Volt(HFI_TypeDef * HFI_t);
 void PLL_Handle(PLL_TypeDef * PLL_t);
 void HFI_Process(void);
-void Fluxobserver_Process(void);
+void Fluxobserver_Update(void);
+float Observer_GetElePhase(void);
+
 #endif

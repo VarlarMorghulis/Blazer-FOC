@@ -107,9 +107,10 @@ void Task_Calib_R_L_Flux(void)
 			{
 				MotorControl.id_Ki = MotorControl.motor_phase_resistance * 200.0f;
 				MotorControl.iq_Ki = MotorControl.motor_phase_resistance * 200.0f;
-			
+				
 				CalibStep = CS_MOTOR_L_START;
 			}
+						
 		break;
 		
 		case CS_MOTOR_L_START:
@@ -130,7 +131,7 @@ void Task_Calib_R_L_Flux(void)
 			// Test voltage along phase A
 			FOC_Voltage(voltages[i], 0, 0);
 
-			if (loop_count >= (num_L_cycles << 1)) 
+			if (loop_count >= num_L_cycles * 2) 
 			{
 				PWM_TurnOnLowSides();
 				CalibStep = CS_MOTOR_L_END;

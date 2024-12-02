@@ -24,7 +24,7 @@
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
-#include "usart.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -64,6 +64,7 @@ extern u8g2_t u8g2;
 extern uint16_t Menu_Cnt;
 extern CANMsg_TypeDef CANMsg;
 extern MotorControl_TypeDef MotorControl;
+
 /* USER CODE END 0 */
 
 /**
@@ -80,7 +81,6 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -104,9 +104,9 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  MX_USART1_UART_Init();
   MX_TIM7_Init();
   MX_TIM8_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   Board_Init();
   
@@ -170,7 +170,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 4;
   RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();

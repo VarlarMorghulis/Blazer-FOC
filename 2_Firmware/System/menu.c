@@ -367,11 +367,11 @@ void Draw_Main_font(int8_t x, int8_t y)
 	u8g2_SetFont(&u8g2, u8g2_font_ncenB14_tf);
 	
 	sprintf(ID_str, "%d", CANMsg.node_id);
-	u8g2_DrawStr(&u8g2, 0, 18, "0x0");
-    u8g2_DrawStr(&u8g2, 35, 18, ID_str);
+	u8g2_DrawStr(&u8g2, 10, 18, "0x0");
+    u8g2_DrawStr(&u8g2, 45, 18, ID_str);
 		
 	sprintf(Vbus_str, "%-.1fV", MotorControl.vbus);
-    u8g2_DrawStr(&u8g2, 65, 18, Vbus_str);
+    u8g2_DrawStr(&u8g2, 68, 18, Vbus_str);
 	
 	u8g2_SetFont(&u8g2, u8g2_font_6x10_mf);
 	

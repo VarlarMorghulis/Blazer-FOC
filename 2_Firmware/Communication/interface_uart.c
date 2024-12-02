@@ -23,9 +23,8 @@ void Vofa_Upload(void)
 //	Frame_t.fdata[9]=PID_Position.samp_value;
 	
 	/*由于float和uint32_t都为4个字节,因此无需再做结构体数据对齐*/
-	HAL_UART_Transmit_DMA(&huart1,(uint8_t *)&Frame_t,sizeof(Frame_TypeDef));
+	CDC_Transmit_FS((uint8_t *)&Frame_t,sizeof(Frame_TypeDef));
 }
-
 
 
 

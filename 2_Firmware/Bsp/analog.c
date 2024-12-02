@@ -57,23 +57,48 @@ float Get_Vbus(void)
 
 void Vbus_Update(void)
 {
+	static int overvoltage_count,undervoltage_count;
+	
 	FOC.Vbus = Get_Vbus();
 	
 	UTILS_LP_FAST(FOC.Vbus_filt, FOC.Vbus, 0.05f);
 	
 	MotorControl.vbus = FOC.Vbus_filt;
 	
-//	if(MotorControl.ModeNow == Current_Mode || 
-//	   MotorControl.ModeNow == Speed_Mode ||
-//	   MotorControl.ModeNow == Position_Mode ||
-//	   MotorControl.ModeNow == Calib_Motor_R_L_Flux ||
-//	   MotorControl.ModeNow == Calib_EncoderOffset)
-//	{
-//		if(MotorControl.vbus > 30.0f)
-//			Set_ErrorNow(Over_Voltage);
-//		else if(MotorControl.vbus < 8.0f)
-//			Set_ErrorNow(Under_Voltage);
-//	}
+	if(MotorControl.ModeNow == Current_Mode || 
+	   MotorControl.ModeNow == Speed_Mode ||
+	   MotorControl.ModeNow == Position_Mode ||
+	   MotorControl.ModeNow == Calib_Motor_R_L_Flux ||
+	   MotorControl.ModeNow == Calib_EncoderOffset)
+	{
+		/*过压保护*/
+		if(MotorControl.vbus > 30.0f)
+		{
+			if(++ overvoltage_count >= 10000)
+			{
+				Set_ErrorNow(Over_Voltage);
+			}
+			overvoltage_count = 0;
+		}
+		else
+		{
+			overvoltage_count = 0;
+		}
+			
+		/*欠压保护*/
+		if(MotorControl.vbus < 8.0f)
+		{
+			if(++ undervoltage_count >= 2000)
+			{
+				Set_ErrorNow(Under_Voltage);
+			}
+			undervoltage_count = 0;
+		}
+		else
+		{
+			undervoltage_count = 0;
+		}
+	}
 }
 
 /*NTC热敏电阻 温度与电阻值对应表*/

@@ -97,7 +97,7 @@ PLL_TypeDef PLL_t=
 	.error_sum_max=6.28f
 };
 
-Fluxobserver_TypeDef Fluxobserver_t=
+Fluxobserver_TypeDef Fluxobserver=
 {
 	.gamma=1000000000.0f,
 	.Ts=0.00005f
@@ -105,7 +105,7 @@ Fluxobserver_TypeDef Fluxobserver_t=
 
 extern MotorControl_TypeDef MotorControl;
 extern CurrentOffset_TypeDef CurrentOffset;
-
+extern FOC_TypeDef FOC;
 
 
 /**
@@ -195,33 +195,43 @@ void PLL_Handle(PLL_TypeDef * PLL_t)
    * @param  无
    * @retval 无
    */
-//void Fluxobserver_Process(void)
-//{
-//	/*观测器输入变量更新*/
-//	Fluxobserver_t.Ialpha = FOC_Sensorless_t.Ialpha;
-//	Fluxobserver_t.Ibeta  = FOC_Sensorless_t.Ibeta;
-//	Fluxobserver_t.Ualpha = AnalogParam_t.vbus * FOC_Sensorless_t.Ualpha;
-//	Fluxobserver_t.Ubeta  = AnalogParam_t.vbus * FOC_Sensorless_t.Ubeta;
-//	
-//	/*观测器部分*/
-//	Fluxobserver_t.y1_last=-Rs * Fluxobserver_t.Ialpha + Fluxobserver_t.Ualpha;
-//	Fluxobserver_t.y2_last=-Rs * Fluxobserver_t.Ibeta  + Fluxobserver_t.Ubeta;
-//	
-//	Fluxobserver_t.etax1 = Fluxobserver_t.x1_last - Ls * Fluxobserver_t.Ialpha;
-//	Fluxobserver_t.etax2 = Fluxobserver_t.x2_last - Ls * Fluxobserver_t.Ibeta;
-//	
-//	Fluxobserver_t.phi_err = Flux*Flux-(Fluxobserver_t.etax1 * Fluxobserver_t.etax1 + Fluxobserver_t.etax2 * Fluxobserver_t.etax2);
-//	
-//	Fluxobserver_t.x1 = Fluxobserver_t.Ts * (Fluxobserver_t.y1_last + Fluxobserver_t.gamma * Fluxobserver_t.etax1 * Fluxobserver_t.phi_err) + Fluxobserver_t.x1_last;
-//	Fluxobserver_t.x2 = Fluxobserver_t.Ts * (Fluxobserver_t.y2_last + Fluxobserver_t.gamma * Fluxobserver_t.etax2 * Fluxobserver_t.phi_err) + Fluxobserver_t.x2_last;
-//	
-//	/*迭代*/
-//	Fluxobserver_t.x1_last=Fluxobserver_t.x1;
-//	Fluxobserver_t.x2_last=Fluxobserver_t.x2;
-//	
-//	Fluxobserver_t.cos = (Fluxobserver_t.x1 - Ls * Fluxobserver_t.Ialpha) / Flux;
-//	Fluxobserver_t.sin = (Fluxobserver_t.x2 - Ls * Fluxobserver_t.Ibeta ) / Flux;
-//	
-//	/*反正切提取角度*/
-//	Fluxobserver_t.theta_e=fast_atan2(Fluxobserver_t.sin,Fluxobserver_t.cos)+_PI;
-//}
+void Fluxobserver_Update(void)
+{
+	float mod_to_V = FOC.Vbus_filt / 1.5f;
+	float Rs   = MotorControl.motor_phase_resistance;
+	float Ls   = MotorControl.motor_phase_inductance;
+	float flux = MotorControl.motor_flux;
+	
+	/*观测器输入变量更新*/
+	Fluxobserver.Ialpha = FOC.Ialpha;
+	Fluxobserver.Ibeta  = FOC.Ibeta;
+	Fluxobserver.Ualpha = FOC.mod_alpha * mod_to_V;
+	Fluxobserver.Ubeta  = FOC.mod_beta  * mod_to_V;
+	
+	/*观测器部分*/
+	Fluxobserver.y1_last = -Rs * Fluxobserver.Ialpha + Fluxobserver.Ualpha;
+	Fluxobserver.y2_last = -Rs * Fluxobserver.Ibeta  + Fluxobserver.Ubeta;
+	
+	Fluxobserver.etax1 = Fluxobserver.x1_last - Ls * Fluxobserver.Ialpha;
+	Fluxobserver.etax2 = Fluxobserver.x2_last - Ls * Fluxobserver.Ibeta;
+	
+	Fluxobserver.phi_err = fast_sq(flux) - (fast_sq(Fluxobserver.etax1) + fast_sq(Fluxobserver.etax2));
+	
+	Fluxobserver.x1 = Current_Ts * (Fluxobserver.y1_last + Fluxobserver.gamma * Fluxobserver.etax1 * Fluxobserver.phi_err) + Fluxobserver.x1_last;
+	Fluxobserver.x2 = Current_Ts * (Fluxobserver.y2_last + Fluxobserver.gamma * Fluxobserver.etax2 * Fluxobserver.phi_err) + Fluxobserver.x2_last;
+	
+	/*迭代*/
+	Fluxobserver.x1_last = Fluxobserver.x1;
+	Fluxobserver.x2_last = Fluxobserver.x2;
+	
+	Fluxobserver.cos = (Fluxobserver.x1 - Ls * Fluxobserver.Ialpha) / flux;
+	Fluxobserver.sin = (Fluxobserver.x2 - Ls * Fluxobserver.Ibeta ) / flux;
+	
+	/*反正切提取角度*/
+	Fluxobserver.theta_e = fast_atan2(Fluxobserver.sin,Fluxobserver.cos) + _PI;
+}
+
+float Observer_GetElePhase(void)
+{
+	return Fluxobserver.theta_e;
+}

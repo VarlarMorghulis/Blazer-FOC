@@ -126,8 +126,19 @@ void Sensored_Positionloop(void)
 
 void Task_Current_Mode(void)
 {	
-	float phase 	=  Encoder_GetElePhase();
-	float phase_vel =  Encoder_GetEleVel();
+	float phase;
+	float phase_vel;
+	
+	if(MotorControl.isUseSensorless == true)
+	{
+		phase = Observer_GetElePhase();
+		phase_vel = 0.0f;
+	}
+	else
+	{
+		phase = Encoder_GetElePhase();
+		phase_vel = Encoder_GetEleVel();
+	}   
 
 	FOC_Current(MotorControl.idRef, MotorControl.iqRef, phase, phase_vel);
 }

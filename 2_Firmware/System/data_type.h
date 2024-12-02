@@ -32,7 +32,6 @@ typedef enum
 	High_Temprature,
 }ErrorNow_TypeDef;
 
-
 typedef struct
 {
 	/*ABC相电流采样的静态偏置*/

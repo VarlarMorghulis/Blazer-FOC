@@ -18,7 +18,7 @@
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
-#include "usart.h"
+#include "usbd_cdc_if.h"
 
 /*Bsp*/
 #include "delay.h"
@@ -26,6 +26,7 @@
 #include "key.h"
 #include "encoder.h"
 #include "analog.h"
+#include "rgb.h"
 #include "oled.h"
 #include "flash.h"
 #include "bsp_task.h"

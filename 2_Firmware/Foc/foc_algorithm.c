@@ -43,29 +43,37 @@ void Clarke_Transform(float Ia, float Ib, float Ic, float *Ialpha, float *Ibeta)
 
 void FOC_SVM(float alpha, float beta, float *tA, float *tB, float *tC ,int32_t *sector)
 {
-    if (beta >= 0.0f) {
-        if (alpha >= 0.0f) {
+    if (beta >= 0.0f) 
+	{
+        if (alpha >= 0.0f) 
+		{
             //quadrant I
             if (ONE_BY_SQRT_3 * beta > alpha)
                 *sector = 2; //*sector v2-v3
             else
                 *sector = 1; //*sector v1-v2
-
-        } else {
+        } 
+		else 
+		{
             //quadrant II
             if (-ONE_BY_SQRT_3 * beta > alpha)
                 *sector = 3; //*sector v3-v4
             else
                 *sector = 2; //*sector v2-v3
         }
-    } else {
-        if (alpha >= 0.0f) {
+    } 
+	else 
+	{
+        if (alpha >= 0.0f) 
+		{
             //quadrant IV
             if (-ONE_BY_SQRT_3 * beta > alpha)
                 *sector = 5; //*sector v5-v6
             else
                 *sector = 6; //*sector v6-v1
-        } else {
+        } 
+		else 
+		{
             //quadrant III
             if (ONE_BY_SQRT_3 * beta > alpha)
                 *sector = 4; //*sector v4-v5
@@ -74,78 +82,91 @@ void FOC_SVM(float alpha, float beta, float *tA, float *tB, float *tC ,int32_t *
         }
     }
 
-    switch (*sector) {
-    // *sector v1-v2
-    case 1: {
-        // Vector on-times
-        float t1 = alpha - ONE_BY_SQRT_3 * beta;
-        float t2 = TWO_BY_SQRT_3 * beta;
+    switch (*sector) 
+	{
+		// *sector v1-v2
+		case 1: 
+		{
+			// Vector on-times
+			float t1 = alpha - ONE_BY_SQRT_3 * beta;
+			float t2 = TWO_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tA = (1.0f - t1 - t2) * 0.5f;
-        *tB = *tA + t1;
-        *tC = *tB + t2;
-    } break;
+			// PWM timings
+			*tA = (1.0f - t1 - t2) * 0.5f;
+			*tB = *tA + t1;
+			*tC = *tB + t2;
+		} 
+		break;
 
-    // *sector v2-v3
-    case 2: {
-        // Vector on-times
-        float t2 =  alpha + ONE_BY_SQRT_3 * beta;
-        float t3 = -alpha + ONE_BY_SQRT_3 * beta;
+		// *sector v2-v3
+		case 2: 
+		{
+			// Vector on-times
+			float t2 =  alpha + ONE_BY_SQRT_3 * beta;
+			float t3 = -alpha + ONE_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tB = (1.0f - t2 - t3) * 0.5f;
-        *tA = *tB + t3;
-        *tC = *tA + t2;
-    } break;
+			// PWM timings
+			*tB = (1.0f - t2 - t3) * 0.5f;
+			*tA = *tB + t3;
+			*tC = *tA + t2;
+		} 
+		break;
 
-    // *sector v3-v4
-    case 3: {
-        // Vector on-times
-        float t3 = TWO_BY_SQRT_3 * beta;
-        float t4 = -alpha - ONE_BY_SQRT_3 * beta;
+		// *sector v3-v4
+		case 3: 
+		{
+			// Vector on-times
+			float t3 = TWO_BY_SQRT_3 * beta;
+			float t4 = -alpha - ONE_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tB = (1.0f - t3 - t4) * 0.5f;
-        *tC = *tB + t3;
-        *tA = *tC + t4;
-    } break;
+			// PWM timings
+			*tB = (1.0f - t3 - t4) * 0.5f;
+			*tC = *tB + t3;
+			*tA = *tC + t4;
+		} 
+		break;
 
-    // *sector v4-v5
-    case 4: {
-        // Vector on-times
-        float t4 = -alpha + ONE_BY_SQRT_3 * beta;
-        float t5 = -TWO_BY_SQRT_3 * beta;
+		// *sector v4-v5
+		case 4: 
+		{
+			// Vector on-times
+			float t4 = -alpha + ONE_BY_SQRT_3 * beta;
+			float t5 = -TWO_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tC = (1.0f - t4 - t5) * 0.5f;
-        *tB = *tC + t5;
-        *tA = *tB + t4;
-    } break;
+			// PWM timings
+			*tC = (1.0f - t4 - t5) * 0.5f;
+			*tB = *tC + t5;
+			*tA = *tB + t4;
+		} 
+		break;
 
-    // *sector v5-v6
-    case 5: {
-        // Vector on-times
-        float t5 = -alpha - ONE_BY_SQRT_3 * beta;
-        float t6 =  alpha - ONE_BY_SQRT_3 * beta;
+		// *sector v5-v6
+		case 5: 
+		{
+			// Vector on-times
+			float t5 = -alpha - ONE_BY_SQRT_3 * beta;
+			float t6 =  alpha - ONE_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tC = (1.0f - t5 - t6) * 0.5f;
-        *tA = *tC + t5;
-        *tB = *tA + t6;
-    } break;
+			// PWM timings
+			*tC = (1.0f - t5 - t6) * 0.5f;
+			*tA = *tC + t5;
+			*tB = *tA + t6;
+		} 
+		break;
 
-    // *sector v6-v1
-    case 6: {
-        // Vector on-times
-        float t6 = -TWO_BY_SQRT_3 * beta;
-        float t1 = alpha + ONE_BY_SQRT_3 * beta;
+		// *sector v6-v1
+		case 6: 
+		{
+			// Vector on-times
+			float t6 = -TWO_BY_SQRT_3 * beta;
+			float t1 = alpha + ONE_BY_SQRT_3 * beta;
 
-        // PWM timings
-        *tA = (1.0f - t6 - t1) * 0.5f;
-        *tC = *tA + t1;
-        *tB = *tC + t6;
-    } break;
+			// PWM timings
+			*tA = (1.0f - t6 - t1) * 0.5f;
+			*tC = *tA + t1;
+			*tB = *tC + t6;
+		} 
+		break;
     }
 }
 

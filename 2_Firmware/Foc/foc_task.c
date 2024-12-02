@@ -51,9 +51,9 @@ void FOC20kHzIRQHandler(void)
 	
 	Current_Cal();
 	
-	if(MotorControl.isUseSensorless == 1)
+	if(MotorControl.isUseSensorless == true)
 	{
-		
+		Fluxobserver_Update();
 	}
 	else
 	{
