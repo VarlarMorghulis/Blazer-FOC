@@ -5,9 +5,9 @@
    * @param  amt 待限幅的变量 low 下限 high上限 
    * @retval 限幅后的值
    */
-float _constrain(float amt,float low,float high)
+float _constrain(float amt, float low, float high)
 {
-	return ((amt<low)?(low):((amt>high)?high:amt));
+	return ((amt < low) ? (low) : ((amt > high) ? high: amt));
 }
 
 /**
@@ -20,10 +20,10 @@ float _normalizeAngle(float angle)
 	float a;
 	int a_int;
 	
-	a_int=(int)(angle/_2PI);
+	a_int = (int)(angle / _2PI);
 	a = angle - a_int * _2PI;
 	
-	return a>=0 ? a : (a+_2PI);
+	return a >= 0 ? a : (a+_2PI);
 }
 
 /**
@@ -35,7 +35,7 @@ float _normalizeAngle(float angle)
 uint32_t FloatToIntBit(float x)
 {
 	uint32_t *pInt;
-	pInt=(uint32_t*)(&x);
+	pInt = (uint32_t *)(&x);
 	return *pInt;
 }
 
@@ -48,7 +48,7 @@ uint32_t FloatToIntBit(float x)
 float IntBitToFloat(uint32_t x)
 {
 	float * pFloat;
-	pFloat=(float *)(&x);
+	pFloat = (float *)(&x);
 	return *pFloat;
 }
 
@@ -77,12 +77,12 @@ float IIR_Butterworth(float input,IIR_Butterworth_TypeDef * IIR_Butterworth_t)
 
 float fast_abs(float x)
 {
-	return x >=0 ? x : -x;
+	return x >=0 ? x: -x;
 }
 
 float fast_sq(float x)
 {
-	return x*x;
+	return x * x;
 }
 
 float fast_max(float x,float y)
@@ -115,9 +115,9 @@ float fast_atan2(float y, float x)
     }
 
     if (y < 0) {
-        return(-angle);
+        return (-angle);
     } else {
-        return(angle);
+        return (angle);
     }
 }
 

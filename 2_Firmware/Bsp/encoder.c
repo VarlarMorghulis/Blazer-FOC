@@ -150,7 +150,7 @@ void Encoder_Update(void)
 	else if(MotorControl.encoder_dir == -1)
 		Encoder.raw = Encoder.cpr - ReadSPIEncoder_Raw();
 	
-	if(Encoder.raw == 0 || Encoder.raw == 1 || Encoder.raw == Encoder.cpr)
+	if(Encoder.raw == 0 || Encoder.raw == 1 || Encoder.raw == Encoder.cpr || Encoder.raw == Encoder.cpr - 1)
 	{
 		if(++ encoderdisconnect_count >= 200)
 		{
@@ -212,21 +212,29 @@ void Encoder_Update(void)
 
     // align delta-sigma on zero to prevent jitter
     bool snap_to_zero_vel = false;
-    if (fast_abs(Encoder.vel_estimate_counts) < Encoder.snap_threshold) {
+    if (fast_abs(Encoder.vel_estimate_counts) < Encoder.snap_threshold) 
+	{
         Encoder.vel_estimate_counts = 0.0f;
         snap_to_zero_vel            = true;
     }
 
     // run encoder count interpolation
     // if we are stopped, make sure we don't randomly drift
-    if (snap_to_zero_vel) {
+    if (snap_to_zero_vel) 
+	{
         Encoder.interpolation = 0.5f;
         // reset interpolation if encoder edge comes
-    } else if (delta_count > 0) {
+    } 
+	else if (delta_count > 0) 
+	{
         Encoder.interpolation = 0.0f;
-    } else if (delta_count < 0) {
+    } 
+	else if (delta_count < 0) 
+	{
         Encoder.interpolation = 1.0f;
-    } else {
+    } 
+	else 
+	{
         // Interpolate (predict) between encoder counts using vel_estimate,
         Encoder.interpolation += Current_Ts * Encoder.vel_estimate_counts;
         // don't allow interpolation indicated position outside of [enc, enc+1)

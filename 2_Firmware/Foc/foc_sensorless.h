@@ -45,8 +45,7 @@ typedef struct
 	float x1_last,x2_last;
 	float x1,x2;
 	float theta_e,omega_e;
-	float theta_m,omega_m;
-	float theta_temp;
+	float theta_last,omega_last;
 }Fluxobserver_TypeDef;
 
 typedef struct
@@ -68,5 +67,6 @@ void PLL_Handle(PLL_TypeDef * PLL_t);
 void HFI_Process(void);
 void Fluxobserver_Update(void);
 float Observer_GetElePhase(void);
+float Observer_GetEleVel(void);
 
 #endif

@@ -109,7 +109,7 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   Board_Init();
-  
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

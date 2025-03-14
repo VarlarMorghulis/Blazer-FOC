@@ -99,8 +99,8 @@ PLL_TypeDef PLL_t=
 
 Fluxobserver_TypeDef Fluxobserver=
 {
-	.gamma=1000000000.0f,
-	.Ts=0.00005f
+	.gamma = 1000000000.0f,
+	.Ts = 0.00005f
 };
 
 extern MotorControl_TypeDef MotorControl;
@@ -201,6 +201,7 @@ void Fluxobserver_Update(void)
 	float Rs   = MotorControl.motor_phase_resistance;
 	float Ls   = MotorControl.motor_phase_inductance;
 	float flux = MotorControl.motor_flux;
+	float delta_theta = 0.0f;
 	
 	/*观测器输入变量更新*/
 	Fluxobserver.Ialpha = FOC.Ialpha;
@@ -229,9 +230,25 @@ void Fluxobserver_Update(void)
 	
 	/*反正切提取角度*/
 	Fluxobserver.theta_e = fast_atan2(Fluxobserver.sin,Fluxobserver.cos) + _PI;
+	
+	delta_theta = Fluxobserver.theta_e - Fluxobserver.theta_last;
+	
+	Fluxobserver.theta_last = Fluxobserver.theta_e;
+	
+	if(delta_theta < -4.0f)
+		delta_theta += _2PI;
+	else if(delta_theta > 4.0f)
+		delta_theta -= _2PI;
+	
+	UTILS_LP_FAST(Fluxobserver.omega_e, delta_theta / Current_Ts, 0.1f);
 }
 
 float Observer_GetElePhase(void)
 {
 	return Fluxobserver.theta_e;
+}
+
+float Observer_GetEleVel(void)
+{
+	return Fluxobserver.omega_e;
 }

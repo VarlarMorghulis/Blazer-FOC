@@ -13,9 +13,9 @@ extern FOC_TypeDef FOC;
 void Current_Cal(void)
 {
 	/*电流采样偏置在一个合理范围内(2048+-100),否则报错*/
-	if(CurrentOffset.A_Offset<1948||CurrentOffset.A_Offset>2148 ||
-	   CurrentOffset.B_Offset<1948||CurrentOffset.B_Offset>2148 ||
-	   CurrentOffset.C_Offset<1948||CurrentOffset.C_Offset>2148	)
+	if(CurrentOffset.A_Offset<1948 || CurrentOffset.A_Offset>2148 ||
+	   CurrentOffset.B_Offset<1948 || CurrentOffset.B_Offset>2148 ||
+	   CurrentOffset.C_Offset<1948 || CurrentOffset.C_Offset>2148	)
 	{
 		Set_ErrorNow(CurrentOffset_Error);
 	}
@@ -74,7 +74,7 @@ void Vbus_Update(void)
 		/*过压保护*/
 		if(MotorControl.vbus > 30.0f)
 		{
-			if(++ overvoltage_count >= 10000)
+			if(++overvoltage_count >= 10000)
 			{
 				Set_ErrorNow(Over_Voltage);
 			}
@@ -88,7 +88,7 @@ void Vbus_Update(void)
 		/*欠压保护*/
 		if(MotorControl.vbus < 8.0f)
 		{
-			if(++ undervoltage_count >= 2000)
+			if(++undervoltage_count >= 2000)
 			{
 				Set_ErrorNow(Under_Voltage);
 			}

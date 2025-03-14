@@ -8,5 +8,8 @@
 
 void Set_ErrorNow(ErrorNow_TypeDef tErrorNow);
 void Clear_RunningData(void);
+void Stop_PWM_Generate(void);
+void Stop_PWM_Generate(void);
+void Start_PWM_Generate(void);
 
 #endif

@@ -53,8 +53,6 @@ typedef struct
     float snap_threshold;
 }Encoder_TypeDef;
 
-
-
 #define enc_spi	 hspi2
 #define ABZ_TIM	 TIM3
 
@@ -62,12 +60,8 @@ typedef struct
 #define READ_ANGLE_VALUE 0x8021 //8020
 #define READ_SPEED_VALUE 0x8031 //8030
 
-#define ENC_CS_ENABLE  ENC_CS_GPIO_Port->BSRR=(uint32_t)ENC_CS_Pin<<16U/*片选脚电平拉低*/
-#define ENC_CS_DISABLE ENC_CS_GPIO_Port->BSRR=ENC_CS_Pin        		/*片选脚电平拉高*/
-
-#define USE_SPI_ENCODER
-//#define USE_ABZ_ENCODER
-
+#define ENC_CS_ENABLE  ENC_CS_GPIO_Port->BSRR = (uint32_t)ENC_CS_Pin << 16U/*片选脚电平拉低*/
+#define ENC_CS_DISABLE ENC_CS_GPIO_Port->BSRR = ENC_CS_Pin        		/*片选脚电平拉高*/
 
 uint16_t ReadTLE5012B_Raw(uint16_t Reg);
 uint16_t ReadMT6816_Raw(void);

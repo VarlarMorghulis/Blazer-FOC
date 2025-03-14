@@ -68,4 +68,5 @@ typedef struct
 
 void Key_Status_Check(void);
 Key_Event Key_GetStatus(uint8_t KEYx);
+
 #endif

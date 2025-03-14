@@ -6,15 +6,6 @@
 #define OFFSET_LUT_NUM   128U
 
 typedef enum 
-{	
-	Calib_ADC=0,
-	Calib_Encoder=1,
-	Linearize_Encoder=2,
-	Calib_Anticogging=3,
-    Calib_Done=4
-}Calib_State;
-
-typedef enum 
 {
 	CS_NULL = 0,
 	

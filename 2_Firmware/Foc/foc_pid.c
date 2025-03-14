@@ -1,7 +1,7 @@
 #include "foc_pid.h"
 
 /*电流死区(A)*/
-float dead_current=0.1f;
+float dead_current = 0.1f;
 /**
    * @brief  电流环 使用PI控制 位置式
    * @param  PID结构体地址

@@ -1,7 +1,6 @@
 #include "oled.h"
 
-
-uint8_t u8x8_byte_4wire_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,void *arg_ptr)
+uint8_t u8x8_byte_4wire_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
 {
     switch (msg)
     {
@@ -14,7 +13,7 @@ uint8_t u8x8_byte_4wire_hw_spi(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int,void *
         case U8X8_MSG_BYTE_INIT: /*初始化函数*/
             break;
         case U8X8_MSG_BYTE_SET_DC: /*设置DC引脚,表明发送的是数据还是命令*/
-			HAL_GPIO_WritePin(OLED_DC_GPIO_Port,OLED_DC_Pin,(GPIO_PinState)arg_int);
+			HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, (GPIO_PinState)arg_int);
             break;
         case U8X8_MSG_BYTE_START_TRANSFER: 
             u8x8_gpio_SetCS(u8x8, u8x8->display_info->chip_enable_level);
@@ -43,7 +42,7 @@ uint8_t u8x8_stm32_gpio_and_delay(U8X8_UNUSED u8x8_t *u8x8,
             HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, (GPIO_PinState)arg_int);
             break;
         case U8X8_MSG_GPIO_DC: /*设置DC引脚,表明发送的是数据还是命令*/
-            HAL_GPIO_WritePin(OLED_DC_GPIO_Port,OLED_DC_Pin,(GPIO_PinState)arg_int);
+            HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, (GPIO_PinState)arg_int);
             break;
         case U8X8_MSG_GPIO_RESET:
             break;
@@ -93,15 +92,12 @@ void draw(u8g2_t *u8g2)
     u8g2_SetFont(u8g2, u8g2_font_4x6_tr);
     u8g2_DrawStr(u8g2, 1,54,"github.com/olikraus/u8g2");
 	u8g2_SendBuffer(u8g2);
-	
-	//u8g2_SetFont(&u8g2,u8g2_font_ncenB08_tr);
 }
 
 u8g2_t u8g2;
 void draw_logo(void)
 {
 	u8g2_ClearDisplay(&u8g2);
-	//u8g2_DrawXBMP(&u8g2,18,5,80,80,logo);
 	u8g2_SendBuffer(&u8g2);
 }
 
@@ -119,9 +115,5 @@ void OLED_Init(void)
 {
 	OLED_RST_Set();
 	u8g2Init(&u8g2);
-	//u8g2_SetFont(&u8g2,u8g2_font_spleen5x8_mf);
-	u8g2_SetFont(&u8g2,u8g2_font_6x10_mf);
-	//u8g2_SetFont(&u8g2,u8g2_font_inb16_mf);
-	//draw_start();
-
+	u8g2_SetFont(&u8g2, u8g2_font_6x10_mf);
 }

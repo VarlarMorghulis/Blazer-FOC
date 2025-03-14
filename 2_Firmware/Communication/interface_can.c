@@ -33,9 +33,9 @@ void CAN1_Filter_Init(void)
 	CAN_FilterStruct.FilterBank = 0;
 	CAN_FilterStruct.FilterFIFOAssignment = CAN_RX_FIFO0;
 	
-	HAL_CAN_ConfigFilter(&hcan1,&CAN_FilterStruct);
+	HAL_CAN_ConfigFilter(&hcan1, &CAN_FilterStruct);
 	HAL_CAN_Start(&hcan1);
-    HAL_CAN_ActivateNotification(&hcan1,CAN_IT_RX_FIFO0_MSG_PENDING);
+    HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
 /**
@@ -51,7 +51,7 @@ void CANRxIRQHandler(void)
 	/*u32_data需要赋初值,否则后续接收到的数据可能错乱*/
 	uint32_t u32_data = 0;
 	
-	HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0, &CAN_RxHeaderStruct, CANMsg.rx_data_u8);
+	HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &CAN_RxHeaderStruct, CANMsg.rx_data_u8);
 	
 	/*提取高3位*/
 	node_id  = CAN_RxHeaderStruct.ExtId >> 8;

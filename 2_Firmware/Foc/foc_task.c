@@ -1,43 +1,32 @@
 #include "foc_task.h"
 
-FOC_State FOC_State_t=FOC_Wait;
-
 MotorControl_TypeDef MotorControl;
 
-ModeNow_TypeDef ModeLast = Motor_Disable;
+ModeNow_TypeDef  ModeLast  = Motor_Disable;
+ErrorNow_TypeDef ErrorLast = No_Error;
 
 void MotorControl_Init(void)
 {
 	MotorControl.ModeNow  = Motor_Disable;
 	MotorControl.ErrorNow = No_Error;
 	
-	//MotorControl.motor_pole_pairs = 7;
-	//MotorControl.motor_phase_resistance = 0.0317f;
-	
-//	MotorControl.idRef = 0.0f;
-//	MotorControl.id_Kp = 0.000765f;
-//	MotorControl.id_Ki = 3.17f;
-//	
-//	MotorControl.iqRef = 0.0f;
-//	MotorControl.iq_Kp = 0.000765f;
-//	MotorControl.iq_Ki = 3.17f;
-	
 	MotorControl.isUseSpeedRamp = 0;
 	MotorControl.isUseZeroSpeedTorqueMaintain = 0;
 	
-	//MotorControl.speedRef = 6.28f;
-//	MotorControl.speedAcc = 50.0f;
-//	MotorControl.speedDec = 50.0f;
+	MotorControl.id_Kp = 0.00153;
+	MotorControl.id_Ki = 6.34;
+	MotorControl.iq_Kp = 0.00153;
+	MotorControl.iq_Ki = 6.34;
+	
 	MotorControl.speed_Kp = 0.05f;
 	MotorControl.speed_Ki = 0.5f;
 	
 	MotorControl.pos_Kp = 0.1f;
 	MotorControl.pos_Ki = 0.0f;
 	
-	MotorControl.calib_current = 10.0f;
-	MotorControl.current_limit = 30.0f;
+	MotorControl.calib_current = 7.0f;
+	//MotorControl.current_limit = 30.0f;
 	MotorControl.speed_limit   = 100.0f;
-
 }
 
 /**
@@ -63,7 +52,7 @@ void FOC20kHzIRQHandler(void)
 	switch(MotorControl.ModeNow)
 	{
 		case Motor_Disable:
-			PWM_TurnOnHighSides();
+			//PWM_TurnOnHighSides();
 		break;
 		
 		case Current_Mode:
@@ -115,5 +104,16 @@ void FOC20kHzIRQHandler(void)
 		Clear_RunningData();
 	}
 	
-	ModeLast = MotorControl.ModeNow;
+	if(ErrorLast == No_Error && MotorControl.ErrorNow != No_Error)
+	{
+		Stop_PWM_Generate();
+	}
+	
+	if(ErrorLast != No_Error && MotorControl.ErrorNow == No_Error)
+	{
+		Start_PWM_Generate();
+	}
+	
+	ModeLast  = MotorControl.ModeNow;
+	ErrorLast = MotorControl.ErrorNow;
 }

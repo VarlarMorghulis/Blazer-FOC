@@ -1,16 +1,8 @@
 #include "foc_run.h"
 
-PID_TypeDef PID_Speed=
-{
-	.Kp=1.0f,
-	.Ki=0.1f
-};
+PID_TypeDef PID_Speed;
 
-PID_TypeDef PID_ZeroSpeed=
-{
-	.Kp=0.1f,
-	.Ki=0.1f,
-};
+PID_TypeDef PID_ZeroSpeed;
 
 PID_TypeDef PID_Position=
 {
@@ -22,14 +14,14 @@ extern MotorControl_TypeDef MotorControl;
 extern Encoder_TypeDef Encoder;
 
 uint8_t speed_to_pos;
-uint8_t spdloop_state=Speed_Mode;
-uint8_t spdloop_laststate=Speed_Mode;
+uint8_t spdloop_state = Speed_Mode;
+uint8_t spdloop_laststate = Speed_Mode;
 
 void Speedloop_StateReset(void)
 {
-	speed_to_pos=0;
-	spdloop_state=Speed_Mode;
-	spdloop_laststate=Speed_Mode;
+	speed_to_pos = 0;
+	spdloop_state = Speed_Mode;
+	spdloop_laststate = Speed_Mode;
 }
 
 /**
@@ -147,10 +139,21 @@ void Task_Speed_Mode(void)
 {
 	static int speedloop_count;
 	
-	float phase 	=  Encoder_GetElePhase();
-	float phase_vel =  Encoder_GetEleVel();
+	float phase;
+	float phase_vel;
 	
-	if(++ speedloop_count >=2)
+	if(MotorControl.isUseSensorless == true)
+	{
+		phase = Observer_GetElePhase();
+		phase_vel = Observer_GetEleVel();
+	}
+	else
+	{
+		phase = Encoder_GetElePhase();
+		phase_vel = Encoder_GetEleVel();
+	}   
+	
+	if(++speedloop_count >= 2)
 	{
 		if(MotorControl.speedAcc == 0.0f || MotorControl.speedDec == 0.0f)
 			MotorControl.isUseSpeedRamp = 0;
@@ -179,11 +182,11 @@ void Task_Speed_Mode(void)
 		}
 		PID_Speed.Kp = MotorControl.speed_Kp;
 		PID_Speed.Ki = MotorControl.speed_Ki;
-		PID_Speed.samp_value = Encoder_GetMecVel();
+		PID_Speed.samp_value = phase_vel / (float)MotorControl.motor_pole_pairs;
 		PID_Speed.ref_value  = MotorControl.speedShadow;
 		MotorControl.iqRef   = Speed_PI_Ctrl(&PID_Speed) * MotorControl.current_limit;
 		
-		speedloop_count =0;
+		speedloop_count = 0;
 	}
 	
 	FOC_Current(MotorControl.idRef, MotorControl.iqRef, phase, phase_vel);

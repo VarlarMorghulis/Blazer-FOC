@@ -147,7 +147,7 @@ void Task_Calib_R_L_Flux(void)
 			
 			loop_count = 0;
 			
-			if(MotorControl.motor_phase_inductance > 0.0005f)
+			if(MotorControl.motor_phase_inductance > 0.0005f || MotorControl.motor_phase_inductance < 0)
 			{
 				Set_ErrorNow(Large_Phase_Inductance);
 			}
@@ -206,7 +206,7 @@ void Task_Calib_Encoder(void)
 			//voltage_temp = voltage * time / 2.0f;
 			phase_set = 0.0f;
 			FOC_Voltage(voltage, 0.0f, phase_set);
-			if(time >=2.0f)
+			if(time >= 2.0f)
 			{
 				start_count = (float) Encoder.shadow_count;
 				CalibStep = CS_DIR_LOOP;
@@ -267,7 +267,7 @@ void Task_Calib_Encoder(void)
 				loop_count = 0;
 				sample_count--;
 				next_sample_time = 0;
-				CalibStep       = CS_ENCODER_CCW_LOOP;
+				CalibStep = CS_ENCODER_CCW_LOOP;
 				break;
 			}
 			FOC_Voltage(voltage, 0.0f, phase_set);
@@ -303,7 +303,7 @@ void Task_Calib_Encoder(void)
 		{
 			// Calculate average offset
 			int64_t moving_avg = 0;
-			for (int i = 0; i < (MotorControl.motor_pole_pairs * SAMPLES_PER_PPAIR); i++) 
+			for (int i=0; i<(MotorControl.motor_pole_pairs * SAMPLES_PER_PPAIR); i++) 
 			{
 				moving_avg += p_error_arr[i];
 			}
@@ -312,10 +312,10 @@ void Task_Calib_Encoder(void)
 			// FIR and map measurements to lut
 			int window     = SAMPLES_PER_PPAIR;
 			int lut_offset = p_error_arr[0] * OFFSET_LUT_NUM / Encoder.cpr;
-			for (int i = 0; i < OFFSET_LUT_NUM; i++) 
+			for (int i=0; i<OFFSET_LUT_NUM; i++) 
 			{
 				moving_avg = 0;
-				for (int j = (-window) / 2; j < (window) / 2; j++) 
+				for (int j=(-window) / 2; j < (window) / 2; j++) 
 				{
 					int index = i * MotorControl.motor_pole_pairs * SAMPLES_PER_PPAIR / OFFSET_LUT_NUM + j;
 					if (index < 0) 

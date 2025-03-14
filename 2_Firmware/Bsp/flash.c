@@ -1,6 +1,6 @@
 #include "flash.h"
 
-#define PARAM_NUM 	sizeof(InterfaceParam_TypeDef)/sizeof(float)
+#define PARAM_NUM 	sizeof(InterfaceParam_TypeDef) / sizeof(float)
 
 extern InterfaceParam_TypeDef InterfaceParam;
 
@@ -18,7 +18,7 @@ void Param_FlashSave(void)
 	uint32_t flash_addr;
 	volatile int i = 0;
 	
-	for(i = 0;i < PARAM_NUM; i ++)
+	for(i=0; i<PARAM_NUM; i++)
 	{
 		param_save[i] = FloatToIntBit(struct_ptr[i]);
 	}
@@ -35,7 +35,7 @@ void Param_FlashSave(void)
 	HAL_FLASHEx_Erase(&FLASH_EraseInitstruct, &PageError);
 	
 	flash_addr = ADDR_FLASH_SECTOR_10;
-	for(i = 0;i < PARAM_NUM;i ++)
+	for(i=0; i<PARAM_NUM; i++)
 	{
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, flash_addr, param_save[i]);	
 		flash_addr += 4;
@@ -51,14 +51,14 @@ void Param_FlashRead(void)
 	
 	flash_addr = ADDR_FLASH_SECTOR_10;
 	
-	static int i = 0;
+	volatile int i = 0;
 	
-	for(i = 0;i < PARAM_NUM;i ++)
+	for(i=0; i<PARAM_NUM; i++)
 	{
 		param_read[i] = (*((volatile uint32_t *)flash_addr));
 		flash_addr += 4;
 	}
-	for(i = 0;i < PARAM_NUM;i ++)
+	for(i=0; i<PARAM_NUM; i++)
 	{
 		struct_ptr[i] = IntBitToFloat(param_read[i]);
 	}

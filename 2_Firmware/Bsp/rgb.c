@@ -4,8 +4,8 @@
 uint32_t Pixel_Buf[LED_NUM+1][24];
 
 RGB_Color RGB;
-uint8_t rgb_up_down=0;
-int brightness=0;
+uint8_t rgb_up_down = 0;
+int brightness = 0;
 
 
 /*
@@ -19,13 +19,13 @@ void RGB_SetColor(uint8_t LedId, RGB_Color Color)
         return; //avoid overflow 防止写入ID大于LED总数
     }
 
-    for(i=0;i<8;i++) {
+    for(i=0; i<8; i++) {
         Pixel_Buf[LedId][i] = ( (255-Color.G & (1 << (7 - i))) ? (CODE_1) : CODE_0);//数组某一行0~7转化存放G
     }
-    for(i=8;i<16;i++)  {
+    for(i=8; i<16; i++)  {
         Pixel_Buf[LedId][i] = ( (255-Color.R & (1 << (15 - i))) ? (CODE_1) : CODE_0);//数组某一行8~15转化存放R
     }
-    for(i=16;i<24;i++) {
+    for(i=16; i<24; i++) {
         Pixel_Buf[LedId][i] = ( (255-Color.B & (1 << (23 - i))) ? (CODE_1) : CODE_0);//数组某一行16~23转化存放B
     }
 }
@@ -36,7 +36,7 @@ void RGB_SetColor(uint8_t LedId, RGB_Color Color)
 void Reset_Load(void)
 {
     uint8_t i;
-    for(i = 0;i < 24;i ++)
+    for(i=0; i<24; i++)
     {
         Pixel_Buf[LED_NUM][i] = 0;
     }
@@ -56,14 +56,13 @@ void RGB_SendArray(void)
 void write_color(uint16_t Pixel_Len,RGB_Color color)
 {
     uint16_t i;
-    for(i = 0;i < Pixel_Len;i ++)//给对应个数LED写入颜色
+    for(i=0; i<Pixel_Len; i++)//给对应个数LED写入颜色
     {
         RGB_SetColor(i,color);
     }
     Reset_Load();
     RGB_SendArray();
 }
-
 
 void Set_RGB_BreathingColor(COLOR color)
 {

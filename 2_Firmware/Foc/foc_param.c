@@ -19,21 +19,10 @@ void Param_Return_Default(void)
 	CurrentOffset.C_Offset 				= 2048;
 	
 	MotorControl.motor_pole_pairs 		= 7;
-//	MotorControl.motor_phase_resistance = 0.0f;
-//	MotorControl.motor_phase_inductance = 0.0f;
-//	MotorControl.motor_flux 			= 0.0f;
 	
 	Encoder.encoder_type		   		= (Encoder_Type)TLE5012B;
 	MotorControl.encoder_dir       		= 1;
 	MotorControl.encoder_offset    		= 0;
-	
-//	for(int i = 0;i < 128;i ++)
-//	MotorControl.offset_lut[i] 			= 0;
-	
-//	MotorControl.id_Kp 					= InterfaceParam.id_kp;
-//	MotorControl.id_Ki 					= InterfaceParam.id_ki;
-//	MotorControl.iq_Kp 					= InterfaceParam.iq_kp;
-//	MotorControl.iq_Ki 					= InterfaceParam.iq_ki;
 	
 	MotorControl.speed_Kp 				= 0.05f;
 	MotorControl.speed_Ki 				= 0.5f;
@@ -41,7 +30,7 @@ void Param_Return_Default(void)
 	MotorControl.pos_Kp 				= 0.05f;
 	MotorControl.pos_Ki 				= 0.0f;
 	
-	MotorControl.calib_current 			= 10.0f;
+	MotorControl.calib_current 			= 15.0f;
 	MotorControl.current_limit 			= 30.0f;
 	MotorControl.speed_limit   			= 200.0f;
 	MotorControl.speedAcc      			= 50.0f;
@@ -71,7 +60,7 @@ void Param_Upload(void)
 	InterfaceParam.encoder_dir 			  = (float)MotorControl.encoder_dir;
 	InterfaceParam.encoder_offset 		  = (float)MotorControl.encoder_offset;
 	
-	for(i = 0;i < 128;i ++)
+	for(i=0; i<128; i++)
 	InterfaceParam.offset_lut[i] 		  = (float)MotorControl.offset_lut[i];
 	
 	InterfaceParam.id_kp 				  = MotorControl.id_Kp;
@@ -113,7 +102,7 @@ void Param_Download(void)
 	MotorControl.encoder_dir       		= (int32_t)InterfaceParam.encoder_dir;
 	MotorControl.encoder_offset    		= (int32_t)InterfaceParam.encoder_offset;
 	
-	for(i = 0;i < 128;i ++)
+	for(i=0; i<128; i++)
 	MotorControl.offset_lut[i] 			= (int32_t)InterfaceParam.offset_lut[i];
 	
 	MotorControl.id_Kp 					= InterfaceParam.id_kp;

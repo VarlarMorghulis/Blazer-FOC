@@ -12,8 +12,6 @@ extern MotorControl_TypeDef MotorControl;
 extern Encoder_TypeDef Encoder;
 extern CANMsg_TypeDef CANMsg;
 
-extern FOC_State FOC_State_t;
-
 enum {NoKEY, LEFT, RIGHT, UP, DOWN, ENTER, QUIT};
 
 typedef void (*Show_FunctionPtr)(int8_t, int8_t);
@@ -269,7 +267,7 @@ void Menu_Show(uint8_t key)
 	
 	if(nowMenu->flag == 0)
 	{
-		for(int i = 0;i < 8;i ++)
+		for(int i=0; i<8; i++)
 		{
 			if(key == LEFT)
 			{
@@ -284,7 +282,7 @@ void Menu_Show(uint8_t key)
 				u8g2_SendBuffer(&u8g2);		
 				delay_ms(5);
 			}
-			else if(key==RIGHT)
+			else if(key == RIGHT)
 			{
 				u8g2_ClearBuffer(&u8g2);
 				Show_Function(nowMenu->Show, 108 - i * 8, 0);
@@ -299,29 +297,11 @@ void Menu_Show(uint8_t key)
 			}
 			else if(key == DOWN)
 			{
-//				u8g2_ClearBuffer(&u8g2);
-//				nowMenu=now;
-//				Show_Function(nowMenu->Show, 0, 40);
-//				nowMenu = now->last;
-//				Show_Function(nowMenu->Show, 0, 40-i*8);
-//				nowMenu = now->next;
-//				Show_Function(nowMenu->Show, 0, 40+i*8);
-//				u8g2_SendBuffer(&u8g2);
-//				delay_ms(5);
 			}
 			else if(key == UP)
-			{
-//				u8g2_ClearBuffer(&u8g2);
-//				nowMenu=now;
-//				Show_Function(nowMenu->Show, 8-i, 40);
-//				nowMenu = now->last;
-//				Show_Function(nowMenu->Show, 8-i, 40-i*8);
-//				nowMenu = now->next;
-//				Show_Function(nowMenu->Show, 8-i, 40+i*8);
-//				u8g2_SendBuffer(&u8g2);
-//				delay_ms(5);		
+			{		
 			}
-			
+		
 			nowMenu = now;
 		}
 	}
@@ -410,74 +390,74 @@ void Draw_Main_font(int8_t x, int8_t y)
 
 void Draw_Calib_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_calib);
-	u8g2_DrawStr(&u8g2, 50+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_calib);
+	u8g2_DrawStr(&u8g2, 50 + x, 70, nowMenu->Name);
 }
 
 void Draw_R_L_Flux_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_r_l_flux);
-	u8g2_DrawStr(&u8g2, 40+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_r_l_flux);
+	u8g2_DrawStr(&u8g2, 40 + x, 70, nowMenu->Name);
 }
 
 void Draw_Encoder_Offset_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_encoder_offset);
-	u8g2_DrawStr(&u8g2, 45+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_encoder_offset);
+	u8g2_DrawStr(&u8g2, 45 + x, 70, nowMenu->Name);
 }
 
 void Draw_Setting_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_setting);
-	u8g2_DrawStr(&u8g2, 44+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_setting);
+	u8g2_DrawStr(&u8g2, 44 + x, 70, nowMenu->Name);
 }
 
 void Draw_CAN_ID_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_can_id);
-	u8g2_DrawStr(&u8g2, 46+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_can_id);
+	u8g2_DrawStr(&u8g2, 46 + x, 70, nowMenu->Name);
 }
 
 void Draw_Current_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2,44+x, 16, 40, 40, gImage_current);
-	u8g2_DrawStr(&u8g2,42+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2,44 + x, 16, 40, 40, gImage_current);
+	u8g2_DrawStr(&u8g2,42 + x, 70, nowMenu->Name);
 }
 
 void Draw_Speed_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_speed);
-	u8g2_DrawStr(&u8g2, 32+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_speed);
+	u8g2_DrawStr(&u8g2, 32 + x, 70, nowMenu->Name);
 }
 
 void Draw_Encoder_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_encoder);
-	u8g2_DrawStr(&u8g2, 44+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_encoder);
+	u8g2_DrawStr(&u8g2, 44 + x, 70, nowMenu->Name);
 }
 
 void Draw_Pole_Pairs_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_pole_paris);
-	u8g2_DrawStr(&u8g2, 35+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_pole_paris);
+	u8g2_DrawStr(&u8g2, 35 + x, 70, nowMenu->Name);
 }
 
 void Draw_Default_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_default);
-	u8g2_DrawStr(&u8g2, 44+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_default);
+	u8g2_DrawStr(&u8g2, 44 + x, 70, nowMenu->Name);
 }
 
 void Draw_Run_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_run);
-	u8g2_DrawStr(&u8g2, 55+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_run);
+	u8g2_DrawStr(&u8g2, 55 + x, 70, nowMenu->Name);
 }
 
 void Draw_Info_font(int8_t x, int8_t y)
 {
-	u8g2_DrawXBMP(&u8g2, 44+x, 16, 40, 40, gImage_info);
-	u8g2_DrawStr(&u8g2, 50+x, 70, nowMenu->Name);
+	u8g2_DrawXBMP(&u8g2, 44 + x, 16, 40, 40, gImage_info);
+	u8g2_DrawStr(&u8g2, 50 + x, 70, nowMenu->Name);
 }
 
 void Main(void)
@@ -492,7 +472,7 @@ void Calib(void)
 
 void R_L_Flux(void)
 {
-	static uint8_t step=0;
+	static uint8_t step = 0;
 	
 	if(step == 0)
 	{
@@ -623,14 +603,14 @@ void CAN_ID(void)
 		/*ID增加*/
 		if(key1_event == KE_ShortPress)
 		{
-			CANMsg.node_id ++;
+			CANMsg.node_id++;
 			if(CANMsg.node_id > 7)
 				CANMsg.node_id = 0;
 		}
 		/*ID减小*/
 		if(key2_event == KE_ShortPress)
 		{
-			CANMsg.node_id --;
+			CANMsg.node_id--;
 			if((int8_t)CANMsg.node_id < 0)
 				CANMsg.node_id = 7;
 		}
@@ -638,7 +618,7 @@ void CAN_ID(void)
 		/*保存配置*/
 		if(key1_event == KE_LongPress)
 		{
-			MotorControl.ModeNow   = Save_Param;
+			MotorControl.ModeNow = Save_Param;
 			step = 0;
 		}
 	}
@@ -737,13 +717,13 @@ void EncoderType(void)
 	{
 		if(key1_event == KE_ShortPress)
 		{
-			Encoder.encoder_type ++;
+			Encoder.encoder_type++;
 			if(Encoder.encoder_type > 1)
 				Encoder.encoder_type = TLE5012B;
 		}
 		if(key2_event == KE_ShortPress)
 		{
-			Encoder.encoder_type --;
+			Encoder.encoder_type--;
 			if((int8_t)Encoder.encoder_type < 0)
 				Encoder.encoder_type = MT6816;
 		}
@@ -803,7 +783,7 @@ void Pole_Pairs(void)
 	{
 		if(key1_event == KE_ShortPress)
 		{
-			MotorControl.motor_pole_pairs ++;
+			MotorControl.motor_pole_pairs++;
 			if(MotorControl.motor_pole_pairs > 30)
 				MotorControl.motor_pole_pairs = 2;
 		}
@@ -857,13 +837,13 @@ void Default(void)
 	{
 		if(key1_event == KE_ShortPress)
 		{
-			if_return_default ++;
+			if_return_default++;
 			if(if_return_default > 1)
 				if_return_default = 0;
 		}
 		if(key2_event == KE_ShortPress)
 		{
-			if_return_default --;
+			if_return_default--;
 			if((int8_t)if_return_default < 0)
 				if_return_default = 1;
 		}
@@ -905,7 +885,6 @@ void Run(void)
 	static uint8_t step;
 	if(step == 0)
 	{
-		//FOC_State_t=FOC_Sensored;
 		step = 1;
 	}
 	

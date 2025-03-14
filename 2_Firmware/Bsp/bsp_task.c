@@ -13,13 +13,13 @@ void BSP1kHzIRQHandler(void)
 {
 	Vofa_Upload();
 	
-	if(++ Led_Cnt >= 200)
+	if(++Led_Cnt >= 200)
 	{
 		LED_Task();
 		Led_Cnt=0;
 	}
 		
-	if(++ RGB_Cnt >= 50)
+	if(++RGB_Cnt >= 50)
 	{
 		switch(MotorControl.ModeNow)
 		{
@@ -48,16 +48,16 @@ void BSP1kHzIRQHandler(void)
 			break;
 		}
 		
-		RGB_Cnt=0;
+		RGB_Cnt = 0;
 	}
 	
-	if(++ Analog_Cnt >= 1)
+	if(++Analog_Cnt >= 1)
 	{
 		Temperature_Update();
 		Analog_Cnt = 0;
 	}
 	
-	if(++ Key_Cnt >= 50)
+	if(++Key_Cnt >= 50)
 	{
 		Key_Status_Check();
 		menu_key = Menu_GetKeyval();
